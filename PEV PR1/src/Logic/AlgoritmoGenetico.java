@@ -6,6 +6,8 @@ public class AlgoritmoGenetico {
 	
 	private Individuo[] poblacion;
 	
+	private int tam_gen;
+	
 	private double[] fitness;
 	
 	private int max_generaciones;
@@ -46,6 +48,7 @@ public class AlgoritmoGenetico {
 		this.prob_mut=valores.prob_mut;
 		this.precision=valores.precision;
 		this.funcion_idx=valores.funcion_idx;
+		//this.tam_gen=tamGen(pos_best, funcion_idx, max_generaciones);
 	}
 		
 	private int tamGen(double valorError, double min, double max) {
