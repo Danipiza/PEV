@@ -1,0 +1,188 @@
+package View;
+
+
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import Logic.AlgoritmoGenetico;
+import Logic.Valores;
+
+import java.awt.GridBagConstraints;
+
+public class ControlPanel extends JPanel{
+
+	private static final long serialVersionUID = 1L;
+	
+	AlgoritmoGenetico AG;
+	
+	JPanel main_panel;	
+	
+	private JButton run_button;
+	
+	private JTextField tam_poblacion;
+	private JTextField generaciones;
+	private JTextField prob_cruce;
+	private JTextField prob_mut;
+	private JTextField precision;
+	
+	private JComboBox<String> funcion_CBox;
+	
+	private Valores valores;
+	
+	public ControlPanel() {
+		tam_poblacion = new JTextField(15);
+		generaciones = new JTextField(15);
+        prob_cruce = new JTextField(15);
+        prob_mut = new JTextField(15);
+        precision = new JTextField(15);
+        
+        AG = new AlgoritmoGenetico();
+        
+		initGUI();
+	}
+	
+	private void initGUI() {
+		
+		main_panel=new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(5, 5, 5, 5); // Padding
+		c.anchor = GridBagConstraints.WEST; // Align components to the left
+				
+		this.add(main_panel);
+		
+		String[] funciones = {"F1: Calibracion y Prueba", 
+							"F2: Mishra Bird", 
+							"F3: Holder table",
+							"F4: Michalewicz (Binaria)",
+							"F5: Michalewicz (Real)"
+							};
+		funcion_CBox = new JComboBox<>(funciones);		
+		
+		
+		run_button = new JButton();
+		run_button.setToolTipText("Run button"); 
+		run_button.setIcon(loadImage("resources/icons/run.png"));
+		run_button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {	
+				run();
+				/*
+				// Perform action here
+                String field1Value = textField1.getText();
+                String field2Value = textField2.getText();
+                String field3Value = textField3.getText();
+                String selectedOption = comboBox.getItemAt(comboBox.getSelectedIndex());
+
+                // Example: print the values
+                System.out.println("Field 1: " + field1Value);
+                System.out.println("Field 2: " + field2Value);
+                System.out.println("Field 3: " + field3Value);
+                System.out.println("Selected Option: " + selectedOption);
+                */
+
+				//run();
+			}
+		});
+		
+		//c.fill = GridBagConstraints.HORIZONTAL;
+				
+		
+		c.gridx = 0; c.gridy = 0;		
+		main_panel.add(new JLabel("Tam. Poblacion:"), c);		
+		c.gridy++; main_panel.add(new JLabel("Num. Generaciones:"), c);
+		c.gridy++; main_panel.add(new JLabel("Prob. Cruce:"), c);		
+		c.gridy++; main_panel.add(new JLabel("Prob. Mutacion:"), c);		
+		c.gridy++; main_panel.add(new JLabel("Precision:"), c);
+		c.gridy++; main_panel.add(new JLabel("Funcion:"), c);
+
+			
+
+		c.gridx++; c.gridy = 0;
+		main_panel.add(tam_poblacion, c);
+		c.gridy++; main_panel.add(generaciones, c);
+		c.gridy++; main_panel.add(prob_cruce, c);
+		c.gridy++; main_panel.add(prob_mut, c);
+		c.gridy++; main_panel.add(precision, c);
+		c.gridy++; main_panel.add(funcion_CBox, c);
+		
+		c.anchor = GridBagConstraints.SOUTH; // Align components to the left
+		c.gridy++; main_panel.add(run_button, c);
+	}
+	
+	private void run() {
+		setValores();
+		AG.ejecuta(valores);		
+	}
+	
+	
+	
+	private void setValores() {		
+		valores=new Valores(Integer.parseInt(tam_poblacion.getText()),
+							Integer.parseInt(generaciones.getText()),
+							Double.parseDouble(prob_cruce.getText()),
+							Double.parseDouble(prob_mut.getText()),
+							Double.parseDouble(precision.getText()),
+							funcion_CBox.getSelectedIndex());		
+	}
+	
+	public Valores getValores() {
+		return valores;
+	}
+	
+	/*private void funcion(int x) {
+		switch (x) {
+		case 1:
+			funcion1Class();
+			break;
+		case 2:
+			funcion2Class();	
+			break;
+		case 3:
+			funcion3Class();
+			break;
+		case 4:
+			funcion4Class();
+			break;
+		case 5:
+			funcion5Class();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	protected void funcion1Class() {
+		
+	}
+	
+	protected void funcion2Class() {
+		
+	}
+
+	protected void funcion3Class() {
+		
+	}
+	
+	protected void funcion4Class() {
+		
+	}
+	
+	protected void funcion5Class() {
+		
+	}*/
+	
+	protected ImageIcon loadImage(String path) {
+		return new ImageIcon(Toolkit.getDefaultToolkit().createImage(path));
+	}
+
+}

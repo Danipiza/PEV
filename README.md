@@ -1,5 +1,9 @@
 # PEV
 
+# IMPORTANTE
+## EN LOS PORTATILES DE LA FACULTAD NO SE PUEDE VINCULAR UN PROYECTO DE GITHUB PARA HACER PUSH Y COMMITS
+
+
 ## Tema 1
 Los Algoritmos Evolutivos (AEs) recogen un conjunto de modelos basados en la evolución de los seres vivos. Inspirados en la Naturaleza.
 

@@ -8,6 +8,7 @@ import View.MainWindow;
 public class Main {
 	
 	public static void main(String[] args) {
+		System.out.println("HOLA");
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
