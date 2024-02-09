@@ -3,20 +3,15 @@ package Logic;
 public class Individuo {
 	public Cromosoma[] cromosoma;
 	
-	public Individuo(int num, double precision, int[] maximos, int[] minimos){
+	public double[] fenotipo;
+	
+	public Individuo(int num, int[] tam_genes, double xMax[], double[] xMin){
 		cromosoma=new Cromosoma[num];
 		for(int i=0;i<num;i++) {
-			cromosoma[i]=init(precision, maximos[i],minimos[i]);
+			cromosoma[i]=new Cromosoma(tam_genes[i]);
 		}
-	}
-	
-	private Cromosoma init(double precision, int maximo, int minimo) {
-		Cromosoma ret = new Cromosoma(tamGen(precision,maximo,minimo));
-		for(int i=0;i<cromosoma.length;i++) {
-			ret.v[i]=(Math.random()<=0.5?1:0);
-		}
-		return ret;
-	}
+		calcular_fenotipo(xMax,xMin);
+	}	
 	
 	private int bin2dec(Cromosoma cromosoma) {
 		int ret=0;
@@ -28,9 +23,27 @@ public class Individuo {
 		return ret;
 	}
 	
-	private double fenotipo(Cromosoma ind, int xMax, int xMin) {
+	
+	private void calcular_fenotipo(double[] xMax, double[] xMin) {			
+		for(int i=0;i<cromosoma.length;i++) {
+			fenotipo[i]=calcular_fenotipoCromosoma(cromosoma[i], xMax[i], xMin[i]);
+		}		
+	}		
+	
+	
+	private double calcular_fenotipoCromosoma(Cromosoma ind, double xMax, double xMin) {		
 		return xMin + bin2dec(ind) *((xMax-xMin)/(Math.pow(2, ind.v.length)-1));
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/*private double[] fenotipos_poblacion() {
 		double[] ret = new double[tam_poblacion];
@@ -42,9 +55,7 @@ public class Individuo {
 	}
 	*/
 	
-	private int tamGen(double precision, double min, double max) {
-		return (int) (Math.log10(((max - min) / precision) + 1) / Math.log10(2));
-	}
+	
 	
 	
 }

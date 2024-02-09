@@ -12,7 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 
 import Logic.AlgoritmoGenetico;
 import Logic.Valores;
@@ -28,7 +30,6 @@ public class ControlPanel extends JPanel{
 	JPanel main_panel;	
 	
 	private JButton run_button;
-	private JButton valores_button;
 	
 	private JTextField tam_poblacion;
 	private JTextField generaciones;
@@ -41,6 +42,8 @@ public class ControlPanel extends JPanel{
 	private JComboBox<String> cruce_CBox;
 	private JComboBox<String> mutacion_CBox;
 	
+	private JSpinner cromosomas_spinner;
+	
 	private Valores valores;
 	
 	public ControlPanel() {
@@ -49,6 +52,7 @@ public class ControlPanel extends JPanel{
         prob_cruce = new JTextField(15);
         prob_mut = new JTextField(15);
         precision = new JTextField(15);
+        cromosomas_spinner = new JSpinner();
         
         AG = new AlgoritmoGenetico();
         
@@ -88,6 +92,11 @@ public class ControlPanel extends JPanel{
 		cruce_CBox = new JComboBox<>(cruce);	
 		mutacion_CBox = new JComboBox<>(mutacion);	
 		
+ 
+											 // Initial value, min, max, step
+        SpinnerNumberModel spinnerModel = new SpinnerNumberModel(2, 1, 10, 1); 
+        cromosomas_spinner.setModel(spinnerModel);
+		
 		
 		run_button = new JButton();
 		run_button.setToolTipText("Run button"); 
@@ -99,19 +108,7 @@ public class ControlPanel extends JPanel{
 			}
 		});
 		
-		valores_button = new JButton();
-		valores_button.setToolTipText("Valores button"); 
-		//valores_button.setIcon(loadImage("resources/icons/run.png"));
-		valores_button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {	
-				// dialog		
-			}
-		});
-		
-		
-		
-				
+						
 		
 		c.gridx = 0; c.gridy = 0;		
 		main_panel.add(new JLabel("Tam. Poblacion:"), c);		
@@ -123,6 +120,7 @@ public class ControlPanel extends JPanel{
 		c.gridy++; main_panel.add(new JLabel("Prob. Mutacion:"), c);		
 		c.gridy++; main_panel.add(new JLabel("Precision:"), c);
 		c.gridy++; main_panel.add(new JLabel("Funcion:"), c);
+		c.gridy++; main_panel.add(new JLabel("d:"), c);
 
 			
 
@@ -136,16 +134,17 @@ public class ControlPanel extends JPanel{
 		c.gridy++; main_panel.add(prob_mut, c);
 		c.gridy++; main_panel.add(precision, c);
 		c.gridy++; main_panel.add(funcion_CBox, c);
+		c.gridy++; main_panel.add(cromosomas_spinner, c);
 		
 		c.anchor = GridBagConstraints.SOUTH; // Align components to the left
 		c.gridy++; main_panel.add(run_button, c);
-		c.gridy++; main_panel.add(valores_button, c);
 	}
 	
 	private void run() {
 		setValores();
 		AG.ejecuta(valores);		
 	}
+	
 	
 	
 	
@@ -158,57 +157,25 @@ public class ControlPanel extends JPanel{
 							mutacion_CBox.getSelectedIndex(),
 							Double.parseDouble(prob_mut.getText()),
 							Double.parseDouble(precision.getText()),
-							funcion_CBox.getSelectedIndex());		
+							funcion_CBox.getSelectedIndex(),
+							(int)cromosomas_spinner.getValue());		
 	}
 	
-	public Valores getValores() {
-		return valores;
-	}
+	public Valores getValores() { return valores; }	
 	
-	/*private void funcion(int x) {
-		switch (x) {
-		case 1:
-			funcion1Class();
-			break;
-		case 2:
-			funcion2Class();	
-			break;
-		case 3:
-			funcion3Class();
-			break;
-		case 4:
-			funcion4Class();
-			break;
-		case 5:
-			funcion5Class();
-			break;
-		default:
-			break;
-		}
-	}
-	
-	protected void funcion1Class() {
-		
-	}
-	
-	protected void funcion2Class() {
-		
-	}
-
-	protected void funcion3Class() {
-		
-	}
-	
-	protected void funcion4Class() {
-		
-	}
-	
-	protected void funcion5Class() {
-		
-	}*/
 	
 	protected ImageIcon loadImage(String path) {
 		return new ImageIcon(Toolkit.getDefaultToolkit().createImage(path));
 	}
 
+	
+	/*protected void valoresClass() {		
+		int num=(int)valores_spinner.getValue();		
+		ValoresDialog valores_dialog = new ValoresDialog(num); // (Frame) this.getTopLevelAncestor()		
+		
+		int estado = valores_dialog.open(num);		
+		if (estado == 1) {			
+			
+		} 
+	}*/
 }
