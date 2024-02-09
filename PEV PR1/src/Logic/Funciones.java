@@ -3,8 +3,6 @@ package Logic;
 public class Funciones {
 	
 	private int funcion_idx;
-	private double izq, der; 	// TODO CAMBIAR HAY INTERVALOS PARA DOS VALORES NO SOLO 1
-								//	EJEMPLO F2
 	
 	public Funciones(int funcion_idx) {
 		this.funcion_idx=funcion_idx;
@@ -89,10 +87,6 @@ public class Funciones {
 		return 0;
 	}
 	
-	
-	
-	public double getIzq() { return izq; }
-	public double getDer() { return der; }
-	
+		
 
 }

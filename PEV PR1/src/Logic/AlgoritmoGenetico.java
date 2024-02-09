@@ -23,16 +23,21 @@ public class AlgoritmoGenetico {
 	private double[] prob_seleccion;
 	private double[] prob_seleccionAcum;
 	
+	private Funciones funcion;
+	private int funcion_idx;
+	
+	private Seleccion seleccion;
 	private int seleccion_idx;
 	
+	private Cruce cruce;
 	private int cruce_idx;
 	private double prob_cruce;
 	
+	private Mutacion mutacion;
 	private int mut_idx;
 	private double prob_mut;	
 	
-	private Funciones funcion;
-	private int funcion_idx;
+	
 	
 	private double[] maximos;
 	private double[] minimos;
@@ -83,6 +88,9 @@ public class AlgoritmoGenetico {
 		this.num_cromosomas=valores.cromosomas;
 		
 		funcion=new Funciones(funcion_idx);
+		seleccion=new Seleccion(tam_poblacion);
+		cruce=new Cruce();
+		mutacion=new Mutacion();
 		
 		this.maximos=funcion.maximos(num_cromosomas);
 		this.minimos=funcion.minimos(num_cromosomas);
@@ -118,23 +126,23 @@ public class AlgoritmoGenetico {
 		prob_seleccionAcum=new double[tam_poblacion];
 		
 		// This functional interface takes a double array as parameter and returns a Double.
-		Function<double[], Double> selectedFunction = null;
+		Function<double[], Double> selected_function = null;
 		
 		switch (funcion_idx) {
 		case 0:
-			selectedFunction = funcion::f1;
+			selected_function = funcion::f1;
 			break;
 		case 1:
-			selectedFunction = funcion::f2;	
+			selected_function = funcion::f2;	
 			break;
 		case 2:
-			selectedFunction = funcion::f3;
+			selected_function = funcion::f3;
 			break;
 		case 3:
-			selectedFunction = funcion::f4;
+			selected_function = funcion::f4;
 			break;
 		case 4:
-			selectedFunction = funcion::f5;
+			selected_function = funcion::f5;
 			break;
 
 		default:
@@ -142,10 +150,10 @@ public class AlgoritmoGenetico {
 		}
 		
 		
-		//if (selectedFunction != null) // NO HACE FALTA
+		//if (selected_function != null) // NO HACE FALTA
         for (int i = 0; i < tam_poblacion; i++) {
-            //fitness[i] = selectedFunction.apply(new double[]{poblacion[i].fenotipo});
-        	fitness[i] = selectedFunction.apply(poblacion[i].fenotipo);
+            //fitness[i] = selected_function.apply(new double[]{poblacion[i].fenotipo});
+        	fitness[i] = selected_function.apply(poblacion[i].fenotipo);
             fitness_total += fitness[i];
         }
         
@@ -154,11 +162,36 @@ public class AlgoritmoGenetico {
         	prob_seleccion[i]=fitness[i]/fitness_total;
         	acum+=prob_seleccion[i];
         	prob_seleccionAcum[i]=acum;
-        }					
+        }		
 	}
 		
 	private Individuo[] seleccion_poblacion() {
-		Individuo[] ret = new Individuo[tam_poblacion];
+		Individuo[] ret = new Individuo[tam_poblacion];		
+		
+		
+		switch (funcion_idx) {
+		case 0:
+			ret=seleccion.ruleta(poblacion, prob_seleccionAcum);
+			break;
+		case 1:
+			ret=seleccion.torneoDeterministico(poblacion, prob_seleccionAcum);
+			break;
+		case 2:
+			ret=seleccion.torneoProbabilistico(poblacion, prob_seleccionAcum);
+			break;
+		case 3:
+			ret=seleccion.estocasticoUniversal(poblacion, prob_seleccionAcum);
+			break;
+		case 4:
+			ret=seleccion.truncamiento(poblacion, prob_seleccionAcum);
+			break;
+		case 5:
+			ret=seleccion.restos(poblacion, prob_seleccionAcum);
+			break;
+
+		default:
+			break;
+		}
 		
 		
 		
@@ -166,18 +199,12 @@ public class AlgoritmoGenetico {
 	}
 	
 	private void cruce_poblacion() {
-		List<Individuo> cruzados = new ArrayList<Individuo>();
-		for (int i = 0; i < tam_poblacion;i++) {
-			// TODO MUT
-		}
+		
 	}
 	
 	
 	private void mutacion_poblacion() {
-		List<Individuo> cruzados = new ArrayList<Individuo>();
-		for (int i = 0; i < tam_poblacion;i++) {
-			// TODO MUT
-		}
+		
 	}
 	
 	

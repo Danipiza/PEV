@@ -7,6 +7,7 @@ public class Individuo {
 	
 	public Individuo(int num, int[] tam_genes, double xMax[], double[] xMin){
 		cromosoma=new Cromosoma[num];
+		fenotipo=new double[num];
 		for(int i=0;i<num;i++) {
 			cromosoma[i]=new Cromosoma(tam_genes[i]);
 		}
@@ -16,7 +17,7 @@ public class Individuo {
 	private int bin2dec(Cromosoma cromosoma) {
 		int ret=0;
 		int cont=1;
-		for(int i=cromosoma.v.length;i>=0;i--) {
+		for(int i=cromosoma.v.length-1;i>=0;i--) {
 			if(cromosoma.v[i]==1)ret+=cont;
 			cont*=2;
 		}

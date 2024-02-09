@@ -4,19 +4,12 @@ package Logic;
 
 public class Mutacion {	
 	
-	public void muta_poblacion(int i, double p, int tam_poblacion, 
-			Individuo[] poblacion, int l) {		
-		switch (i) {
-		case 0: // BASICA
-			mut_basica(tam_poblacion,p,poblacion,l);
-			break;
-		default:
-			break;
-		}
+	// TODO 
+	public Mutacion() {
 		
 	}
 	
-	private void mut_basica(int tam_poblacion, double p,
+	public void mut_basica(int tam_poblacion, double p,
 			Individuo[] poblacion, int l) {
 		
 		Individuo[] ret = new Individuo[tam_poblacion];
