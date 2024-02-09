@@ -28,6 +28,7 @@ public class ControlPanel extends JPanel{
 	JPanel main_panel;	
 	
 	private JButton run_button;
+	private JButton valores_button;
 	
 	private JTextField tam_poblacion;
 	private JTextField generaciones;
@@ -36,6 +37,9 @@ public class ControlPanel extends JPanel{
 	private JTextField precision;
 	
 	private JComboBox<String> funcion_CBox;
+	private JComboBox<String> seleccion_CBox;
+	private JComboBox<String> cruce_CBox;
+	private JComboBox<String> mutacion_CBox;
 	
 	private Valores valores;
 	
@@ -66,7 +70,23 @@ public class ControlPanel extends JPanel{
 							"F4: Michalewicz (Binaria)",
 							"F5: Michalewicz (Real)"
 							};
-		funcion_CBox = new JComboBox<>(funciones);		
+		String[] seleccion = {"Ruleta", 
+							"Torneo Deterministico", 
+							"Torneo Probabilistico",
+							"Estocastico Universal",
+							"Truncamiento",
+							"Restos",
+							};
+		String[] cruce= {"Mono-Punto",
+						"Uniforme"
+						};
+		String[] mutacion = {"Básica"
+							};
+		
+		funcion_CBox = new JComboBox<>(funciones);	
+		seleccion_CBox = new JComboBox<>(seleccion);	
+		cruce_CBox = new JComboBox<>(cruce);	
+		mutacion_CBox = new JComboBox<>(mutacion);	
 		
 		
 		run_button = new JButton();
@@ -75,32 +95,31 @@ public class ControlPanel extends JPanel{
 		run_button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {	
-				run();
-				/*
-				// Perform action here
-                String field1Value = textField1.getText();
-                String field2Value = textField2.getText();
-                String field3Value = textField3.getText();
-                String selectedOption = comboBox.getItemAt(comboBox.getSelectedIndex());
-
-                // Example: print the values
-                System.out.println("Field 1: " + field1Value);
-                System.out.println("Field 2: " + field2Value);
-                System.out.println("Field 3: " + field3Value);
-                System.out.println("Selected Option: " + selectedOption);
-                */
-
-				//run();
+				run();				
 			}
 		});
 		
-		//c.fill = GridBagConstraints.HORIZONTAL;
+		valores_button = new JButton();
+		valores_button.setToolTipText("Valores button"); 
+		//valores_button.setIcon(loadImage("resources/icons/run.png"));
+		valores_button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {	
+				// dialog		
+			}
+		});
+		
+		
+		
 				
 		
 		c.gridx = 0; c.gridy = 0;		
 		main_panel.add(new JLabel("Tam. Poblacion:"), c);		
 		c.gridy++; main_panel.add(new JLabel("Num. Generaciones:"), c);
+		c.gridy++; main_panel.add(new JLabel("Metodo de Seleccion:"), c);
+		c.gridy++; main_panel.add(new JLabel("Metodo de Cruce:"), c);
 		c.gridy++; main_panel.add(new JLabel("Prob. Cruce:"), c);		
+		c.gridy++; main_panel.add(new JLabel("Metodo de Mutacion:"), c);
 		c.gridy++; main_panel.add(new JLabel("Prob. Mutacion:"), c);		
 		c.gridy++; main_panel.add(new JLabel("Precision:"), c);
 		c.gridy++; main_panel.add(new JLabel("Funcion:"), c);
@@ -110,13 +129,17 @@ public class ControlPanel extends JPanel{
 		c.gridx++; c.gridy = 0;
 		main_panel.add(tam_poblacion, c);
 		c.gridy++; main_panel.add(generaciones, c);
+		c.gridy++; main_panel.add(seleccion_CBox, c);
+		c.gridy++; main_panel.add(cruce_CBox, c);
 		c.gridy++; main_panel.add(prob_cruce, c);
+		c.gridy++; main_panel.add(mutacion_CBox, c);
 		c.gridy++; main_panel.add(prob_mut, c);
 		c.gridy++; main_panel.add(precision, c);
 		c.gridy++; main_panel.add(funcion_CBox, c);
 		
 		c.anchor = GridBagConstraints.SOUTH; // Align components to the left
 		c.gridy++; main_panel.add(run_button, c);
+		c.gridy++; main_panel.add(valores_button, c);
 	}
 	
 	private void run() {
@@ -129,7 +152,10 @@ public class ControlPanel extends JPanel{
 	private void setValores() {		
 		valores=new Valores(Integer.parseInt(tam_poblacion.getText()),
 							Integer.parseInt(generaciones.getText()),
+							seleccion_CBox.getSelectedIndex(),
+							cruce_CBox.getSelectedIndex(),
 							Double.parseDouble(prob_cruce.getText()),
+							mutacion_CBox.getSelectedIndex(),
 							Double.parseDouble(prob_mut.getText()),
 							Double.parseDouble(precision.getText()),
 							funcion_CBox.getSelectedIndex());		
