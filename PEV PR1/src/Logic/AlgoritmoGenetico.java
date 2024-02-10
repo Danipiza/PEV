@@ -174,18 +174,21 @@ public class AlgoritmoGenetico {
 			ret=seleccion.ruleta(poblacion, prob_seleccionAcum);
 			break;
 		case 1:
-			ret=seleccion.torneoDeterministico(poblacion, prob_seleccionAcum);
+			ret=seleccion.torneoDeterministico(poblacion, 3);
 			break;
 		case 2:
-			ret=seleccion.torneoProbabilistico(poblacion, prob_seleccionAcum);
+			ret=seleccion.torneoProbabilistico(poblacion, 3, 0.2);
 			break;
 		case 3:
-			ret=seleccion.estocasticoUniversal(poblacion, prob_seleccionAcum);
+			ret=seleccion.estocasticoUniversal1(poblacion, prob_seleccionAcum);
 			break;
 		case 4:
-			ret=seleccion.truncamiento(poblacion, prob_seleccionAcum);
+			ret=seleccion.estocasticoUniversal2(poblacion, prob_seleccionAcum);
 			break;
 		case 5:
+			ret=seleccion.truncamiento(poblacion, prob_seleccionAcum);
+			break;
+		case 6:
 			ret=seleccion.restos(poblacion, prob_seleccionAcum);
 			break;
 
