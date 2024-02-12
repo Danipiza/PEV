@@ -53,9 +53,14 @@ public class AlgoritmoGenetico {
 	public AlgoritmoGenetico() { }
 		
 	public void ejecuta(Valores valores) {
+		Individuo[] selec=null;
 		setValores(valores);
 		
+		
 		init_poblacion();
+		
+		//cruce.cruce_uniforme(poblacion);
+		
 		/*for (Individuo ind: poblacion) {			
 			for(Cromosoma c: ind.cromosoma) {
 				for (int a: c.v) {
@@ -68,8 +73,8 @@ public class AlgoritmoGenetico {
 		
 		while(generaciones--!=0) {
 			evaluacion_poblacion();
-			seleccion_poblacion();
-			cruce_poblacion();
+			selec = seleccion_poblacion();
+			cruce_poblacion(selec);
 			mutacion_poblacion();					
 		}
 	}
@@ -89,7 +94,7 @@ public class AlgoritmoGenetico {
 		
 		funcion=new Funciones(funcion_idx);
 		seleccion=new Seleccion(tam_poblacion);
-		cruce=new Cruce();
+		cruce=new Cruce(prob_cruce);
 		mutacion=new Mutacion();
 		
 		this.maximos=funcion.maximos(num_cromosomas);
@@ -173,10 +178,10 @@ public class AlgoritmoGenetico {
 		case 0:
 			ret=seleccion.ruleta(poblacion, prob_seleccionAcum);
 			break;
-		case 1:
+		case 1:			
 			ret=seleccion.torneoDeterministico(poblacion, 3);
 			break;
-		case 2:
+		case 2:			
 			ret=seleccion.torneoProbabilistico(poblacion, 3, 0.2);
 			break;
 		case 3:
@@ -201,8 +206,21 @@ public class AlgoritmoGenetico {
 		return ret;
 	}
 	
-	private void cruce_poblacion() {
+	private Individuo[] cruce_poblacion(Individuo[] selec) {
+		Individuo[] ret = null;
 		
+		switch (cruce_idx) {
+		case 0:
+			ret=cruce.cruce_uniforme(selec);
+			break;
+		case 1:
+			ret=cruce.cruce_uniforme(selec);
+			break;
+		default:
+			break;
+		}
+		
+		return ret;
 	}
 	
 	

@@ -37,7 +37,14 @@ public class Individuo {
 	}
 	
 	
-	
+	public void printIndividuo() {
+		for(Cromosoma c: cromosoma) {
+			for(int a: c.v) {
+				System.out.print(a + " ");
+			}
+		}
+		System.out.println();
+	}
 	
 	
 	
