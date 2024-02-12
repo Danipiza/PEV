@@ -5,6 +5,8 @@ public class Individuo {
 	
 	public double[] fenotipo;
 	
+	public double fitness;
+	
 	public Individuo(int num, int[] tam_genes, double xMax[], double[] xMin){
 		cromosoma=new Cromosoma[num];
 		fenotipo=new double[num];

@@ -50,38 +50,65 @@ public class Seleccion {
 		
 		return seleccionados;
 	}	
+	
+	// TODO QUITAR, COMPROBANDO, fitness[] DE AlgoritmoGenetico
 	public Individuo[] torneoDeterministico(Individuo[] poblacion, int k) {
 		Individuo[] seleccionados = new Individuo[poblacion.length];
-		Individuo[] torneo = new Individuo[k];
+		//Individuo[] torneo = new Individuo[k];
+		Individuo tmp;
+		
+		int index;
+		double max;		
 		for (int i = 0; i < poblacion.length; i++) {
+			max=0; index=-1;
 			for (int j = 0; j < k; j++) {
 				int randomIndex = (int) (Math.random() * poblacion.length);
-				torneo[j] = poblacion[randomIndex];
+				//torneo[j] = poblacion[randomIndex];
+				tmp=poblacion[randomIndex];
+				if(max<tmp.fitness) {
+					max=tmp.fitness;
+					index=randomIndex;
+				}
 			}
 			
-			double max = 0; int index = 0;
-			for (int j = 0; j < 3; j++) {
+			//double max = 0; int index = 0;
+			/*for (int j = 0; j < 3; j++) {
 				if (torneo[j].fitness > max) {
 					max = torneo[j].fitness;
 					index = j;
 				}
-			}
-			seleccionados[i] = torneo[index];
+			}*/
+			seleccionados[i] = poblacion[index];
 		}
 			
 		return seleccionados;
 	}
 	public Individuo[] torneoProbabilistico(Individuo[] poblacion, int k, double p) {
 		Individuo[] seleccionados = new Individuo[poblacion.length];
-		Individuo[] torneo = new Individuo[k];
+		//Individuo[] torneo = new Individuo[k];
+		Individuo tmp;
+		
+		int indexMax, indexMin;
+		double max, min;
 		for (int i = 0; i < poblacion.length; i++) {
+			max = 0; min = Double.MAX_VALUE;
+			indexMax=-1; indexMin=-1;
 			for (int j = 0; j < k; j++) {
 				int randomIndex = (int) (Math.random() * poblacion.length);
-				torneo[j] = poblacion[randomIndex];
+				tmp=poblacion[randomIndex];
+				if(tmp.fitness>max) {
+					max=tmp.fitness;
+					indexMax=randomIndex;
+				}
+				else if(tmp.fitness<min) {
+					min=tmp.fitness;
+					indexMin=randomIndex;
+				}
+				//torneo[j] = poblacion[randomIndex];
 			}
 			
-			double max = 0, min = Double.MAX_VALUE; int index = 0;
-			if (Math.random() > p) {
+			//double max = 0, min = Double.MAX_VALUE; int index = 0;
+			/*if (Math.random() > p) {
 				for (int j = 0; j < 3; j++) {
 					if (torneo[j].fitness > max) {
 						max = torneo[j].fitness;
@@ -96,9 +123,9 @@ public class Seleccion {
 						index = j;
 					}
 				}
-			}
-			
-			seleccionados[i] = torneo[index];
+			}*/
+			seleccionados[i]=(Math.random() > p?poblacion[indexMax]:poblacion[indexMin]);
+			//seleccionados[i] = torneo[index];
 		}
 			
 		return seleccionados;

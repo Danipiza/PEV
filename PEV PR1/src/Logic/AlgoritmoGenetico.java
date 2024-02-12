@@ -59,7 +59,7 @@ public class AlgoritmoGenetico {
 		
 		init_poblacion();
 		
-		//cruce.cruce_uniforme(poblacion);
+		cruce.cruce_uniforme(poblacion);
 		
 		/*for (Individuo ind: poblacion) {			
 			for(Cromosoma c: ind.cromosoma) {
@@ -158,7 +158,9 @@ public class AlgoritmoGenetico {
 		//if (selected_function != null) // NO HACE FALTA
         for (int i = 0; i < tam_poblacion; i++) {
             //fitness[i] = selected_function.apply(new double[]{poblacion[i].fenotipo});
-        	fitness[i] = selected_function.apply(poblacion[i].fenotipo);
+        	// TODO CAMBIAR, PARA QUE SOLO ESTE EN LA CLASE Individuo, QUITAR ARRAY GLOBAL fitness[]
+        	fitness[i] = selected_function.apply(poblacion[i].fenotipo); 
+        	poblacion[i].fitness=fitness[i];
             fitness_total += fitness[i];
         }
         
