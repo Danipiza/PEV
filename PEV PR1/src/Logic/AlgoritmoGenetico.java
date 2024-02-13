@@ -3,6 +3,9 @@ package Logic;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import View.ControlPanel;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -49,37 +52,15 @@ public class AlgoritmoGenetico {
 	private Individuo best;
 	private int pos_best;	
 	
+	private ValoresIndividuosGrafico[] valores_inds;
+	private int pos_valores;
 	
-	public AlgoritmoGenetico() { }
-		
-	public void ejecuta(Valores valores) {
-		Individuo[] selec=null;
-		setValores(valores);
-		
-		
-		init_poblacion();
-		
-		cruce.cruce_uniforme(poblacion);
-		
-		/*for (Individuo ind: poblacion) {			
-			for(Cromosoma c: ind.cromosoma) {
-				for (int a: c.v) {
-					System.out.print(a + " ");
-				}
-				System.out.print("| ");
-			}
-			System.out.println();
-		}*/
-		
-		while(generaciones--!=0) {
-			evaluacion_poblacion();
-			selec = seleccion_poblacion();
-			cruce_poblacion(selec);
-			mutacion_poblacion();					
-		}
+	private ControlPanel ctrl;
+	
+	public AlgoritmoGenetico(ControlPanel ctrl) { 
+		this.ctrl=ctrl;
 	}
-	
-	
+		
 	private void setValores(Valores valores) {
 		this.tam_poblacion=valores.tam_poblacion;
 		this.generaciones=valores.generaciones;
@@ -102,6 +83,34 @@ public class AlgoritmoGenetico {
 		
 		tam_genes=tamGenes();		
 	}
+	
+	
+	public void ejecuta(Valores valores) {
+		Individuo[] selec=null;
+		setValores(valores);
+		valores_inds = new ValoresIndividuosGrafico[tam_poblacion*(generaciones+1)];
+		pos_valores=0;
+		
+		init_poblacion();
+
+		//mutacion_poblacion();
+		//cruce.cruce_uniforme(poblacion);		
+		
+		evaluacion_poblacion();
+		while(generaciones--!=0) {
+			//evaluacion_poblacion(); // SI PONEMOS ESTO NO ALMACENA LOS DATOS DE LA ULTIMA GENERACION
+			selec = seleccion_poblacion(); 		// NO COMPROBADO
+			// AQUI SE ALMACENA EN EL ARRAY GLOBAL poblacion
+			cruce_poblacion(selec);  			// NO COMPROBADO
+			mutacion_poblacion(); 				// BIEN, COMPROMBADO
+			evaluacion_poblacion();				// NO COMPROBADO
+		}
+
+		// TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
+		ctrl.actualiza_Grafico(valores_inds);
+	}
+	
+	
 	
 	private int[] tamGenes() {
 		int ret[] = new int[num_cromosomas];
@@ -162,6 +171,10 @@ public class AlgoritmoGenetico {
         	fitness[i] = selected_function.apply(poblacion[i].fenotipo); 
         	poblacion[i].fitness=fitness[i];
             fitness_total += fitness[i];
+            
+            // GRAFICO
+            poblacion[i].calcular_fenotipo(maximos, minimos);
+            valores_inds[pos_valores++]=new ValoresIndividuosGrafico(poblacion[i].fenotipo, fitness[i]);
         }
         
         double acum=0;
@@ -227,10 +240,31 @@ public class AlgoritmoGenetico {
 	
 	
 	private void mutacion_poblacion() {
-		
+		//printPoblacion();
+		switch (mut_idx) {
+		case 0:
+			mutacion.mut_basica(poblacion, prob_mut);
+			break;
+		default:
+			break;
+		}
+		//System.out.println("Proceso de mutacion terminado: ");
+		//System.out.println();
+		//printPoblacion();
 	}
 	
 	
+	private void printPoblacion() {
+		for (Individuo ind: poblacion) {			
+			for(Cromosoma c: ind.cromosoma) {
+				for (int a: c.v) {
+					System.out.print(a + " ");
+				}
+				System.out.print("| ");
+			}
+			System.out.println();
+		}
+	}
 				
 	
 }

@@ -27,7 +27,7 @@ public class Individuo {
 	}
 	
 	
-	private void calcular_fenotipo(double[] xMax, double[] xMin) {			
+	public void calcular_fenotipo(double[] xMax, double[] xMin) {			
 		for(int i=0;i<cromosoma.length;i++) {
 			fenotipo[i]=calcular_fenotipoCromosoma(cromosoma[i], xMax[i], xMin[i]);
 		}		

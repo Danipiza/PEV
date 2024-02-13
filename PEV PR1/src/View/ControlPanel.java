@@ -19,6 +19,7 @@ import javax.swing.SpinnerNumberModel;
 
 import Logic.AlgoritmoGenetico;
 import Logic.Valores;
+import Logic.ValoresIndividuosGrafico;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -58,7 +59,7 @@ public class ControlPanel extends JPanel{
         precision = new JTextField(15);
         cromosomas_spinner = new JSpinner();
         
-        AG = new AlgoritmoGenetico();
+        AG = new AlgoritmoGenetico(this); // MEJORAR IMPLEMENTACION
         
 		initGUI();
 	}
@@ -170,6 +171,10 @@ public class ControlPanel extends JPanel{
         return rightPanel;
     }
 	
+    public void actualiza_Grafico(ValoresIndividuosGrafico[] vals) {
+		
+	}
+    
 	private void run() {
 		setValores();
 		AG.ejecuta(valores);		
@@ -191,6 +196,8 @@ public class ControlPanel extends JPanel{
 	}
 	
 	public Valores getValores() { return valores; }	
+	
+	
 	
 	
 	protected ImageIcon loadImage(String path) {
