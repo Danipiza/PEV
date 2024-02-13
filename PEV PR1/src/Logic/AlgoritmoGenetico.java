@@ -52,7 +52,9 @@ public class AlgoritmoGenetico {
 	private Individuo best;
 	private int pos_best;	
 	
-	private ValoresIndividuosGrafico[] valores_inds;
+	
+	private double[][] valores_inds;	
+	//private ValoresIndividuosGrafico[] valores_inds;
 	private int pos_valores;
 	
 	private ControlPanel ctrl;
@@ -87,24 +89,34 @@ public class AlgoritmoGenetico {
 	
 	public void ejecuta(Valores valores) {
 		Individuo[] selec=null;
+		
 		setValores(valores);
-		valores_inds = new ValoresIndividuosGrafico[tam_poblacion*(generaciones+1)];
+		
+		valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 		pos_valores=0;
 		
 		init_poblacion();
 
 		//mutacion_poblacion();
-		//cruce.cruce_uniforme(poblacion);		
+		
+		/*evaluacion_poblacion();
+		printPoblacion();		
+		selec=seleccion_poblacion();
+		cruce.cruce_uniforme(selec, poblacion);	
+		System.out.println("Cruce realizado");
+		printPoblacion();*/
 		
 		evaluacion_poblacion();
 		while(generaciones--!=0) {
 			//evaluacion_poblacion(); // SI PONEMOS ESTO NO ALMACENA LOS DATOS DE LA ULTIMA GENERACION
-			selec = seleccion_poblacion(); 		// NO COMPROBADO
-			// AQUI SE ALMACENA EN EL ARRAY GLOBAL poblacion
-			cruce_poblacion(selec);  			// NO COMPROBADO
-			mutacion_poblacion(); 				// BIEN, COMPROMBADO
-			evaluacion_poblacion();				// NO COMPROBADO
+			selec=seleccion_poblacion(); 		
+			cruce_poblacion(selec);  			
+			mutacion_poblacion(); 				
+			evaluacion_poblacion();	
+			printPoblacion();
+			System.out.println("-------------------------------------------------------------");
 		}
+		
 
 		// TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
 		ctrl.actualiza_Grafico(valores_inds);
@@ -165,20 +177,22 @@ public class AlgoritmoGenetico {
 		
 		
 		//if (selected_function != null) // NO HACE FALTA
-        for (int i = 0; i < tam_poblacion; i++) {
+        for (int i=0;i<tam_poblacion;i++) {
             //fitness[i] = selected_function.apply(new double[]{poblacion[i].fenotipo});
         	// TODO CAMBIAR, PARA QUE SOLO ESTE EN LA CLASE Individuo, QUITAR ARRAY GLOBAL fitness[]
-        	fitness[i] = selected_function.apply(poblacion[i].fenotipo); 
+        	fitness[i]=selected_function.apply(poblacion[i].fenotipo); 
         	poblacion[i].fitness=fitness[i];
             fitness_total += fitness[i];
             
             // GRAFICO
             poblacion[i].calcular_fenotipo(maximos, minimos);
-            valores_inds[pos_valores++]=new ValoresIndividuosGrafico(poblacion[i].fenotipo, fitness[i]);
+            valores_inds[pos_valores][0]=poblacion[i].fenotipo[0];
+            valores_inds[pos_valores][1]=poblacion[i].fenotipo[1];
+            valores_inds[pos_valores++][2]=fitness[i];
         }
         
         double acum=0;
-        for (int i = 0; i < tam_poblacion; i++) {           	
+        for (int i=0;i<tam_poblacion;i++) {           	
         	prob_seleccion[i]=fitness[i]/fitness_total;
         	acum+=prob_seleccion[i];
         	prob_seleccionAcum[i]=acum;
@@ -221,21 +235,21 @@ public class AlgoritmoGenetico {
 		return ret;
 	}
 	
-	private Individuo[] cruce_poblacion(Individuo[] selec) {
-		Individuo[] ret = null;
+	private /*Individuo[]*/ void cruce_poblacion(Individuo[] selec) {
+		//Individuo[] ret = null;
 		
 		switch (cruce_idx) {
 		case 0:
-			ret=cruce.cruce_uniforme(selec);
+			/*ret=*/cruce.cruce_monopunto(selec, poblacion);
 			break;
 		case 1:
-			ret=cruce.cruce_uniforme(selec);
+			/*ret=*/cruce.cruce_uniforme(selec, poblacion);
 			break;
 		default:
 			break;
 		}
 		
-		return ret;
+		//return ret;
 	}
 	
 	
@@ -262,7 +276,7 @@ public class AlgoritmoGenetico {
 				}
 				System.out.print("| ");
 			}
-			System.out.println();
+			System.out.println(" Fitness: " + ind.fitness);
 		}
 	}
 				

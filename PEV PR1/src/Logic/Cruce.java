@@ -9,14 +9,14 @@ public class Cruce {
 		this.p=p;
 	}
 	
-	public Individuo[] cruce_monopunto(Individuo[] individuos) {
-		int n=individuos.length;
+	public void cruce_monopunto(Individuo[] selec, Individuo[] poblacion) {
+		int n=selec.length;
 		if(n%2==1) n--; // descarta al ultimo si es impar
-		Individuo[] ret = new Individuo[n];
+		//Individuo[] ret = new Individuo[n];
 		
-		int[] long_cromosomas=new int[individuos[0].cromosoma.length];
+		int[] long_cromosomas=new int[selec[0].cromosoma.length];
 		int corte_maximo=-1, cont=0;		
-		for(Cromosoma c: individuos[0].cromosoma) {
+		for(Cromosoma c: selec[0].cromosoma) {
 			corte_maximo+=c.v.length;
 			long_cromosomas[cont++]=c.v.length;
 		}
@@ -25,8 +25,8 @@ public class Cruce {
 		Individuo ind1, ind2;
 		int corte, tmp;
 		while(i<n) {			
-			ind1=individuos[i];
-			ind2=individuos[i+1];
+			ind1=selec[i];
+			ind2=selec[i+1];
 			//System.out.print("(ANTES)   Ind1: "); ind1.printIndividuo();
 			//System.out.print("(ANTES)   Ind2: "); ind2.printIndividuo();
 			if(Math.random()>p) {				
@@ -44,22 +44,22 @@ public class Cruce {
 					}					
 				}
 			}
-			ret[i++]=ind1; ret[i++]=ind2;
+			poblacion[i++]=ind1; poblacion[i++]=ind2;
 			//System.out.print("(DESPUES) Ind1: "); ind1.printIndividuo();
 			//System.out.print("(DESPUES) Ind2: "); ind2.printIndividuo();
 			//System.out.println();
 		}
-		return ret;
+		//return ret;
 	}
 	
-	public Individuo[] cruce_uniforme(Individuo[] individuos) {
-		int n = individuos.length;
+	public void /*Individuo[]*/ cruce_uniforme(Individuo[] selec, Individuo[] poblacion) {
+		int n = selec.length;
 		if(n%2==1) n--; // descarta al ultimo si es impar
-		Individuo[] ret = new Individuo[n];
+		//Individuo[] ret = new Individuo[n];
 		
-		int[] long_cromosomas=new int[individuos[0].cromosoma.length];
+		int[] long_cromosomas=new int[selec[0].cromosoma.length];
 		int cont=0, l=0;		
-		for(Cromosoma c: individuos[0].cromosoma) {			
+		for(Cromosoma c: selec[0].cromosoma) {			
 			l+=c.v.length;
 			long_cromosomas[cont++]=c.v.length;
 		}
@@ -68,8 +68,8 @@ public class Cruce {
 		Individuo ind1, ind2;
 		int tmp;
 		while(i<n) {			
-			ind1=individuos[i];
-			ind2=individuos[i+1];
+			ind1=selec[i];
+			ind2=selec[i+1];
 			//System.out.print("(ANTES)   Ind1: "); ind1.printIndividuo();
 			//System.out.print("(ANTES)   Ind2: "); ind2.printIndividuo();
 			if(Math.random()>p) {	
@@ -90,11 +90,11 @@ public class Cruce {
 				}
 				//System.out.println();
 			}
-			ret[i++]=ind1; ret[i++]=ind2;
+			poblacion[i++]=ind1; poblacion[i++]=ind2;
 			//System.out.print("(DESPUES) Ind1: "); ind1.printIndividuo();
 			//System.out.print("(DESPUES) Ind2: "); ind2.printIndividuo();
 			//System.out.println();
 		}
-		return ret;
+		//return ret;
 	}
 }

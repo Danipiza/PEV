@@ -171,15 +171,14 @@ public class ControlPanel extends JPanel{
         return rightPanel;
     }
 	
-    public void actualiza_Grafico(ValoresIndividuosGrafico[] vals) {
-		
+    public void actualiza_Grafico(double[][] vals) {
+        plot.addGridPlot("Function", vals);
 	}
     
 	private void run() {
 		setValores();
 		AG.ejecuta(valores);		
-	}	
-	
+	}		
 	
 	
 	private void setValores() {		

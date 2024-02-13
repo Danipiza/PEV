@@ -40,12 +40,12 @@ public class Seleccion {
 		}	
 		
 		// TODO QUITAR
-		for(Individuo ind:seleccionados) {
+		/*for(Individuo ind:seleccionados) {
 			for(double f: ind.fenotipo) {
 				System.out.print(f + " ");				
 			}
 			System.out.println();								
-		}
+		}*/
 		
 		
 		return seleccionados;
