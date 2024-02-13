@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 
 
+
 public class MainWindow extends JFrame{
 
 	private static final long serialVersionUID = 1L;
@@ -23,17 +24,23 @@ public class MainWindow extends JFrame{
 
 	
 	public MainWindow() {
-		super("Algoritmos Geneticos");
+		/*super("Algoritmos Geneticos");
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// set the jframe size and location, and make it visible
 	    super.setPreferredSize(new Dimension(1500, 1000));
 	    super.pack();
 	    super.setLocationRelativeTo(null);
-	    super.setVisible(true);
+	    super.setVisible(true);*/
 		
 		
+		super("Algoritmos Geneticos");
+	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    this.setSize(800, 600);
+	    this.add(new ControlPanel());
+	    this.setVisible(true);
+	    
 		
-		initGUI();
+		//initGUI();
 	}
 	
 	private void initGUI() {
@@ -47,18 +54,18 @@ public class MainWindow extends JFrame{
 		mainPanel.add(viewsPanel, BorderLayout.CENTER);*/
 		
 		
-		JPanel main_panel=new JPanel(new GridBagLayout());
-		this.setContentPane(main_panel);	
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(5, 5, 5, 5); // Padding
-		c.anchor = GridBagConstraints.WEST; // Align components to the left
+		///JPanel main_panel=new JPanel(new GridBagLayout());
+		///this.setContentPane(main_panel);	
+		///GridBagConstraints c = new GridBagConstraints();
+		///c.insets = new Insets(5, 5, 5, 5); // Padding
+		///c.anchor = GridBagConstraints.CENTER; // Align components to the left
 		
 		//ctrl_p= new ControlPanel(new GridBagLayout());
 		ctrl_p= new ControlPanel();
 		//this.getContentPane().add(ctrl_p, BorderLayout.WEST); // Align panel to the left
 		
-		main_panel.add(ctrl_p, c);
-		
+		///main_panel.add(ctrl_p, c);
+		this.add(ctrl_p);
 		
 		
 		/*c.anchor = GridBagConstraints.EAST; // Align components to the left
