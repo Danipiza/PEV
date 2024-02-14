@@ -1,9 +1,9 @@
 package Logic;
 
-public class Cromosoma {
+public class Gen {
 	public int[] v;
 	
-	public Cromosoma(int l){
+	public Gen(int l){
 		v=new int[l];
 		init(l);			
 	}

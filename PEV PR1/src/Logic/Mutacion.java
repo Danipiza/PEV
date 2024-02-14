@@ -15,13 +15,19 @@ public class Mutacion {
 		
 		for (int i=0;i<tam_poblacion;i++) {
 			
-			for(int c=0;c<poblacion[i].cromosoma.length;c++){
-				for(int j=0;j<poblacion[i].cromosoma[c].v.length;j++) {
-					if(Math.random()>p) {
-						poblacion[i].cromosoma[c].v[j]=(poblacion[i].cromosoma[c].v[j]+1)%2;
+			//poblacion[i].printIndividuo();
+			//System.out.print("muta en: ");
+			for(int c=0;c<poblacion[i].genes.length;c++){
+				//System.out.print("Gen " + (c+1) + ": ");
+				for(int j=0;j<poblacion[i].genes[c].v.length;j++) {
+					if(Math.random()<p) {
+						//System.out.print(j+ " ");
+						poblacion[i].genes[c].v[j]=(poblacion[i].genes[c].v[j]+1)%2;
 					}
 				}
 			}
+			//System.out.println();
+			//poblacion[i].printIndividuo();
 		}
 	}
 	

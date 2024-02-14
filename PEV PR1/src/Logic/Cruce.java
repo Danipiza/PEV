@@ -14,9 +14,9 @@ public class Cruce {
 		if(n%2==1) n--; // descarta al ultimo si es impar
 		//Individuo[] ret = new Individuo[n];
 		
-		int[] long_cromosomas=new int[selec[0].cromosoma.length];
+		int[] long_cromosomas=new int[selec[0].genes.length];
 		int corte_maximo=-1, cont=0;		
-		for(Cromosoma c: selec[0].cromosoma) {
+		for(Gen c: selec[0].genes) {
 			corte_maximo+=c.v.length;
 			long_cromosomas[cont++]=c.v.length;
 		}
@@ -29,14 +29,14 @@ public class Cruce {
 			ind2=selec[i+1];
 			//System.out.print("(ANTES)   Ind1: "); ind1.printIndividuo();
 			//System.out.print("(ANTES)   Ind2: "); ind2.printIndividuo();
-			if(Math.random()>p) {				
+			if(Math.random()<p) {				
 				corte=(int) (Math.random()*(corte_maximo))+1; // [1,corte_maximo]
 				cont=0; j=0;
 				//System.out.println("Corte en: " + corte + " ----------------------------------" );				
 				for(k=0;k<corte;k++) {
-					tmp=ind1.cromosoma[cont].v[j];
-					ind1.cromosoma[cont].v[j]=ind2.cromosoma[cont].v[j];
-					ind2.cromosoma[cont].v[j]=tmp;
+					tmp=ind1.genes[cont].v[j];
+					ind1.genes[cont].v[j]=ind2.genes[cont].v[j];
+					ind2.genes[cont].v[j]=tmp;
 					j++;
 					if(j==long_cromosomas[cont]) {
 						cont++;
@@ -57,9 +57,9 @@ public class Cruce {
 		if(n%2==1) n--; // descarta al ultimo si es impar
 		//Individuo[] ret = new Individuo[n];
 		
-		int[] long_cromosomas=new int[selec[0].cromosoma.length];
+		int[] long_cromosomas=new int[selec[0].genes.length];
 		int cont=0, l=0;		
-		for(Cromosoma c: selec[0].cromosoma) {			
+		for(Gen c: selec[0].genes) {			
 			l+=c.v.length;
 			long_cromosomas[cont++]=c.v.length;
 		}
@@ -78,9 +78,9 @@ public class Cruce {
 				for(k=0;k<l;k++) {
 					if(Math.random()<0.5) { 
 						//System.out.print(k + " ");
-						tmp=ind1.cromosoma[cont].v[j];
-						ind1.cromosoma[cont].v[j]=ind2.cromosoma[cont].v[j];
-						ind2.cromosoma[cont].v[j]=tmp;
+						tmp=ind1.genes[cont].v[j];
+						ind1.genes[cont].v[j]=ind2.genes[cont].v[j];
+						ind2.genes[cont].v[j]=tmp;
 					}
 					j++;
 					if(j==long_cromosomas[cont]) {

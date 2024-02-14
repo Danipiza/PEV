@@ -46,7 +46,8 @@ public class ControlPanel extends JPanel{
 	
 	private JSpinner cromosomas_spinner;
 	
-	private Plot3DPanel plot;
+	private Plot2DPanel plot2D;
+	private Plot3DPanel plot3D;
 	
 	
 	private Valores valores;
@@ -68,7 +69,7 @@ public class ControlPanel extends JPanel{
 		setLayout(new BorderLayout());
 
         JPanel leftPanel = createLeftPanel();
-        JPanel rightPanel = createRightPanel();        
+        JPanel rightPanel = createRightPanel2D();        
 
         add(leftPanel, BorderLayout.WEST);
         add(rightPanel, BorderLayout.CENTER);
@@ -151,7 +152,7 @@ public class ControlPanel extends JPanel{
         return leftPanel;
     }
 
-    private JPanel createRightPanel() {
+    private JPanel createRightPanel3D() {
     	JPanel rightPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         rightPanel.setPreferredSize(new Dimension(475, 600));
@@ -160,19 +161,58 @@ public class ControlPanel extends JPanel{
         gbc.weighty = 1.0; // // Mas espacio vertical
         gbc.fill = GridBagConstraints.BOTH; // Rellena el espacio disponible 
     	
-    	plot = new Plot3DPanel();    	
+        plot3D = new Plot3DPanel();    	
     	
-    	plot.getAxis(0).setLabelText("X1");
-    	plot.getAxis(1).setLabelText("X2");
-    	plot.getAxis(2).setLabelText("Fitness");
+        plot3D.getAxis(0).setLabelText("X1");
+        plot3D.getAxis(1).setLabelText("X2");
+        plot3D.getAxis(2).setLabelText("Fitness");
         //plot.removeAllPlots();        
-        rightPanel.add(plot, gbc);
+        rightPanel.add(plot3D, gbc);
+        
+        return rightPanel;
+    }
+    
+    private JPanel createRightPanel2D() {
+    	JPanel rightPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        rightPanel.setPreferredSize(new Dimension(475, 600));
+        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.weightx = 1.0; // Mas espacio horizontal 
+        gbc.weighty = 1.0; // // Mas espacio vertical
+        gbc.fill = GridBagConstraints.BOTH; // Rellena el espacio disponible 
+    	
+        plot2D = new Plot2DPanel();    	
+    	
+        plot2D.getAxis(0).setLabelText("Generacion");
+        plot2D.getAxis(1).setLabelText("Fitness");
+    	
+        //plot.removeAllPlots();        
+        rightPanel.add(plot2D, gbc);
         
         return rightPanel;
     }
 	
     public void actualiza_Grafico(double[][] vals) {
-        plot.addGridPlot("Function", vals);
+    	
+    	double[] x = new double[vals[0].length];
+    	for(int i=0;i<vals[0].length;i++) {
+    		x[i]=i;
+    	}
+        //double[] y1 = {2, 3, 4, 5, 6};
+        //double[] y2 = {1, 4, 3, 2, 5};
+        //double[] y3 = {3, 2, 5, 4, 1};
+
+        // Add the lines to the plot with different colors
+        plot2D.addLinePlot("Mejor Absoluto", x, vals[0]);
+        plot2D.addLinePlot("Mejor de la Generacion", x, vals[1]);
+        plot2D.addLinePlot("Media", x, vals[2]);
+
+        // Customize the plot (optional)
+        plot2D.setAxisLabels("X Axis", "Y Axis");
+        plot2D.setAxisLabel(0, "X Axis");
+        plot2D.setAxisLabel(1, "Y Axis");
+        plot2D.setFixedBounds(1, 0, 300); // Fix Y-axis bounds
+        
 	}
     
 	private void run() {

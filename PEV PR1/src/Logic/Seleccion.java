@@ -15,20 +15,21 @@ public class Seleccion {
 	
 	
 	private int busquedaBinaria(double x, double[] prob_acumulada) {
-		int ret=0;
 		int i=0, j=prob_acumulada.length-1;
 		int m=0;		
-		while (i <= j) {
-            m=i+(j-i)/2;
-
-            if (prob_acumulada[m]>=x) {
-                ret = m;
-                j = m - 1;
+		while (i < j) {
+            m=(j+i+1)/2;
+            
+            if (prob_acumulada[m]<x) {
+            	i = m;
             } 
-            else i=m+1;
+            else if (prob_acumulada[m]>x) {
+            	j = m - 1;
+            } 
+            else return m;
         }
 		
-		return ret;
+		return i;
 	}
 	public Individuo[] ruleta(Individuo[] poblacion, double[] prob_acumulada) {
 		Individuo[] seleccionados = new Individuo[tam_poblacion];
@@ -191,7 +192,7 @@ public class Seleccion {
 			}
 			
 		}	
-
+		// random de otros metodos
 		while(x < tam_poblacion ) {
 			seleccionados[x] = poblacion[busquedaBinaria(Math.random() * tam_poblacion, prob_acumulada)];
 			x++;

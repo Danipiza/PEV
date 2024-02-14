@@ -49,13 +49,18 @@ public class AlgoritmoGenetico {
 	
 	private int tam_torneo;
 	
-	private Individuo best;
-	private int pos_best;	
+		
 	
 	
 	private double[][] valores_inds;	
 	//private ValoresIndividuosGrafico[] valores_inds;
 	private int pos_valores;
+	
+	private double[][] progreso_generaciones;
+	private double mejor_total;
+
+	//private Individuo best;
+	//private int pos_best;
 	
 	private ControlPanel ctrl;
 	
@@ -93,6 +98,7 @@ public class AlgoritmoGenetico {
 		setValores(valores);
 		
 		valores_inds=new double[tam_poblacion*(generaciones+1)][3];
+		progreso_generaciones=new double[3][generaciones+1];
 		pos_valores=0;
 		
 		init_poblacion();
@@ -105,21 +111,22 @@ public class AlgoritmoGenetico {
 		cruce.cruce_uniforme(selec, poblacion);	
 		System.out.println("Cruce realizado");
 		printPoblacion();*/
-		
 		evaluacion_poblacion();
+		//printPoblacion();
+		//System.out.println("-------------------------------------------------------------");
 		while(generaciones--!=0) {
 			//evaluacion_poblacion(); // SI PONEMOS ESTO NO ALMACENA LOS DATOS DE LA ULTIMA GENERACION
 			selec=seleccion_poblacion(); 		
 			cruce_poblacion(selec);  			
 			mutacion_poblacion(); 				
 			evaluacion_poblacion();	
-			printPoblacion();
-			System.out.println("-------------------------------------------------------------");
+			//printPoblacion();
+			//System.out.println("-------------------------------------------------------------");
 		}
 		
 
 		// TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
-		ctrl.actualiza_Grafico(valores_inds);
+		ctrl.actualiza_Grafico(progreso_generaciones);
 	}
 	
 	
@@ -175,7 +182,7 @@ public class AlgoritmoGenetico {
 			break;
 		}
 		
-		
+		double mejor_generacion=0;
 		//if (selected_function != null) // NO HACE FALTA
         for (int i=0;i<tam_poblacion;i++) {
             //fitness[i] = selected_function.apply(new double[]{poblacion[i].fenotipo});
@@ -184,12 +191,23 @@ public class AlgoritmoGenetico {
         	poblacion[i].fitness=fitness[i];
             fitness_total += fitness[i];
             
+            if(mejor_generacion<fitness[i]) mejor_generacion=fitness[i];
+            
             // GRAFICO
             poblacion[i].calcular_fenotipo(maximos, minimos);
-            valores_inds[pos_valores][0]=poblacion[i].fenotipo[0];
+            /*valores_inds[pos_valores][0]=poblacion[i].fenotipo[0];
             valores_inds[pos_valores][1]=poblacion[i].fenotipo[1];
-            valores_inds[pos_valores++][2]=fitness[i];
+            valores_inds[pos_valores++][2]=fitness[i];*/            
         }
+        if(mejor_generacion>mejor_total) mejor_total=mejor_generacion;
+        
+        /*plot2D.addLinePlot("Mejor Absoluto", x, vals[0]);
+        plot2D.addLinePlot("Mejor", x, vals[1]);
+        plot2D.addLinePlot("Media", x, vals[2]);*/
+        
+        progreso_generaciones[0][pos_valores]=mejor_total; // Mejor Absoluto
+		progreso_generaciones[1][pos_valores]=mejor_generacion; // Mejor Local
+		progreso_generaciones[2][pos_valores++]=fitness_total/tam_poblacion; // Media
         
         double acum=0;
         for (int i=0;i<tam_poblacion;i++) {           	
@@ -270,13 +288,14 @@ public class AlgoritmoGenetico {
 	
 	private void printPoblacion() {
 		for (Individuo ind: poblacion) {			
-			for(Cromosoma c: ind.cromosoma) {
+			for(Gen c: ind.genes) {
 				for (int a: c.v) {
 					System.out.print(a + " ");
 				}
 				System.out.print("| ");
 			}
-			System.out.println(" Fitness: " + ind.fitness);
+			System.out.println(" Fitness: " + ind.fitness + 
+					"f1: " + ind.fenotipo[0] + " f2: " + ind.fenotipo[1]);
 		}
 	}
 				
