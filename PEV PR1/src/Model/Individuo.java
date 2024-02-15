@@ -7,7 +7,9 @@ public class Individuo {
 	
 	public double fitness;
 	
-	public Individuo(int num, int[] tam_genes, double xMax[], double[] xMin){
+	public Individuo(int num, int[] tam_genes, double xMax[], double[] xMin) {
+		fitness=0;
+		
 		genes=new Gen[num];
 		fenotipo=new double[num];
 		for(int i=0;i<num;i++) {

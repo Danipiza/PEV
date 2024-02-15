@@ -47,7 +47,7 @@ public class AlgoritmoGenetico {
 	
 	private double[] maximos;
 	private double[] minimos;
-	
+	private int optimizacion; // 0 Minimizacion, 1 Maximizacion
 		
 	private int tam_torneo;
 		
@@ -86,6 +86,7 @@ public class AlgoritmoGenetico {
 		
 		this.maximos=funcion.maximos(num_genes);
 		this.minimos=funcion.minimos(num_genes);
+		this.optimizacion=funcion.optimizacion();
 		
 		tam_genes=tamGenes();		
 	}
@@ -95,6 +96,8 @@ public class AlgoritmoGenetico {
 		Individuo[] selec=null;
 		
 		setValores(valores);
+		mejor_total=(optimizacion==0?Double.MAX_VALUE:Double.MIN_VALUE);
+		//mejor_total=0;
 		
 		//valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 		progreso_generaciones=new double[3][generaciones+1];
@@ -121,17 +124,18 @@ public class AlgoritmoGenetico {
 		
 		while(generaciones--!=0) {
 			selec=seleccion_poblacion(); 		
-			cruce_poblacion(selec);  			
-			mutacion_poblacion(); 				
+			poblacion=cruce_poblacion(selec);  			
+			poblacion=mutacion_poblacion(); 				
 			evaluacion_poblacion();	
-			
 			//printPoblacion();
 			//System.out.println("-------------------------------------------------------------");
 		}
+		//printPoblacion();
+		//System.out.println("-------------------------------------------------------------");
 		
 
-		// TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
-		ctrl.actualiza_Grafico(progreso_generaciones);
+		// TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO		
+		ctrl.actualiza_Grafico(progreso_generaciones, funcion.intervalosGrafico());
 	}
 	
 	
@@ -187,37 +191,40 @@ public class AlgoritmoGenetico {
 			break;
 		}
 		
-		double mejor_generacion=0;
+		double mejor_generacion=(optimizacion==0?Double.MAX_VALUE:Double.MIN_VALUE);
+		//double mejor_generacion=0;
+		double tmp;
 		//if (selected_function != null) // NO HACE FALTA
         for (int i=0;i<tam_poblacion;i++) {
-            //fitness[i] = selected_function.apply(new double[]{poblacion[i].fenotipo});
-        	// TODO CAMBIAR, PARA QUE SOLO ESTE EN LA CLASE Individuo, QUITAR ARRAY GLOBAL fitness[]
-        	fitness[i]=selected_function.apply(poblacion[i].fenotipo); 
-        	poblacion[i].fitness=fitness[i];
-            fitness_total += fitness[i];
+        	tmp=selected_function.apply(poblacion[i].fenotipo); 
+        	poblacion[i].fitness=tmp;
+        	fitness[i]=tmp;
+            fitness_total += tmp;
             
-            if(mejor_generacion<fitness[i]) mejor_generacion=fitness[i];
+            //if(optimizacion==0&&mejor_generacion>tmp) mejor_generacion=tmp;
+            //else if(optimizacion==1&&mejor_generacion<tmp) mejor_generacion=tmp;
+            if(mejor_generacion<tmp) mejor_generacion=tmp;
             
-            // GRAFICO
             poblacion[i].calcular_fenotipo(maximos, minimos);
-            /*valores_inds[pos_valores][0]=poblacion[i].fenotipo[0];
+            
+            /* GRAFICO 3D
+            valores_inds[pos_valores][0]=poblacion[i].fenotipo[0];
             valores_inds[pos_valores][1]=poblacion[i].fenotipo[1];
             valores_inds[pos_valores++][2]=fitness[i];*/            
         }
-        if(mejor_generacion>mejor_total) mejor_total=mejor_generacion;
-        
-        /*plot2D.addLinePlot("Mejor Absoluto", x, vals[0]);
-        plot2D.addLinePlot("Mejor", x, vals[1]);
-        plot2D.addLinePlot("Media", x, vals[2]);*/
+        if(optimizacion==0&&mejor_generacion<mejor_total)mejor_total=mejor_generacion;
+        else if(optimizacion==1&&mejor_generacion>mejor_total) mejor_total=mejor_generacion;
+        //if(mejor_generacion>mejor_total) mejor_total=mejor_generacion;
         
         progreso_generaciones[0][pos_valores]=mejor_total; // Mejor Absoluto
 		progreso_generaciones[1][pos_valores]=mejor_generacion; // Mejor Local
 		progreso_generaciones[2][pos_valores++]=fitness_total/tam_poblacion; // Media
         
         double acum=0;
-        for (int i=0;i<tam_poblacion;i++) {           	
-        	prob_seleccion[i]=fitness[i]/fitness_total;
-        	acum+=prob_seleccion[i];
+        for (int i=0;i<tam_poblacion;i++) {      
+        	tmp=fitness[i]/fitness_total;
+        	prob_seleccion[i]=tmp;
+        	acum+=tmp;
         	prob_seleccionAcum[i]=acum;
         }		
 	}
@@ -226,7 +233,7 @@ public class AlgoritmoGenetico {
 		Individuo[] ret = new Individuo[tam_poblacion];		
 		
 		
-		switch (funcion_idx) {
+		switch (seleccion_idx) {
 		case 0:
 			ret=seleccion.ruleta(poblacion, prob_seleccionAcum);
 			break;
@@ -258,29 +265,30 @@ public class AlgoritmoGenetico {
 		return ret;
 	}
 	
-	private /*Individuo[]*/ void cruce_poblacion(Individuo[] selec) {
-		//Individuo[] ret = null;
+	private Individuo[] cruce_poblacion(Individuo[] selec) {
+		Individuo[] ret = null;
 		
 		switch (cruce_idx) {
 		case 0:
-			/*ret=*/cruce.cruce_monopunto(selec, poblacion);
+			ret=cruce.cruce_monopunto(selec);
 			break;
 		case 1:
-			/*ret=*/cruce.cruce_uniforme(selec, poblacion);
+			ret=cruce.cruce_uniforme(selec);
 			break;
 		default:
 			break;
 		}
 		
-		//return ret;
+		return ret;
 	}
 	
 	
-	private void mutacion_poblacion() {
+	private Individuo[] mutacion_poblacion() {
 		//printPoblacion();
+		Individuo[] ret=null;
 		switch (mut_idx) {
 		case 0:
-			mutacion.mut_basica(poblacion, prob_mut);
+			ret = mutacion.mut_basica(poblacion, prob_mut);
 			break;
 		default:
 			break;
@@ -288,10 +296,12 @@ public class AlgoritmoGenetico {
 		//System.out.println("Proceso de mutacion terminado: ");
 		//System.out.println();
 		//printPoblacion();
+		return ret;
 	}
 	
 	
 	private void printPoblacion() {
+		int cont=0;
 		for (Individuo ind: poblacion) {			
 			for(Gen c: ind.genes) {
 				for (int a: c.v) {

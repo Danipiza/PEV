@@ -20,6 +20,7 @@ import javax.swing.SpinnerNumberModel;
 import Logic.AlgoritmoGenetico;
 import Model.Valores;
 import Model.ValoresIndividuosGrafico;
+import Utils.Pair;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -192,7 +193,8 @@ public class ControlPanel extends JPanel{
         return rightPanel;
     }
 	
-    public void actualiza_Grafico(double[][] vals) {
+    public void actualiza_Grafico(double[][] vals, Pair<Double,Double> interval) {
+    	plot2D.removeAllPlots();
     	
     	double[] x = new double[vals[0].length];
     	for(int i=0;i<vals[0].length;i++) {
@@ -211,7 +213,7 @@ public class ControlPanel extends JPanel{
         plot2D.setAxisLabels("X Axis", "Y Axis");
         plot2D.setAxisLabel(0, "X Axis");
         plot2D.setAxisLabel(1, "Y Axis");
-        plot2D.setFixedBounds(1, 0, 300); // Fix Y-axis bounds
+        plot2D.setFixedBounds(1, interval.getKey(), interval.getValue()); // Fix Y-axis bounds
         
 	}
     
