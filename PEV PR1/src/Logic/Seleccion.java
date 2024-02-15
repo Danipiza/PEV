@@ -3,6 +3,7 @@ package Logic;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import Model.Individuo;
 import Utils.Pair;
 
 public class Seleccion {

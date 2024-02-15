@@ -1,4 +1,4 @@
-package Logic;
+package Model;
 
 
 public class Valores {
@@ -11,11 +11,11 @@ public class Valores {
 	public double prob_mut;
 	public double precision;	
 	public int funcion_idx;
-	public int cromosomas;
+	public int num_genes;
 	
 	public Valores(int tam_poblacion, int generaciones, int seleccion_idx,
 			int cruce_idx, double prob_cruce, int mut_idx, double prob_mut, 
-			double precision, int funcion_idx, int cromosomas) {
+			double precision, int funcion_idx, int num_genes) {
 		
 		this.tam_poblacion=tam_poblacion;
 		this.generaciones=generaciones;
@@ -26,6 +26,6 @@ public class Valores {
 		this.prob_mut=prob_mut;
 		this.precision=precision;
 		this.funcion_idx=funcion_idx;
-		this.cromosomas=cromosomas;
+		this.num_genes=num_genes;
 	}
 }

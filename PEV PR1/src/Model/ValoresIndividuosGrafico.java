@@ -1,4 +1,4 @@
-package Logic;
+package Model;
 
 public class ValoresIndividuosGrafico {
 	public double[] fenotipos;

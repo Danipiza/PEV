@@ -1,5 +1,7 @@
 package Logic;
 
+import Model.Individuo;
+
 //import java.lang.Math.random;
 
 public class Mutacion {	

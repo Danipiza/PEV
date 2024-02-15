@@ -1,5 +1,7 @@
 package Logic;
 
+import Model.Gen;
+import Model.Individuo;
 
 public class Cruce {
 	
@@ -14,11 +16,11 @@ public class Cruce {
 		if(n%2==1) n--; // descarta al ultimo si es impar
 		//Individuo[] ret = new Individuo[n];
 		
-		int[] long_cromosomas=new int[selec[0].genes.length];
+		int[] long_genes=new int[selec[0].genes.length];
 		int corte_maximo=-1, cont=0;		
 		for(Gen c: selec[0].genes) {
 			corte_maximo+=c.v.length;
-			long_cromosomas[cont++]=c.v.length;
+			long_genes[cont++]=c.v.length;
 		}
 		//int l=corte_maximo+1;
 		int i=0, j=0, k=0;
@@ -38,7 +40,7 @@ public class Cruce {
 					ind1.genes[cont].v[j]=ind2.genes[cont].v[j];
 					ind2.genes[cont].v[j]=tmp;
 					j++;
-					if(j==long_cromosomas[cont]) {
+					if(j==long_genes[cont]) {
 						cont++;
 						j=0;
 					}					
@@ -57,11 +59,11 @@ public class Cruce {
 		if(n%2==1) n--; // descarta al ultimo si es impar
 		//Individuo[] ret = new Individuo[n];
 		
-		int[] long_cromosomas=new int[selec[0].genes.length];
+		int[] long_genes=new int[selec[0].genes.length];
 		int cont=0, l=0;		
 		for(Gen c: selec[0].genes) {			
 			l+=c.v.length;
-			long_cromosomas[cont++]=c.v.length;
+			long_genes[cont++]=c.v.length;
 		}
 		
 		int i=0, j=0, k=0;
@@ -83,7 +85,7 @@ public class Cruce {
 						ind2.genes[cont].v[j]=tmp;
 					}
 					j++;
-					if(j==long_cromosomas[cont]) {
+					if(j==long_genes[cont]) {
 						cont++;
 						j=0;
 					}					

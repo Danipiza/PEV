@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import Model.Gen;
+import Model.Individuo;
+import Model.Valores;
 import View.ControlPanel;
 
 import java.util.ArrayList;
@@ -14,21 +17,20 @@ public class AlgoritmoGenetico {
 	
 	private int tam_poblacion;	
 	private Individuo[] poblacion;	
-	
-	private int num_cromosomas;
-	private int tam_individuo;
-	private int[] tam_genes;		
-	
+		
 	private int generaciones;
+	
+	private int tam_individuo;
+	private int num_genes;
+	private int[] tam_genes;
+	
+	private double precision;	
 	
 	private double fitness_total;
 	private double[] fitness;
 	private double[] prob_seleccion;
 	private double[] prob_seleccionAcum;
-	
-	private Funciones funcion;
-	private int funcion_idx;
-	
+		
 	private Seleccion seleccion;
 	private int seleccion_idx;
 	
@@ -39,26 +41,23 @@ public class AlgoritmoGenetico {
 	private Mutacion mutacion;
 	private int mut_idx;
 	private double prob_mut;	
-	
-	
+		
+	private Funciones funcion;
+	private int funcion_idx;
 	
 	private double[] maximos;
 	private double[] minimos;
 	
-	private double precision;	
-	
-	private int tam_torneo;
-	
 		
-	
-	
-	private double[][] valores_inds;	
-	//private ValoresIndividuosGrafico[] valores_inds;
+	private int tam_torneo;
+		
 	private int pos_valores;
+	//private double[][] valores_inds;	
+	//private ValoresIndividuosGrafico[] valores_inds;
+	
 	
 	private double[][] progreso_generaciones;
 	private double mejor_total;
-
 	//private Individuo best;
 	//private int pos_best;
 	
@@ -78,15 +77,15 @@ public class AlgoritmoGenetico {
 		this.prob_mut=valores.prob_mut;
 		this.precision=valores.precision;
 		this.funcion_idx=valores.funcion_idx;
-		this.num_cromosomas=valores.cromosomas;
+		this.num_genes=valores.num_genes;
 		
 		funcion=new Funciones(funcion_idx);
 		seleccion=new Seleccion(tam_poblacion);
 		cruce=new Cruce(prob_cruce);
 		mutacion=new Mutacion();
 		
-		this.maximos=funcion.maximos(num_cromosomas);
-		this.minimos=funcion.minimos(num_cromosomas);
+		this.maximos=funcion.maximos(num_genes);
+		this.minimos=funcion.minimos(num_genes);
 		
 		tam_genes=tamGenes();		
 	}
@@ -97,7 +96,7 @@ public class AlgoritmoGenetico {
 		
 		setValores(valores);
 		
-		valores_inds=new double[tam_poblacion*(generaciones+1)][3];
+		//valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 		progreso_generaciones=new double[3][generaciones+1];
 		pos_valores=0;
 		
@@ -111,15 +110,21 @@ public class AlgoritmoGenetico {
 		cruce.cruce_uniforme(selec, poblacion);	
 		System.out.println("Cruce realizado");
 		printPoblacion();*/
+		
+		
 		evaluacion_poblacion();
+		
+		
 		//printPoblacion();
 		//System.out.println("-------------------------------------------------------------");
+		
+		
 		while(generaciones--!=0) {
-			//evaluacion_poblacion(); // SI PONEMOS ESTO NO ALMACENA LOS DATOS DE LA ULTIMA GENERACION
 			selec=seleccion_poblacion(); 		
 			cruce_poblacion(selec);  			
 			mutacion_poblacion(); 				
 			evaluacion_poblacion();	
+			
 			//printPoblacion();
 			//System.out.println("-------------------------------------------------------------");
 		}
@@ -132,8 +137,8 @@ public class AlgoritmoGenetico {
 	
 	
 	private int[] tamGenes() {
-		int ret[] = new int[num_cromosomas];
-		for(int i=0;i<num_cromosomas;i++) {
+		int ret[] = new int[num_genes];
+		for(int i=0;i<num_genes;i++) {
 			tam_individuo+=ret[i]=tamGen(precision, minimos[i],maximos[i]);
 		}
 		
@@ -148,7 +153,7 @@ public class AlgoritmoGenetico {
 	private void init_poblacion() {		
 		poblacion = new Individuo[tam_poblacion];		
 		for(int i=0;i<tam_poblacion;i++) {
-			poblacion[i]=new Individuo(num_cromosomas, tam_genes, maximos, minimos);
+			poblacion[i]=new Individuo(num_genes, tam_genes, maximos, minimos);
 		}
 	}	
 				

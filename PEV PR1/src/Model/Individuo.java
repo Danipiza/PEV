@@ -1,4 +1,4 @@
-package Logic;
+package Model;
 
 public class Individuo {
 	public Gen[] genes;
@@ -16,11 +16,11 @@ public class Individuo {
 		calcular_fenotipo(xMax,xMin);
 	}	
 	
-	private int bin2dec(Gen cromosoma) {
+	private int bin2dec(Gen gen) {
 		int ret=0;
 		int cont=1;
-		for(int i=cromosoma.v.length-1;i>=0;i--) {
-			if(cromosoma.v[i]==1)ret+=cont;
+		for(int i=gen.v.length-1;i>=0;i--) {
+			if(gen.v[i]==1)ret+=cont;
 			cont*=2;
 		}
 		return ret;

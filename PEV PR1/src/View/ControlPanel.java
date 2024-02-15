@@ -18,8 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
 import Logic.AlgoritmoGenetico;
-import Logic.Valores;
-import Logic.ValoresIndividuosGrafico;
+import Model.Valores;
+import Model.ValoresIndividuosGrafico;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -44,7 +44,7 @@ public class ControlPanel extends JPanel{
 	private JComboBox<String> cruce_CBox;
 	private JComboBox<String> mutacion_CBox;
 	
-	private JSpinner cromosomas_spinner;
+	private JSpinner genes_spinner;
 	
 	private Plot2DPanel plot2D;
 	private Plot3DPanel plot3D;
@@ -58,7 +58,7 @@ public class ControlPanel extends JPanel{
         prob_cruce = new JTextField(15);
         prob_mut = new JTextField(15);
         precision = new JTextField(15);
-        cromosomas_spinner = new JSpinner();
+        genes_spinner = new JSpinner();
         
         AG = new AlgoritmoGenetico(this); // MEJORAR IMPLEMENTACION
         
@@ -107,7 +107,7 @@ public class ControlPanel extends JPanel{
  
 											 // Initial value, min, max, step
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(2, 1, 10, 1); 
-        cromosomas_spinner.setModel(spinnerModel);		
+        genes_spinner.setModel(spinnerModel);		
 		
 		run_button = new JButton();
 		run_button.setToolTipText("Run button"); 
@@ -143,7 +143,7 @@ public class ControlPanel extends JPanel{
 		gbc.gridy++; leftPanel.add(prob_mut, gbc);
 		gbc.gridy++; leftPanel.add(precision, gbc);
 		gbc.gridy++; leftPanel.add(funcion_CBox, gbc);
-		gbc.gridy++; leftPanel.add(cromosomas_spinner, gbc);
+		gbc.gridy++; leftPanel.add(genes_spinner, gbc);
 		
 		gbc.anchor = GridBagConstraints.SOUTH; // Align components to the left
 		gbc.gridy++; leftPanel.add(run_button, gbc);
@@ -231,7 +231,7 @@ public class ControlPanel extends JPanel{
 							Double.parseDouble(prob_mut.getText()),
 							Double.parseDouble(precision.getText()),
 							funcion_CBox.getSelectedIndex(),
-							(int)cromosomas_spinner.getValue());		
+							(int)genes_spinner.getValue());		
 	}
 	
 	public Valores getValores() { return valores; }	
