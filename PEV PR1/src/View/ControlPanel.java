@@ -187,6 +187,7 @@ public class ControlPanel extends JPanel{
         plot2D.getAxis(0).setLabelText("Generacion");
         plot2D.getAxis(1).setLabelText("Fitness");
     	
+        plot2D.addLegend("SOUTH");
         //plot.removeAllPlots();        
         rightPanel.add(plot2D, gbc);
         
