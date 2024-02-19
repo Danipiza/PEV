@@ -7,202 +7,176 @@ import Model.Individuo;
 import Utils.Pair;
 
 public class Seleccion {
-	
 	int tam_poblacion;
+	boolean opt;
 	
-	public Seleccion(int tam_poblacion) {
-		this.tam_poblacion=tam_poblacion;
+	public Seleccion(int _tam_poblacion, boolean _opt) {
+		this.tam_poblacion = _tam_poblacion;
+		this.opt = _opt;
 	}
-	
-	
-	private int busquedaBinaria(double x, double[] prob_acumulada) {
-		int i=0, j=prob_acumulada.length-1;
-		int m=0;		
+
+
+	protected int busquedaBinaria(double x, double[] prob_acumulada) {
+		int i = 0, j = tam_poblacion - 1;
+		int m = 0;
 		while (i < j) {
-            m=(j+i+1)/2;
-            
-            if (prob_acumulada[m]<x) {
-            	i = m;
-            } 
-            else if (prob_acumulada[m]>x) {
-            	j = m - 1;
-            } 
-            else return m;
-        }
-		
+			m = (j + i) / 2;
+
+			if (x > prob_acumulada[m]) {
+				i = m + 1;
+			} else if (x < prob_acumulada[m]) {
+				j = m;
+			} else
+				return m;
+		}
+
 		return i;
 	}
-	public Individuo[] ruleta(Individuo[] poblacion, double[] prob_acumulada) {
-		Individuo[] seleccionados = new Individuo[tam_poblacion];
-		
+
+	public Individuo[] ruleta(Individuo[] poblacion, double[] prob_acumulada, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
+
 		double rand;
-		for(int i=0;i<tam_poblacion;i++) {
-			rand=Math.random();
-			seleccionados[i]=poblacion[busquedaBinaria(rand, prob_acumulada)];
-		}	
-		
-		// TODO QUITAR
-		/*for(Individuo ind:seleccionados) {
-			for(double f: ind.fenotipo) {
-				System.out.print(f + " ");				
-			}
-			System.out.println();								
-		}*/
-		
-		
-		return seleccionados;
-	}	
-	
-	// TODO QUITAR, COMPROBANDO, fitness[] DE AlgoritmoGenetico
-	public Individuo[] torneoDeterministico(Individuo[] poblacion, int k) {
-		Individuo[] seleccionados = new Individuo[poblacion.length];
-		//Individuo[] torneo = new Individuo[k];
-		Individuo tmp;
-		
-		int index;
-		double max;		
-		for (int i = 0; i < poblacion.length; i++) {
-			max=0; index=-1;
-			for (int j = 0; j < k; j++) {
-				int randomIndex = (int) (Math.random() * poblacion.length);
-				//torneo[j] = poblacion[randomIndex];
-				tmp=poblacion[randomIndex];
-				if(max<tmp.fitness) {
-					max=tmp.fitness;
-					index=randomIndex;
-				}
-			}
-			
-			//double max = 0; int index = 0;
-			/*for (int j = 0; j < 3; j++) {
-				if (torneo[j].fitness > max) {
-					max = torneo[j].fitness;
-					index = j;
-				}
-			}*/
-			seleccionados[i] = poblacion[index];
+		for (int i = 0; i < tam_seleccionados; i++) {
+			rand = Math.random();
+			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(rand, prob_acumulada)]);
 		}
-			
+
 		return seleccionados;
 	}
-	public Individuo[] torneoProbabilistico(Individuo[] poblacion, int k, double p) {
-		Individuo[] seleccionados = new Individuo[poblacion.length];
-		//Individuo[] torneo = new Individuo[k];
-		Individuo tmp;
-		
+
+	public Individuo[] torneoDeterministico(Individuo[] poblacion, double[] prob_acumulada, int k, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
+
+		double randomFitness;
 		int indexMax, indexMin;
 		double max, min;
-		for (int i = 0; i < poblacion.length; i++) {
-			max = 0; min = Double.MAX_VALUE;
-			indexMax=-1; indexMin=-1;
+		for (int i = 0; i < tam_seleccionados; i++) {
+			max = Double.NEGATIVE_INFINITY;
+			min = Double.MAX_VALUE;
+			indexMax = -1;
+			indexMin = -1;
+			for (int j = 0; j < k; j++) {
+				int randomIndex = (int) (Math.random() * tam_poblacion);
+				randomFitness = poblacion[randomIndex].fitness;
+				if (randomFitness > max) {
+					max = randomFitness;
+					indexMax = randomIndex;
+				} 
+				if (randomFitness < min) {
+					min = randomFitness;
+					indexMin = randomIndex;
+				}
+			}	
+			 
+			seleccionados[i] = new Individuo((opt ? poblacion[indexMax] : poblacion[indexMin]));
+		}
+
+		return seleccionados;
+	}
+
+	public Individuo[] torneoProbabilistico(Individuo[] poblacion, double[] prob_acumulada, int k, double p, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
+
+		double randomFitness;
+		int indexMax, indexMin;
+		double max, min;
+		for (int i = 0; i < tam_seleccionados; i++) {
+			max = Double.NEGATIVE_INFINITY;
+			min = Double.MAX_VALUE;
+			indexMax = -1;
+			indexMin = -1;
 			for (int j = 0; j < k; j++) {
 				int randomIndex = (int) (Math.random() * poblacion.length);
-				tmp=poblacion[randomIndex];
-				if(tmp.fitness>max) {
-					max=tmp.fitness;
-					indexMax=randomIndex;
+				randomFitness = poblacion[randomIndex].fitness;
+				if (randomFitness > max) {
+					max = randomFitness;
+					indexMax = randomIndex;
+				} 
+				if (randomFitness < min) {
+					min = randomFitness;
+					indexMin = randomIndex;
 				}
-				else if(tmp.fitness<min) {
-					min=tmp.fitness;
-					indexMin=randomIndex;
-				}
-				//torneo[j] = poblacion[randomIndex];
-			}
+			}	
+			 
+			seleccionados[i] = new Individuo((opt && Math.random() <= p || !opt && Math.random() > p ? poblacion[indexMax] : poblacion[indexMin]));
 			
-			//double max = 0, min = Double.MAX_VALUE; int index = 0;
-			/*if (Math.random() > p) {
-				for (int j = 0; j < 3; j++) {
-					if (torneo[j].fitness > max) {
-						max = torneo[j].fitness;
-						index = j;
-					}
-				}
-			}
-			else {
-				for (int j = 0; j < 3; j++) {
-					if (torneo[j].fitness < min) {
-						min = torneo[j].fitness;
-						index = j;
-					}
-				}
-			}*/
-			seleccionados[i]=(Math.random() > p?poblacion[indexMax]:poblacion[indexMin]);
-			//seleccionados[i] = torneo[index];
 		}
-			
+
 		return seleccionados;
 	}
-	public Individuo[] estocasticoUniversal1(Individuo[] poblacion, double[] prob_acumulada) {
-		Individuo[] seleccionados = new Individuo[tam_poblacion];
+
+	public Individuo[] estocasticoUniversal1(Individuo[] poblacion, double[] prob_acumulada, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 		
-		double incr = 1/poblacion.length, rand = Math.random() * incr;
-		for(int i=0;i<tam_poblacion;i++) {
-			seleccionados[i]=poblacion[busquedaBinaria(rand, prob_acumulada)];
+		double incr = 1.0 / tam_seleccionados, rand = Math.random() * incr;
+		for (int i = 0; i < tam_seleccionados; i++) {
+			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(rand, prob_acumulada)]);
 			rand += incr;
-		}	
-		
+		}
+
 		return seleccionados;
 	}
 
-	public Individuo[] estocasticoUniversal2(Individuo[] poblacion, double[] prob_acumulada) {
-		Individuo[] seleccionados = new Individuo[tam_poblacion];
-		
-		double distMarca = 1/poblacion.length, rand = Math.random() * distMarca;
-		for(int i=0;i<tam_poblacion;i++) {
-			seleccionados[i]=poblacion[busquedaBinaria((rand + i)/distMarca, prob_acumulada)];
-		}	
-		
+	public Individuo[] estocasticoUniversal2(Individuo[] poblacion, double[] prob_acumulada, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
+
+		double distMarca = 1.0 / tam_seleccionados, rand = Math.random() * distMarca;
+		for (int i = 0; i < tam_seleccionados; i++) {
+			double x = (rand + i) / tam_seleccionados;
+			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(x, prob_acumulada)]);
+		}
+
 		return seleccionados;
 	}
 
-	public Individuo[] truncamiento(Individuo[] poblacion, double[] prob_acumulada) {
-		Individuo[] seleccionados = new Individuo[tam_poblacion];
-		
+	public Individuo[] truncamiento(Individuo[] poblacion, double[] prob_seleccion, double trunc, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
+
 		Pair<Individuo, Double>[] pairs = new Pair[tam_poblacion];
-        for (int i = 0; i < tam_poblacion; i++) {
-            pairs[i] = new Pair<>(poblacion[i], prob_acumulada[i]);
-        }
+		for (int i = 0; i < tam_poblacion; i++) {
+			pairs[i] = new Pair<>(poblacion[i], prob_seleccion[i]);
+		}
 
 		Arrays.sort(pairs, new Comparator<Pair<Individuo, Double>>() {
 			public int compare(Pair<Individuo, Double> a, Pair<Individuo, Double> b) {
-			   if (a.getValue() > b.getValue()) return -1;
-			   else return 1;
+				if (a.getValue() > b.getValue())
+					return -1;
+				else
+					return 1;
 			}
 		});
 
-		double trunc = 0.5; int x = 0, num = (int) (1/trunc); 
-		for(int i = 0; i < tam_poblacion * trunc; i++) {
+		int x = 0, num = (int) (1.0 / trunc);
+		for (int i = 0; i < tam_seleccionados * trunc; i++) {
 			for (int j = 0; j < num; j++) {
-				seleccionados[x] = poblacion[i];
+				seleccionados[x++] = new Individuo(poblacion[i]);
 			}
-		}		
-		
+		}
+
 		return seleccionados;
 	}
 
+	public Individuo[] restos(Individuo[] poblacion, double[] prob_seleccion, double[] prob_acumulada, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
-
-	public Individuo[] restos(Individuo[] poblacion, double[] prob_acumulada) {
-		Individuo[] seleccionados = new Individuo[tam_poblacion];
-		
 		int x = 0;
-		for(int i = 0;i < tam_poblacion; i++) {
-			int num = (int) prob_acumulada[i] * tam_poblacion;
+		for (int i = 0; i < tam_seleccionados; i++) {
+			double aux = prob_seleccion[i] * tam_seleccionados;
+			int num = (int) aux;
 			for (int j = 0; j < num; j++) {
-				seleccionados[x] = poblacion[i];
+				seleccionados[x++] = new Individuo(poblacion[i]);
 			}
-			
-		}	
+
+		}
+		
 		// random de otros metodos
-		while(x < tam_poblacion ) {
-			seleccionados[x] = poblacion[busquedaBinaria(Math.random() * tam_poblacion, prob_acumulada)];
-			x++;
-		}	
-		
-		
+		Individuo[] resto = ruleta(poblacion, prob_acumulada, tam_seleccionados - x);
+		int i = 0;
+		while (x < tam_seleccionados) {
+			seleccionados[x++] = resto[i++];
+		}
+
 		return seleccionados;
 	}
-	
-
-	
 }
