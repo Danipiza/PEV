@@ -12,10 +12,11 @@ public class Valores {
 	public double precision;	
 	public int funcion_idx;
 	public int num_genes;
+	public boolean elitismo;
 	
 	public Valores(int tam_poblacion, int generaciones, int seleccion_idx,
 			int cruce_idx, double prob_cruce, int mut_idx, double prob_mut, 
-			double precision, int funcion_idx, int num_genes) {
+			double precision, int funcion_idx, int num_genes, boolean elitismo) {
 		
 		this.tam_poblacion=tam_poblacion;
 		this.generaciones=generaciones;
@@ -27,5 +28,6 @@ public class Valores {
 		this.precision=precision;
 		this.funcion_idx=funcion_idx;
 		this.num_genes=num_genes;
+		this.elitismo=elitismo;
 	}
 }

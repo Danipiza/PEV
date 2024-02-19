@@ -2,6 +2,7 @@ package Logic;
 
 import Model.Gen;
 import Model.Individuo;
+import Model.IndividuoBin;
 
 public class Cruce {
 
@@ -28,8 +29,8 @@ public class Cruce {
 		Individuo ind1, ind2;
 		int corte, tmp;
 		while (i < n) {
-			ind1 = new Individuo(selec[i]);
-			ind2 = new Individuo(selec[i + 1]);
+			ind1 = new IndividuoBin(selec[i]);
+			ind2 = new IndividuoBin(selec[i + 1]);
 			// System.out.print("(ANTES) Ind1: "); ind1.printIndividuo();
 			// System.out.print("(ANTES) Ind2: "); ind2.printIndividuo();
 			if (Math.random() < p) {

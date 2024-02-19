@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import Model.Individuo;
+import Model.IndividuoBin;
 import Utils.Pair;
 
 public class Seleccion {
@@ -39,7 +40,7 @@ public class Seleccion {
 		double rand;
 		for (int i = 0; i < tam_seleccionados; i++) {
 			rand = Math.random();
-			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(rand, prob_acumulada)]);
+			seleccionados[i] = new IndividuoBin(poblacion[busquedaBinaria(rand, prob_acumulada)]);
 		}
 
 		return seleccionados;
@@ -69,7 +70,7 @@ public class Seleccion {
 				}
 			}	
 			 
-			seleccionados[i] = new Individuo((opt ? poblacion[indexMax] : poblacion[indexMin]));
+			seleccionados[i] = new IndividuoBin((opt ? poblacion[indexMax] : poblacion[indexMin]));
 		}
 
 		return seleccionados;
@@ -99,7 +100,7 @@ public class Seleccion {
 				}
 			}	
 			 
-			seleccionados[i] = new Individuo((opt && Math.random() <= p || !opt && Math.random() > p ? poblacion[indexMax] : poblacion[indexMin]));
+			seleccionados[i] = new IndividuoBin((opt && Math.random() <= p || !opt && Math.random() > p ? poblacion[indexMax] : poblacion[indexMin]));
 			
 		}
 
@@ -111,7 +112,7 @@ public class Seleccion {
 		
 		double incr = 1.0 / tam_seleccionados, rand = Math.random() * incr;
 		for (int i = 0; i < tam_seleccionados; i++) {
-			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(rand, prob_acumulada)]);
+			seleccionados[i] = new IndividuoBin(poblacion[busquedaBinaria(rand, prob_acumulada)]);
 			rand += incr;
 		}
 
@@ -124,7 +125,7 @@ public class Seleccion {
 		double distMarca = 1.0 / tam_seleccionados, rand = Math.random() * distMarca;
 		for (int i = 0; i < tam_seleccionados; i++) {
 			double x = (rand + i) / tam_seleccionados;
-			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(x, prob_acumulada)]);
+			seleccionados[i] = new IndividuoBin(poblacion[busquedaBinaria(x, prob_acumulada)]);
 		}
 
 		return seleccionados;
@@ -150,7 +151,7 @@ public class Seleccion {
 		int x = 0, num = (int) (1.0 / trunc);
 		for (int i = 0; i < tam_seleccionados * trunc; i++) {
 			for (int j = 0; j < num; j++) {
-				seleccionados[x++] = new Individuo(poblacion[i]);
+				seleccionados[x++] = new IndividuoBin(poblacion[i]);
 			}
 		}
 
@@ -165,7 +166,7 @@ public class Seleccion {
 			double aux = prob_seleccion[i] * tam_seleccionados;
 			int num = (int) aux;
 			for (int j = 0; j < num; j++) {
-				seleccionados[x++] = new Individuo(poblacion[i]);
+				seleccionados[x++] = new IndividuoBin(poblacion[i]);
 			}
 
 		}

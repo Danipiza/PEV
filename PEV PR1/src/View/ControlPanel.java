@@ -7,6 +7,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.function.BooleanSupplier;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,12 +15,14 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
 import Logic.AlgoritmoGenetico;
 import Model.Valores;
 import Model.ValoresIndividuosGrafico;
+import Utils.BooleanSwitch;
 import Utils.Pair;
 
 import java.awt.BorderLayout;
@@ -34,6 +37,8 @@ public class ControlPanel extends JPanel{
 		
 	private JButton run_button;
 	
+	private BooleanSwitch elitismo_button;
+	
 	private JTextField tam_poblacion;
 	private JTextField generaciones;
 	private JTextField prob_cruce;
@@ -47,8 +52,12 @@ public class ControlPanel extends JPanel{
 	
 	private JSpinner genes_spinner;
 	
+	private JTextArea text_area;
+	
 	private Plot2DPanel plot2D;
 	private Plot3DPanel plot3D;
+	
+	
 	
 	
 	private Valores valores;
@@ -60,6 +69,7 @@ public class ControlPanel extends JPanel{
         prob_mut = new JTextField(15);
         precision = new JTextField(15);
         genes_spinner = new JSpinner();
+       
         
         AG = new AlgoritmoGenetico(this); // MEJORAR IMPLEMENTACION
         
@@ -102,11 +112,15 @@ public class ControlPanel extends JPanel{
 		String[] mutacion = {"Básica"
 							};
 		
+		elitismo_button=new BooleanSwitch();
+		
 		funcion_CBox = new JComboBox<>(funciones);	
 		seleccion_CBox = new JComboBox<>(seleccion);	
 		cruce_CBox = new JComboBox<>(cruce);	
-		mutacion_CBox = new JComboBox<>(mutacion);			
- 
+		mutacion_CBox = new JComboBox<>(mutacion);		
+		text_area = new JTextArea(2, 2);
+		
+		text_area.append("Esperando una ejecucion...");
 											 // Initial value, min, max, step
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(2, 1, 10, 1); 
         genes_spinner.setModel(spinnerModel);		
@@ -120,9 +134,16 @@ public class ControlPanel extends JPanel{
 				run();				
 			}
 		});		
-							
+		
+		
+		
+		
 		gbc.anchor=GridBagConstraints.WEST;
+		
+		
         gbc.gridx = 0; gbc.gridy = 0; // Espacio antes de las JLabels para que se vea mejor la GUI
+        
+        
         leftPanel.add(new JLabel("  Tam. Poblacion:"), gbc);		
 		gbc.gridy++; leftPanel.add(new JLabel("  Num. Generaciones:"), gbc);
 		gbc.gridy++; leftPanel.add(new JLabel("  Metodo de Seleccion:"), gbc);
@@ -133,10 +154,14 @@ public class ControlPanel extends JPanel{
 		gbc.gridy++; leftPanel.add(new JLabel("  Precision:"), gbc);
 		gbc.gridy++; leftPanel.add(new JLabel("  Funcion:"), gbc);
 		gbc.gridy++; leftPanel.add(new JLabel("  d:"), gbc);
-			
+		gbc.gridy++; leftPanel.add(new JLabel("  Elitismo:"), gbc);
+		gbc.anchor=GridBagConstraints.EAST;
+		gbc.gridy++; leftPanel.add(new JLabel("Valor optimo:  "), gbc);
+		gbc.anchor=GridBagConstraints.WEST;
 
 		gbc.gridx++; gbc.gridy = 0;
-		leftPanel.add(tam_poblacion, gbc);
+		//leftPanel.add(text_area, gbc);
+		/*gbc.gridy++;*/ leftPanel.add(tam_poblacion, gbc);
 		gbc.gridy++; leftPanel.add(generaciones, gbc);
 		gbc.gridy++; leftPanel.add(seleccion_CBox, gbc);
 		gbc.gridy++; leftPanel.add(cruce_CBox, gbc);
@@ -146,6 +171,8 @@ public class ControlPanel extends JPanel{
 		gbc.gridy++; leftPanel.add(precision, gbc);
 		gbc.gridy++; leftPanel.add(funcion_CBox, gbc);
 		gbc.gridy++; leftPanel.add(genes_spinner, gbc);
+		gbc.gridy++; leftPanel.add(elitismo_button, gbc);
+		gbc.gridy++; leftPanel.add(text_area, gbc);
 		
 		gbc.anchor = GridBagConstraints.SOUTH; // Align components to the left
 		gbc.gridy++; leftPanel.add(run_button, gbc);
@@ -215,6 +242,8 @@ public class ControlPanel extends JPanel{
         plot2D.setAxisLabel(0, "X Axis");
         plot2D.setAxisLabel(1, "Y Axis");
         plot2D.setFixedBounds(1, interval.getKey(), interval.getValue()); // Fix Y-axis bounds
+     
+        text_area.setText(""+vals[0][vals[0].length-1]);
         
 	}
     
@@ -234,7 +263,8 @@ public class ControlPanel extends JPanel{
 							Double.parseDouble(prob_mut.getText()),
 							Double.parseDouble(precision.getText()),
 							funcion_CBox.getSelectedIndex(),
-							(int)genes_spinner.getValue());		
+							(int)genes_spinner.getValue(),
+							elitismo_button.getValor());		
 	}
 	
 	public Valores getValores() { return valores; }	

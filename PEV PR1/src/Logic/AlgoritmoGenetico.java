@@ -6,6 +6,8 @@ import java.util.function.Function;
 
 import Model.Gen;
 import Model.Individuo;
+import Model.IndividuoBin;
+import Model.IndividuoReal;
 import Model.Valores;
 import View.ControlPanel;
 
@@ -48,6 +50,7 @@ public class AlgoritmoGenetico {
 	private double[][] progreso_generaciones;
 	private double mejor_total;
 	
+	private boolean elitismo;
 
 	private ControlPanel ctrl;
 
@@ -65,7 +68,8 @@ public class AlgoritmoGenetico {
 		this.prob_mut = valores.prob_mut;
 		this.precision = valores.precision;
 		this.funcion_idx = valores.funcion_idx;
-		this.num_genes = valores.num_genes;		
+		this.num_genes = valores.num_genes;
+		this.elitismo= valores.elitismo;
 
 		funcionSelector();
 		seleccion = new Seleccion(tam_poblacion, funcion.opt);
@@ -121,8 +125,16 @@ public class AlgoritmoGenetico {
 
 	private void init_poblacion() {
 		poblacion = new Individuo[tam_poblacion];
-		for (int i = 0; i < tam_poblacion; i++) {
-			poblacion[i] = new Individuo(num_genes, tam_genes, funcion.maximos, funcion.minimos);
+		
+		if(funcion_idx<4) { 
+			for (int i = 0; i < tam_poblacion; i++) {
+				poblacion[i] = new IndividuoBin(num_genes, tam_genes, funcion.maximos, funcion.minimos);
+			}
+		}
+		else {
+			for (int i = 0; i < tam_poblacion; i++) {
+				poblacion[i] = new IndividuoReal(num_genes, precision);
+			}
 		}
 	}
 
@@ -135,14 +147,19 @@ public class AlgoritmoGenetico {
 		// double mejor_generacion=0;
 		double tmp;
 		// if (selected_function != null) // NO HACE FALTA
-		for (int i = 0; i < tam_poblacion; i++) {
-			poblacion[i].calcular_fenotipo(funcion.maximos, funcion.minimos);
-
+		
+		if(funcion_idx<4) {
+			for (int i = 0; i < tam_poblacion; i++) {
+				poblacion[i].calcular_fenotipo(funcion.maximos, funcion.minimos);
+			}
+		}
+		
+		
+		for (int i = 0; i < tam_poblacion; i++) {				
 			poblacion[i].fitness = funcion.fitness(poblacion[i].fenotipo);
 			fitness_total += poblacion[i].fitness;
 
 			mejor_generacion = funcion.cmp(mejor_generacion, poblacion[i].fitness);
-
 			/*
 			 * GRAFICO 3D
 			 * valores_inds[pos_valores][0]=poblacion[i].fenotipo[0];
@@ -150,6 +167,9 @@ public class AlgoritmoGenetico {
 			 * valores_inds[pos_valores++][2]=fitness[i];
 			 */
 		}
+		
+		
+		
 		mejor_total = funcion.cmp(mejor_total, mejor_generacion);
 
 		progreso_generaciones[0][generacionActual] = mejor_total; // Mejor Absoluto
@@ -256,14 +276,7 @@ public class AlgoritmoGenetico {
 	private void printPoblacion() {
 		int cont = 0;
 		for (Individuo ind : poblacion) {
-			for (Gen c : ind.genes) {
-				for (int a : c.v) {
-					System.out.print(a + " ");
-				}
-				System.out.print("| ");
-			}
-			System.out.println(" Fitness: " + ind.fitness +
-					"f1: " + ind.fenotipo[0] + " f2: " + ind.fenotipo[1]);
+			ind.printIndividuo();
 		}
 	}
 
