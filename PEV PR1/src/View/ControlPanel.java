@@ -107,7 +107,9 @@ public class ControlPanel extends JPanel{
 							"Restos",
 							};
 		String[] cruce= {"Mono-Punto",
-						"Uniforme"
+						"Uniforme",
+						"Aritmetico",
+						"BLX"
 						};
 		String[] mutacion = {"Básica"
 							};
@@ -245,6 +247,12 @@ public class ControlPanel extends JPanel{
      
         text_area.setText(""+vals[0][vals[0].length-1]);
         
+	}
+    
+    public void actualiza_fallo(String s) {
+    	plot2D.removeAllPlots();
+    	
+    	text_area.setText(s);        
 	}
     
 	private void run() {

@@ -9,6 +9,7 @@ import Model.Individuo;
 import Model.IndividuoBin;
 import Model.IndividuoReal;
 import Model.Valores;
+import Utils.FuncionException;
 import View.ControlPanel;
 
 import java.util.ArrayList;
@@ -51,6 +52,9 @@ public class AlgoritmoGenetico {
 	private double mejor_total;
 	
 	private boolean elitismo;
+	
+	private int decimales;
+	
 
 	private ControlPanel ctrl;
 
@@ -70,11 +74,17 @@ public class AlgoritmoGenetico {
 		this.funcion_idx = valores.funcion_idx;
 		this.num_genes = valores.num_genes;
 		this.elitismo= valores.elitismo;
+		
+		this.decimales=1;
+		while(precision!=1) {
+			precision*=10;
+			decimales*=10;
+		}
 
 		funcionSelector();
-		seleccion = new Seleccion(tam_poblacion, funcion.opt);
-		cruce = new Cruce(prob_cruce);
-		mutacion = new Mutacion();
+		seleccion = new Seleccion(tam_poblacion, funcion.opt,funcion_idx);
+		cruce = new Cruce(prob_cruce, funcion_idx);
+		mutacion = new Mutacion(prob_mut);
 
 		tam_genes = tamGenes();
 
@@ -82,6 +92,8 @@ public class AlgoritmoGenetico {
 	}
 
 	public void ejecuta(Valores valores) {
+		Individuo[] selec=null;
+		String fallo ="";
 		setValores(valores);
 
 		// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
@@ -95,16 +107,26 @@ public class AlgoritmoGenetico {
 		//System.out.println("-------------------------------------------------------------");
 
 		while (generaciones-- != 0) {
-			poblacion = seleccion_poblacion();
-			poblacion = cruce_poblacion(poblacion);
-			mutacion_poblacion();
+			selec = seleccion_poblacion();
+			try {
+				poblacion = cruce_poblacion(selec);
+				poblacion = mutacion_poblacion(); 
+			}
+			catch (Exception e) {
+				fallo = e.getMessage();
+				break;
+			}
 			evaluacion_poblacion();
 			//printPoblacion();
 			//System.out.println("-------------------------------------------------------------");
 		}
-
-		// TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
-		ctrl.actualiza_Grafico(progreso_generaciones, funcion.intervalosGrafico);
+		
+		if(fallo.equals("")) { // TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
+			ctrl.actualiza_Grafico(progreso_generaciones, funcion.intervalosGrafico);
+		}
+		else {
+			ctrl.actualiza_fallo(fallo);
+		}
 	}
 
 	
@@ -133,7 +155,7 @@ public class AlgoritmoGenetico {
 		}
 		else {
 			for (int i = 0; i < tam_poblacion; i++) {
-				poblacion[i] = new IndividuoReal(num_genes, precision);
+				poblacion[i] = new IndividuoReal(num_genes, decimales);
 			}
 		}
 	}
@@ -247,10 +269,20 @@ public class AlgoritmoGenetico {
 
 		switch (cruce_idx) {
 			case 0:
-				ret = cruce.cruce_monopunto(selec);
+				if(funcion_idx<4) ret = cruce.cruce_monopuntoBin(selec);
+				else ret = cruce.cruce_monopuntoReal(selec, num_genes);
 				break;
 			case 1:
-				ret = cruce.cruce_uniforme(selec);
+				if(funcion_idx<4) ret = cruce.cruce_uniformeBin(selec);
+				else ret=cruce.cruce_uniformeReal(selec, num_genes);
+				break;
+			case 2:
+				if(funcion_idx<4) throw new FuncionException("No hay C. Arit en Bin");
+				else ret = cruce.cruce_aritmetico(selec);
+				break;
+			case 3:
+				if(funcion_idx<4) throw new FuncionException("No hay C. BLX en Bin");
+				else ret = cruce.cruce_BLX(selec);
 				break;
 			default:
 				break;
@@ -259,11 +291,13 @@ public class AlgoritmoGenetico {
 		return ret;
 	}
 
-	private void mutacion_poblacion() {
-		// printPoblacion();
+	private Individuo[] mutacion_poblacion() {
+		Individuo[] ret = null; 
+		
 		switch (mut_idx) {
 			case 0:
-				mutacion.mut_basica(poblacion, prob_mut);
+				if(funcion_idx<4) ret=mutacion.mut_basicaBin(poblacion);
+				else ret=mutacion.mut_basicaReal(poblacion, decimales);
 				break;
 			default:
 				break;
@@ -271,6 +305,7 @@ public class AlgoritmoGenetico {
 		// System.out.println("Proceso de mutacion terminado: ");
 		// System.out.println();
 		// printPoblacion();
+		return ret;
 	}
 
 	private void printPoblacion() {

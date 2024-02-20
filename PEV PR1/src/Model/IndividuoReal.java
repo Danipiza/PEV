@@ -6,13 +6,9 @@ public class IndividuoReal extends Individuo {
 	
 	//public double[] genes;
 	
-	public IndividuoReal(int num, double precision) {
+	public IndividuoReal(int num, int prec) {
 		Random rand = new Random();
-		double prec=1;
-		while(precision!=1) {
-			precision*=10;
-			prec*=10;
-		}
+		
 		fenotipo = new double[num];
 		fitness = 0;
 		for (int i=0;i<num;i++) {
