@@ -87,8 +87,8 @@ class Funcion3 extends Funcion {
 
 class Funcion4 extends Funcion {
 	int d;
-	public Funcion4(int _d) {
-		d = _d;
+	public Funcion4(int d) {
+		this.d = d;
 		intervalosGrafico = new Pair<>(-15.0, 5.0); // Inicializar intervalosGrafico
 		maximos = new double[d]; // Inicializar array maximos 
 		minimos = new double[d]; // Inicializar array minimos
@@ -103,7 +103,7 @@ class Funcion4 extends Funcion {
 		double ret = 0;
 		for (int i = 1; i <= d; i++) {
 			double sin1 = Math.sin(nums[i-1]);
-			double radians = i*Math.pow(nums[i-1],2)/Math.PI;
+			double radians = (i*Math.pow(nums[i-1],2))/Math.PI;
 			double comp = Math.sin(radians);
 			ret += sin1*Math.pow(comp,20);
 		}
@@ -120,7 +120,9 @@ class Funcion4 extends Funcion {
 }
 
 class Funcion5 extends Funcion {
-	public Funcion5() {
+	int d;
+	public Funcion5(int d) {
+		this.d = d;
 		intervalosGrafico = new Pair<>(-10.0, 10.0); // Inicializar intervalosGrafico
 		maximos = new double[] { 10, 10 }; // Inicializar array maximos 
 		minimos = new double[] { -10, -10 }; // Inicializar array minimos 
@@ -129,7 +131,14 @@ class Funcion5 extends Funcion {
 
 	@Override
 	public double fitness(double[] nums) {
-		return (Math.pow(nums[0], 2) + 2 * Math.pow(nums[1], 2));
+		double ret = 0;
+		for (int i = 1; i <= d; i++) {
+			double sin1 = Math.sin(nums[i-1]);
+			double radians = i*Math.pow(nums[i-1],2)/Math.PI;
+			double comp = Math.sin(radians);
+			ret += sin1*Math.pow(comp,20);
+		}
+		return ret*-1;
 	}
 
 	@Override

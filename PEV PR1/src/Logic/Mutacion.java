@@ -1,6 +1,8 @@
 package Logic;
 
+
 import Model.Individuo;
+import Model.IndividuoReal;
 
 //import java.lang.Math.random;
 
@@ -37,6 +39,27 @@ public class Mutacion {
 		return ret;
 	}
 	
+	
+	public Individuo[] mut_Real(Individuo[] poblacion, int prec) {		
+		
+		int tam_poblacion=poblacion.length;
+		Individuo[] ret = new Individuo[tam_poblacion];
+		
+		IndividuoReal act;
+		for (int i=0;i<tam_poblacion;i++) {
+			act=new IndividuoReal(poblacion[i]);
+			for(int j=0;j<poblacion[0].fenotipo.length;j++) {
+				if(Math.random()<p) {
+					act.fenotipo[j]=act.genAleatorio(prec);
+				}
+				ret[i]=act;
+			}
+		}
+		
+		return ret;
+	}
+	
+	//TODO
 	public Individuo[] mut_basicaReal(Individuo[] poblacion, int precision) {
 		int tam_poblacion=poblacion.length;
 		Individuo[] ret = new Individuo[tam_poblacion];

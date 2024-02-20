@@ -75,18 +75,19 @@ public class AlgoritmoGenetico {
 		this.num_genes = valores.num_genes;
 		this.elitismo= valores.elitismo;
 		
-		this.decimales=1;
-		while(precision!=1) {
-			precision*=10;
+		double tmp=precision*10;
+		this.decimales=10;
+		while(tmp!=1) {
+			tmp*=10;
 			decimales*=10;
 		}
-
+		
 		funcionSelector();
 		seleccion = new Seleccion(tam_poblacion, funcion.opt,funcion_idx);
 		cruce = new Cruce(prob_cruce, funcion_idx);
 		mutacion = new Mutacion(prob_mut);
 
-		tam_genes = tamGenes();
+		if(funcion_idx<4)tam_genes = tamGenes();
 
 		mejor_total = (funcion.opt ? Double.MIN_VALUE : Double.MAX_VALUE);
 	}
@@ -140,7 +141,6 @@ public class AlgoritmoGenetico {
 		return ret;
 	}
 
-	// TODO preguntar si es con ceil
 	private int tamGen(double precision, double min, double max) {
 		return (int) Math.ceil((Math.log10(((max - min) / precision) + 1) / Math.log10(2)));
 	}
@@ -222,7 +222,7 @@ public class AlgoritmoGenetico {
 				funcion = new Funcion4(num_genes);
 				break;
 			case 4:
-				funcion = new Funcion5();
+				funcion = new Funcion5(num_genes);
 				break;
 
 			default:
@@ -297,7 +297,7 @@ public class AlgoritmoGenetico {
 		switch (mut_idx) {
 			case 0:
 				if(funcion_idx<4) ret=mutacion.mut_basicaBin(poblacion);
-				else ret=mutacion.mut_basicaReal(poblacion, decimales);
+				else ret=mutacion.mut_Real(poblacion, decimales);
 				break;
 			default:
 				break;
