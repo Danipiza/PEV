@@ -20,7 +20,7 @@ import javax.swing.SpinnerNumberModel;
 
 import Logic.AlgoritmoGenetico;
 import Model.Valores;
-import Utils.BooleanSwitch;
+//import Utils.BooleanSwitch;
 import Utils.Pair;
 
 import java.awt.BorderLayout;
@@ -35,13 +35,14 @@ public class ControlPanel extends JPanel {
 
 	private JButton run_button;
 
-	private BooleanSwitch elitismo_button;
+	//private BooleanSwitch elitismo_button;
 
 	private JTextField tam_poblacion;
 	private JTextField generaciones;
 	private JTextField prob_cruce;
 	private JTextField prob_mut;
 	private JTextField precision;
+	private JTextField elitismo;
 
 	private JComboBox<String> funcion_CBox;
 	private JComboBox<String> seleccion_CBox;
@@ -63,6 +64,7 @@ public class ControlPanel extends JPanel {
 		prob_cruce = new JTextField("0.6", 15);
 		prob_mut = new JTextField("0.05", 15);
 		precision = new JTextField("0.001", 15);
+		elitismo = new JTextField("0", 15);
 		genes_spinner = new JSpinner();
 
 		AG = new AlgoritmoGenetico(this); // MEJORAR IMPLEMENTACION
@@ -108,7 +110,7 @@ public class ControlPanel extends JPanel {
 		String[] mutacion = { "Básica"
 		};
 
-		elitismo_button = new BooleanSwitch();
+		//elitismo_button = new BooleanSwitch();
 
 		funcion_CBox = new JComboBox<>(funciones);
 		seleccion_CBox = new JComboBox<>(seleccion);
@@ -127,7 +129,9 @@ public class ControlPanel extends JPanel {
 		run_button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				run();
+				int tmp=Integer.parseInt(elitismo.getText());
+				if(tmp<0||tmp>100) actualiza_fallo("Elitismo porcentaje");
+				else run();
 			}
 		});
 
@@ -185,7 +189,7 @@ public class ControlPanel extends JPanel {
 		gbc.gridy++;
 		leftPanel.add(genes_spinner, gbc);
 		gbc.gridy++;
-		leftPanel.add(elitismo_button, gbc);
+		leftPanel.add(elitismo, gbc); //elitismo_button
 		gbc.gridy++;
 		leftPanel.add(text_area, gbc);
 
@@ -196,26 +200,7 @@ public class ControlPanel extends JPanel {
 		return leftPanel;
 	}
 
-	private JPanel createRightPanel3D() {
-		JPanel rightPanel = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		rightPanel.setPreferredSize(new Dimension(475, 600));
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.weightx = 1.0; // Mas espacio horizontal
-		gbc.weighty = 1.0; // // Mas espacio vertical
-		gbc.fill = GridBagConstraints.BOTH; // Rellena el espacio disponible
-
-		plot3D = new Plot3DPanel();
-
-		plot3D.getAxis(0).setLabelText("X1");
-		plot3D.getAxis(1).setLabelText("X2");
-		plot3D.getAxis(2).setLabelText("Fitness");
-		// plot.removeAllPlots();
-		rightPanel.add(plot3D, gbc);
-
-		return rightPanel;
-	}
+	
 
 	private JPanel createRightPanel2D() {
 		JPanel rightPanel = new JPanel(new GridBagLayout());
@@ -286,7 +271,8 @@ public class ControlPanel extends JPanel {
 				Double.parseDouble(precision.getText()),
 				funcion_CBox.getSelectedIndex(),
 				(int) genes_spinner.getValue(),
-				elitismo_button.getValor());
+				Integer.parseInt(elitismo.getText()));
+				//elitismo_button.getValor());
 	}
 
 	public Valores getValores() {
@@ -297,16 +283,27 @@ public class ControlPanel extends JPanel {
 		return new ImageIcon(Toolkit.getDefaultToolkit().createImage(path));
 	}
 
-	/*
-	 * protected void valoresClass() {
-	 * int num=(int)valores_spinner.getValue();
-	 * ValoresDialog valores_dialog = new ValoresDialog(num); // (Frame)
-	 * this.getTopLevelAncestor()
-	 * 
-	 * int estado = valores_dialog.open(num);
-	 * if (estado == 1) {
-	 * 
-	 * }
-	 * }
-	 */
+	@SuppressWarnings("unused")
+	private JPanel createRightPanel3D() {
+		JPanel rightPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		rightPanel.setPreferredSize(new Dimension(475, 600));
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 1.0; // Mas espacio horizontal
+		gbc.weighty = 1.0; // // Mas espacio vertical
+		gbc.fill = GridBagConstraints.BOTH; // Rellena el espacio disponible
+
+		plot3D = new Plot3DPanel();
+
+		plot3D.getAxis(0).setLabelText("X1");
+		plot3D.getAxis(1).setLabelText("X2");
+		plot3D.getAxis(2).setLabelText("Fitness");
+		// plot.removeAllPlots();
+		rightPanel.add(plot3D, gbc);
+
+		return rightPanel;
+	}
+	
+	
 }

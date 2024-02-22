@@ -8,19 +8,27 @@ import Model.IndividuoReal;
 public class Cruce {
 
 	private double p;
+	
+	private int tam_elite;
 
-	private boolean bin;
+	//private boolean bin;
 
-	public Cruce(double p, int funcion_idx) {
+	public Cruce(double p, int funcion_idx, int tam_elite) {
 		this.p = p;
-		this.bin = (funcion_idx < 4 ? true : false);
+		this.tam_elite=tam_elite;
+		//this.bin = (funcion_idx < 4 ? true : false);
 	}
 
 	public Individuo[] cruce_monopuntoBin(Individuo[] selec) {
 		int n = selec.length;
-		if (n % 2 == 1)
+		Individuo[] ret = new Individuo[n+tam_elite];
+		//n-=tam_elite;
+		
+		if (n % 2 == 1) {
+			ret[n - 1] = selec[n - 1];
 			n--; // descarta al ultimo si es impar
-		Individuo[] ret = new Individuo[n];
+		}
+		
 
 		int[] long_genes = new int[selec[0].genes.length];
 		int corte_maximo = -1, cont = 0;
@@ -66,9 +74,13 @@ public class Cruce {
 
 	public Individuo[] cruce_monopuntoReal(Individuo[] selec, int d) {
 		int n = selec.length;
-		if (n % 2 == 1)
-			n--; // TODO CAMBIAR PARA QUE AÑADA EL ELIMINADO EN LA POBLACION
-		Individuo[] ret = new Individuo[n];
+		Individuo[] ret = new Individuo[n+tam_elite];
+		//n-=tam_elite;
+		
+		if (n % 2 == 1) {
+			ret[n - 1] = selec[n - 1];
+			n--; // descarta al ultimo si es impar
+		}
 
 		int corte_maximo = d - 1;
 
@@ -95,9 +107,13 @@ public class Cruce {
 
 	public Individuo[] cruce_uniformeBin(Individuo[] selec) {
 		int n = selec.length;
-		if (n % 2 == 1)
+		Individuo[] ret = new Individuo[n+tam_elite];
+		n-=tam_elite;
+		
+		if (n % 2 == 1) {
+			ret[n - 1] = selec[n - 1];
 			n--; // descarta al ultimo si es impar
-		Individuo[] ret = new Individuo[n];
+		}
 
 		int[] long_genes = new int[selec[0].genes.length];
 		int cont = 0, l = 0;
@@ -145,13 +161,17 @@ public class Cruce {
 
 	public Individuo[] cruce_uniformeReal(Individuo[] selec, int d) {
 		int n = selec.length;
-		if (n % 2 == 1)
+		Individuo[] ret = new Individuo[n+tam_elite];
+		n-=tam_elite;
+		
+		if (n % 2 == 1) {
+			ret[n - 1] = selec[n - 1];
 			n--; // descarta al ultimo si es impar
-		Individuo[] ret = new Individuo[n];
+		}
 
 		int i = 0, j = 0;
 		Individuo ind1, ind2;
-		double corte, tmp;
+		double tmp;
 		while (i < n) {
 			ind1 = new IndividuoReal(selec[i]);
 			ind2 = new IndividuoReal(selec[i + 1]);
@@ -172,8 +192,9 @@ public class Cruce {
 
 	public Individuo[] cruce_aritmetico(Individuo[] selec, int d, double a) {
 		int n = selec.length;
-
 		Individuo[] ret = new Individuo[n];
+		n-=tam_elite;
+		
 		if (n % 2 == 1) {
 			ret[n - 1] = selec[n - 1];
 			n--; // descarta al ultimo si es impar
@@ -201,8 +222,9 @@ public class Cruce {
 
 	public Individuo[] cruce_BLX(Individuo[] selec, int d, double a) {
 		int n = selec.length;
-
-		Individuo[] ret = new Individuo[n];
+		Individuo[] ret = new Individuo[n+tam_elite];
+		n-=tam_elite;
+		
 		if (n % 2 == 1) {
 			ret[n - 1] = selec[n - 1];
 			n--; // descarta al ultimo si es impar

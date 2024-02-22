@@ -9,13 +9,15 @@ import Model.IndividuoReal;
 import Utils.Pair;
 
 public class Seleccion {
-	int tam_poblacion;
-	boolean opt;
+	private int tam_poblacion;
+	//private int tam_elite;
+	private boolean opt;
 	private boolean bin;
 	
 	public Seleccion(int _tam_poblacion, boolean _opt, int funcion_idx) {
 		this.tam_poblacion = _tam_poblacion;
 		this.opt = _opt;
+		//this.tam_elite=tam_elite;
 		this.bin=(funcion_idx<4?true:false);
 	}
 
@@ -141,6 +143,7 @@ public class Seleccion {
 		return seleccionados;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Individuo[] truncamiento(Individuo[] poblacion, double[] prob_seleccion, double trunc, int tam_seleccionados) {
 		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
@@ -160,7 +163,7 @@ public class Seleccion {
 
 		int x = 0, num = (int) (1.0 / trunc);
 		
-		for (int i = 0; i < tam_seleccionados * trunc; i++) {
+		for (int i = 0; i < (tam_seleccionados) * trunc; i++) {
 			for (int j = 0; j < num; j++) {
 				if(bin) seleccionados[x++] = new IndividuoBin(poblacion[i]);
 				else seleccionados[x++] = new IndividuoReal(poblacion[i]);
@@ -176,7 +179,7 @@ public class Seleccion {
 		int x = 0, num;
 		double aux;		
 		for (int i = 0; i < tam_seleccionados; i++) {
-			aux = prob_seleccion[i] * tam_seleccionados;
+			aux = prob_seleccion[i] * (tam_seleccionados);
 			num = (int) aux;
 			for (int j = 0; j < num; j++) {
 				if(bin) seleccionados[x++] = new IndividuoBin(poblacion[i]);
@@ -188,7 +191,8 @@ public class Seleccion {
 		
 		Individuo[] resto = null;
 		int func=(int) (Math.random()*5);
-		switch (func) {
+		switch (func) { // SE SUMA LA PARTE DE elitismo PORQUE SINO SE RESTA 2 VECES, 
+						// EN LA PARTE DE restos() Y LA FUNCION RANDOM
 		case 0:
 			resto = ruleta(poblacion, prob_acumulada, tam_seleccionados - x);
 			break;

@@ -1,6 +1,7 @@
 package Logic;
 
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import Utils.Pair;
@@ -11,9 +12,11 @@ import Model.IndividuoBin;
 import Model.IndividuoReal;
 import Model.Valores;
 import Utils.FuncionException;
+import Utils.Node;
 import View.ControlPanel;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 
 @SuppressWarnings("unused")
@@ -52,7 +55,9 @@ public class AlgoritmoGenetico {
 	private double[][] progreso_generaciones;
 	private double mejor_total;
 
-	private boolean elitismo;
+	private int elitismo;
+	private int tam_elite;
+	PriorityQueue<Node> elitQ;
 
 	private int decimales;
 
@@ -81,23 +86,27 @@ public class AlgoritmoGenetico {
 			tmp *= 10;
 			decimales *= 10;
 		}
+		
+		tam_elite=(int) (tam_poblacion*(elitismo/100.0));
 
 		funcionSelector();
 		seleccion = new Seleccion(tam_poblacion, funcion.opt, funcion_idx);
-		cruce = new Cruce(prob_cruce, funcion_idx);
-		mutacion = new Mutacion(prob_mut);
+		cruce = new Cruce(prob_cruce, funcion_idx,tam_elite);
+		mutacion = new Mutacion(prob_mut,tam_elite);
 
-		if (funcion_idx < 4)
-			tam_genes = tamGenes();
+		if (funcion_idx < 4) tam_genes = tamGenes();
 
 		mejor_total = (funcion.opt ? Double.MIN_VALUE : Double.MAX_VALUE);
 	}
 
 	public void ejecuta(Valores valores) {
 		Individuo[] selec = null;
+		
+		Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
+		elitQ = new PriorityQueue<>(comparator);
 		String fallo = "";
 		setValores(valores);
-
+		
 		// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 		progreso_generaciones = new double[3][generaciones + 1];
 		generacionActual = 0;
@@ -113,6 +122,10 @@ public class AlgoritmoGenetico {
 			try {
 				poblacion = cruce_poblacion(selec);
 				poblacion = mutacion_poblacion();
+				while(elitQ.size()!=0) {
+					//elitQ.poll();
+					poblacion[tam_poblacion-elitQ.size()]=elitQ.poll().getId();
+				}
 			} catch (Exception e) {
 				fallo = e.getMessage();
 				break;
@@ -173,12 +186,20 @@ public class AlgoritmoGenetico {
 		}
 
 		double fitnessTotalAdaptado = 0;
+		double fit;
 		for (int i = 0; i < tam_poblacion; i++) {
-			poblacion[i].fitness = funcion.fitness(poblacion[i].fenotipo);
-			fitness_total += poblacion[i].fitness;
+			fit=funcion.fitness(poblacion[i].fenotipo);
+			poblacion[i].fitness = fit;
+			fitness_total += fit;
+			
+			if(elitQ.size()<tam_elite) elitQ.add(new Node(fit,poblacion[i]));
+			else if(tam_elite!=0&&funcion.cmp(elitQ.peek().getValue(), fit)==fit) {
+				elitQ.poll();
+				elitQ.add(new Node(fit,poblacion[i]));
+			}
 
-			mejor_generacion = funcion.cmp(mejor_generacion, poblacion[i].fitness);
-			peor_generacion = funcion.cmpPeor(peor_generacion, poblacion[i].fitness);
+			mejor_generacion = funcion.cmp(mejor_generacion, fit);
+			peor_generacion = funcion.cmpPeor(peor_generacion, fit);
 			/*
 			 * GRAFICO 3D
 			 * valores_inds[pos_valores][0]=poblacion[i].fenotipo[0];
@@ -245,29 +266,26 @@ public class AlgoritmoGenetico {
 
 		switch (seleccion_idx) {
 			case 0:
-				ret = seleccion.ruleta(poblacion, prob_seleccion, tam_poblacion);
+				ret = seleccion.ruleta(poblacion, prob_seleccion, tam_poblacion-tam_elite);
 				break;
 			case 1:
-				ret = seleccion.torneoDeterministico(poblacion, prob_seleccionAcum, 3, tam_poblacion);
+				ret = seleccion.torneoDeterministico(poblacion, prob_seleccionAcum, 3, tam_poblacion-tam_elite);
 				break;
 			case 2:
-				ret = seleccion.torneoProbabilistico(poblacion, prob_seleccionAcum, 3, 0.9, tam_poblacion);
+				ret = seleccion.torneoProbabilistico(poblacion, prob_seleccionAcum, 3, 0.9, tam_poblacion-tam_elite);
 				break;
 			case 3:
-				ret = seleccion.estocasticoUniversal1(poblacion, prob_seleccionAcum, tam_poblacion);
+				ret = seleccion.estocasticoUniversal1(poblacion, prob_seleccionAcum, tam_poblacion-tam_elite);
 				break;
 			case 4:
-				ret = seleccion.estocasticoUniversal2(poblacion, prob_seleccionAcum, tam_poblacion);
+				ret = seleccion.estocasticoUniversal2(poblacion, prob_seleccionAcum, tam_poblacion-tam_elite);
 				break;
-
 			case 5:
-				ret = seleccion.truncamiento(poblacion, prob_seleccion, 0.5, tam_poblacion);
+				ret = seleccion.truncamiento(poblacion, prob_seleccion, 0.5, tam_poblacion-tam_elite);
 				break;
-
 			case 6:
-				ret = seleccion.restos(poblacion, prob_seleccion, prob_seleccionAcum, tam_poblacion);
+				ret = seleccion.restos(poblacion, prob_seleccion, prob_seleccionAcum, tam_poblacion-tam_elite);
 				break;
-
 			default:
 				break;
 		}

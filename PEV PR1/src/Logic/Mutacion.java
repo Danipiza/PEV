@@ -9,17 +9,20 @@ import Model.IndividuoReal;
 public class Mutacion {
 
 	private double p;
+	private int tam_elite;
 	
-	public Mutacion(double p) {
+	public Mutacion(double p, int tam_elite) {
 		this.p=p;
+		this.tam_elite=tam_elite;
 	}
 
 	public Individuo[] mut_basicaBin(Individuo[] poblacion) {
 		int tam_poblacion=poblacion.length;
 		Individuo[] ret = new Individuo[tam_poblacion];
 		
+		
 		Individuo act;
-		for (int i=0;i<tam_poblacion;i++) {
+		for (int i=0;i<tam_poblacion-tam_elite;i++) {
 			act=poblacion[i];
 			//poblacion[i].printIndividuo();
 			//System.out.print("muta en: ");
@@ -46,7 +49,7 @@ public class Mutacion {
 		Individuo[] ret = new Individuo[tam_poblacion];
 		
 		IndividuoReal act;
-		for (int i=0;i<tam_poblacion;i++) {
+		for (int i=0;i<tam_poblacion-tam_elite;i++) {
 			act=new IndividuoReal(poblacion[i]);
 			for(int j=0;j<poblacion[0].fenotipo.length;j++) {
 				if(Math.random()<p) {
@@ -67,7 +70,7 @@ public class Mutacion {
 		int prec=precision;
 		Individuo act;
 		double tmp;
-		for (int i=0;i<tam_poblacion;i++) {			
+		for (int i=0;i<tam_poblacion-tam_elite;i++) {			
 			act=poblacion[i];
 			if(Math.random()<p) tmp=Math.random()*3; //[0-3]
 			else tmp = act.fenotipo[i]%10;

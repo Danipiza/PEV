@@ -1,18 +1,6 @@
 package View;
 
-
-
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-//import java.awt.GridLayout;
-import java.awt.Insets;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-
-
 
 public class MainWindow extends JFrame{
 
@@ -43,6 +31,7 @@ public class MainWindow extends JFrame{
 		//initGUI();
 	}
 	
+	@SuppressWarnings("unused")
 	private void initGUI() {
 		
 		/*JPanel mainPanel = new JPanel(new BorderLayout());

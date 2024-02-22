@@ -6,7 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BooleanSwitch extends JToggleButton {
-    private boolean encendido;
+    
+	private static final long serialVersionUID = 1L;
+	
+	private boolean encendido;
 
     public BooleanSwitch() {
     	setPreferredSize(new Dimension(25, 25)); // Adjust size when switched on
