@@ -245,6 +245,8 @@ public class ControlPanel extends JPanel {
 		plot2D.setAxisLabel(1, "Y Axis");
 		plot2D.setFixedBounds(1, interval.getKey(), interval.getValue()); // Fix Y-axis bounds
 
+		//plot2D.addLegend("Mejor Absoluto");
+		plot2D.addLegend("SOUTH");
 		text_area.setText("" + vals[0][vals[0].length - 1]);
 
 	}
