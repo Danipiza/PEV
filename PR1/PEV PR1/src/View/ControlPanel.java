@@ -240,9 +240,8 @@ public class ControlPanel extends JPanel {
 		plot2D.addLinePlot("Media", x, vals[2]);
 
 		// Customize the plot (optional)
-		plot2D.setAxisLabels("X Axis", "Y Axis");
-		plot2D.setAxisLabel(0, "X Axis");
-		plot2D.setAxisLabel(1, "Y Axis");
+		plot2D.getAxis(0).setLabelText("Generacion");
+		plot2D.getAxis(1).setLabelText("Fitness");
 		plot2D.setFixedBounds(1, interval.getKey(), interval.getValue()); // Fix Y-axis bounds
 
 		//plot2D.addLegend("Mejor Absoluto");

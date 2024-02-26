@@ -16,6 +16,7 @@ import Utils.Node;
 import View.ControlPanel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
@@ -101,11 +102,14 @@ public class AlgoritmoGenetico {
 
 	public void ejecuta(Valores valores) {
 		Individuo[] selec = null;
+				
 		
-		Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
-		elitQ = new PriorityQueue<>(comparator);
 		String fallo = "";
 		setValores(valores);
+		
+		Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
+		if(funcion_idx!=0) elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
+		else elitQ = new PriorityQueue<>(comparator);
 		
 		// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 		progreso_generaciones = new double[3][generaciones + 1];
