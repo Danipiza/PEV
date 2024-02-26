@@ -137,7 +137,7 @@ public class Seleccion {
 			double x = (rand + i) / tam_seleccionados;
 			
 			if(bin) seleccionados[i] = new IndividuoBin(poblacion[busquedaBinaria(x, prob_acumulada)]);
-			else seleccionados[i] = new IndividuoBin(poblacion[busquedaBinaria(x, prob_acumulada)]);
+			else seleccionados[i] = new IndividuoReal(poblacion[busquedaBinaria(x, prob_acumulada)]);
 		}
 
 		return seleccionados;
@@ -147,8 +147,8 @@ public class Seleccion {
 	public Individuo[] truncamiento(Individuo[] poblacion, double[] prob_seleccion, double trunc, int tam_seleccionados) {
 		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
-		Pair<Individuo, Double>[] pairs = new Pair[tam_poblacion];
-		for (int i = 0; i < tam_poblacion; i++) {
+		Pair<Individuo, Double>[] pairs = new Pair[tam_seleccionados];
+		for (int i = 0; i < tam_seleccionados; i++) {
 			pairs[i] = new Pair<>(poblacion[i], prob_seleccion[i]);
 		}
 
@@ -164,7 +164,7 @@ public class Seleccion {
 		int x = 0, num = (int) (1.0 / trunc);
 		
 		for (int i = 0; i < (tam_seleccionados) * trunc; i++) {
-			for (int j = 0; j < num; j++) {
+			for (int j = 0; j < num && x<tam_seleccionados; j++) {
 				if(bin) seleccionados[x++] = new IndividuoBin(poblacion[i]);
 				else seleccionados[x++] = new IndividuoReal(poblacion[i]);
 			}

@@ -108,8 +108,12 @@ public class AlgoritmoGenetico {
 		setValores(valores);
 		
 		Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
-		if(funcion_idx!=0) elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
-		else elitQ = new PriorityQueue<>(comparator);
+		if(funcion_idx!=0) {
+			elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
+		}
+		else {
+			elitQ = new PriorityQueue<>(comparator);
+		}
 		
 		// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 		progreso_generaciones = new double[3][generaciones + 1];

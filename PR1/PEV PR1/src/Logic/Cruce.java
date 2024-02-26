@@ -108,7 +108,7 @@ public class Cruce {
 	public Individuo[] cruce_uniformeBin(Individuo[] selec) {
 		int n = selec.length;
 		Individuo[] ret = new Individuo[n+tam_elite];
-		n-=tam_elite;
+		//n-=tam_elite;
 		
 		if (n % 2 == 1) {
 			ret[n - 1] = selec[n - 1];
@@ -162,7 +162,7 @@ public class Cruce {
 	public Individuo[] cruce_uniformeReal(Individuo[] selec, int d) {
 		int n = selec.length;
 		Individuo[] ret = new Individuo[n+tam_elite];
-		n-=tam_elite;
+		//n-=tam_elite;
 		
 		if (n % 2 == 1) {
 			ret[n - 1] = selec[n - 1];
@@ -192,8 +192,8 @@ public class Cruce {
 
 	public Individuo[] cruce_aritmetico(Individuo[] selec, int d, double a) {
 		int n = selec.length;
-		Individuo[] ret = new Individuo[n];
-		n-=tam_elite;
+		Individuo[] ret = new Individuo[n+tam_elite];
+		//n-=tam_elite;
 		
 		if (n % 2 == 1) {
 			ret[n - 1] = selec[n - 1];
@@ -223,7 +223,7 @@ public class Cruce {
 	public Individuo[] cruce_BLX(Individuo[] selec, int d, double a) {
 		int n = selec.length;
 		Individuo[] ret = new Individuo[n+tam_elite];
-		n-=tam_elite;
+		//n-=tam_elite;
 		
 		if (n % 2 == 1) {
 			ret[n - 1] = selec[n - 1];
