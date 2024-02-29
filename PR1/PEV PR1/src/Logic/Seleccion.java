@@ -10,7 +10,6 @@ import Utils.Pair;
 
 public class Seleccion {
 	private int tam_poblacion;
-	//private int tam_elite;
 	private boolean opt;
 	private boolean bin;
 	
@@ -53,7 +52,7 @@ public class Seleccion {
 		return seleccionados;
 	}
 
-	public Individuo[] torneoDeterministico(Individuo[] poblacion, double[] prob_acumulada, int k, int tam_seleccionados) {
+	public Individuo[] torneoDeterministico(Individuo[] poblacion, int k, int tam_seleccionados) {
 		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
 		double randomFitness;
@@ -84,7 +83,7 @@ public class Seleccion {
 		return seleccionados;
 	}
 	
-	public Individuo[] torneoProbabilistico(Individuo[] poblacion, double[] prob_acumulada, int k, double p, int tam_seleccionados) {
+	public Individuo[] torneoProbabilistico(Individuo[] poblacion, int k, double p, int tam_seleccionados) {
 		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
 		double randomFitness;
@@ -152,14 +151,17 @@ public class Seleccion {
 			pairs[i] = new Pair<>(poblacion[i], prob_seleccion[i]);
 		}
 
-		Arrays.sort(pairs, new Comparator<Pair<Individuo, Double>>() {
+		//Arrays.sort(pairs, Comparator.comparingDouble(Pair<Individuo, Double>::getKey));
+		Arrays.sort(pairs, Comparator.comparingDouble(p -> p.getValue()));
+		//Arrays.sort(pairs, Comparator.comparingDouble(p -> ((Pair<Individuo, Double>) p).getValue()).reversed());
+		/*Arrays.sort(pairs, new Comparator<Pair<Individuo, Double>>() {
 			public int compare(Pair<Individuo, Double> a, Pair<Individuo, Double> b) {
 				if (a.getValue() > b.getValue())
 					return -1;
 				else
 					return 1;
 			}
-		});
+		});*/
 
 		int x = 0, num = (int) (1.0 / trunc);
 		
@@ -197,10 +199,10 @@ public class Seleccion {
 			resto = ruleta(poblacion, prob_acumulada, tam_seleccionados - x);
 			break;
 		case 1:
-			resto = torneoDeterministico(poblacion, prob_acumulada, 3, tam_seleccionados - x);	
+			resto = torneoDeterministico(poblacion, 3, tam_seleccionados - x);	
 			break;
 		case 2:
-			resto = torneoProbabilistico(poblacion, prob_acumulada, 3, 0.9, tam_seleccionados - x);
+			resto = torneoProbabilistico(poblacion, 3, 0.9, tam_seleccionados - x);
 			break;
 		case 3:
 			resto = estocasticoUniversal1(poblacion, prob_acumulada, tam_seleccionados - x);

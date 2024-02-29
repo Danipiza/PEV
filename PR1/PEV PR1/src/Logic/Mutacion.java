@@ -62,7 +62,7 @@ public class Mutacion {
 		return ret;
 	}
 	
-	//TODO
+	/*
 	public Individuo[] mut_basicaReal(Individuo[] poblacion, int precision) {
 		int tam_poblacion=poblacion.length;
 		Individuo[] ret = new Individuo[tam_poblacion];
@@ -98,6 +98,6 @@ public class Mutacion {
 			ret[i]=act;
 		}
 		return ret;
-	}
+	}*/
 
 }

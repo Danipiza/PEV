@@ -80,6 +80,7 @@ public class AlgoritmoGenetico {
 		this.funcion_idx = valores.funcion_idx;
 		this.num_genes = valores.num_genes;
 		this.elitismo = valores.elitismo;
+		if(funcion_idx<3)num_genes=2;
 
 		double tmp = precision * 10;
 		this.decimales = 10;
@@ -277,10 +278,10 @@ public class AlgoritmoGenetico {
 				ret = seleccion.ruleta(poblacion, prob_seleccion, tam_poblacion-tam_elite);
 				break;
 			case 1:
-				ret = seleccion.torneoDeterministico(poblacion, prob_seleccionAcum, 3, tam_poblacion-tam_elite);
+				ret = seleccion.torneoDeterministico(poblacion, 3, tam_poblacion-tam_elite);
 				break;
 			case 2:
-				ret = seleccion.torneoProbabilistico(poblacion, prob_seleccionAcum, 3, 0.9, tam_poblacion-tam_elite);
+				ret = seleccion.torneoProbabilistico(poblacion, 3, 0.9, tam_poblacion-tam_elite);
 				break;
 			case 3:
 				ret = seleccion.estocasticoUniversal1(poblacion, prob_seleccionAcum, tam_poblacion-tam_elite);
