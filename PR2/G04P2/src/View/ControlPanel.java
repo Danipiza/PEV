@@ -60,7 +60,7 @@ public class ControlPanel extends JPanel {
 		tam_poblacion = new JTextField("100", 16);
 		generaciones = new JTextField("100", 16);
 		prob_cruce = new JTextField("0.6", 16);
-		prob_mut = new JTextField("0.05", 16);
+		prob_mut = new JTextField("0.3", 16);
 		elitismo = new JTextField("0", 16);
 
 		AG = new AlgoritmoGenetico(this); // MEJORAR IMPLEMENTACION
@@ -96,9 +96,7 @@ public class ControlPanel extends JPanel {
 								"Restos",
 								"Ranking"};
 		
-		String[] cruce = { 	"Aritmetico",
-							"BLX",
-							"PMX",
+		String[] cruce = { 	"PMX",
 							"OX",
 							"OX-PP",
 							"CX",
@@ -232,7 +230,7 @@ public class ControlPanel extends JPanel {
 		// Customize the plot (optional)
 		plot2D.getAxis(0).setLabelText("Generacion");
 		plot2D.getAxis(1).setLabelText("Fitness");
-		plot2D.setFixedBounds(1, interval.getKey(), interval.getValue()); // Fix Y-axis bounds
+		plot2D.setFixedBounds(1, 0, 300); // Fix Y-axis bounds
 
 		//plot2D.addLegend("Mejor Absoluto");
 		plot2D.addLegend("SOUTH");

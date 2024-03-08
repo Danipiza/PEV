@@ -7,7 +7,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import Utils.Pair;
 
-import Model.IndividuoReal;
+import Model.Individuo;
 import Model.Valores;
 import Utils.FuncionException;
 import Utils.Node;
@@ -39,7 +39,7 @@ public class AlgoritmoGenetico {
 	// Init
 	private int tam_individuo;
 	private int[] tam_genes;
-	private IndividuoReal[] poblacion;
+	private Individuo[] poblacion;
 
 	// Evaluacion
 	private double fitness_total;
@@ -91,28 +91,27 @@ public class AlgoritmoGenetico {
 
 		tam_elite=(int) (tam_poblacion*(elitismo/100.0));
 
+		funcion = new Funcion();
 		seleccion = new Seleccion(tam_poblacion, funcion_idx);
 		cruce = new Cruce(prob_cruce, funcion_idx,tam_elite);
 		mutacion = new Mutacion(prob_mut,tam_elite);
 		lee_archivos();
 		
-
-		// TODO
-		mejor_total = (true ? Double.MIN_VALUE : Double.MAX_VALUE);
+		mejor_total = Double.MAX_VALUE;
 	}
 
 	public void ejecuta(Valores valores) {
-		IndividuoReal[] selec = null;				
+		Individuo[] selec = null;				
 		
 		String fallo = "";
 		setValores(valores);
 		
 		// ELITISMO
-		/* Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
+		Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
 		if(funcion_idx!=0) {
 			elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
 		}
-		else elitQ = new PriorityQueue<>(comparator);*/
+		else elitQ = new PriorityQueue<>(comparator);
 		
 		// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 		progreso_generaciones = new double[3][generaciones + 1];
@@ -120,7 +119,12 @@ public class AlgoritmoGenetico {
 
 		
 		init_poblacion();
-		/*evaluacion_poblacion();
+		
+		
+		evaluacion_poblacion();
+		/*for(Individuo ind: poblacion) {
+			ind.printIndividuo();
+		}*/
 
 
 		while (generaciones-- != 0) {
@@ -130,7 +134,7 @@ public class AlgoritmoGenetico {
 				poblacion = mutacion_poblacion();
 				
 				// ELITISMO
-				/*while(elitQ.size()!=0) {
+				while(elitQ.size()!=0) {
 					poblacion[tam_poblacion-elitQ.size()]=elitQ.poll().getId();
 				}
 			} catch (Exception e) {
@@ -144,7 +148,7 @@ public class AlgoritmoGenetico {
 			ctrl.actualiza_Grafico(progreso_generaciones, funcion.intervalosGrafico);
 		} else {
 			ctrl.actualiza_fallo(fallo);
-		}*/
+		}
 	}
 
 	
@@ -200,56 +204,50 @@ public class AlgoritmoGenetico {
 			System.out.println(v);
 		}*/
 		
-		for(i=0;i<num_pistas;i++) {
+		/*for(i=0;i<num_pistas;i++) {
 			for(j=0;j<num_vuelos;j++) {
 				System.out.print(TEL[i][j] + " ");
 			}
 			System.out.println();
-		}
+		}*/
 	}
 
 	
 
 	private void init_poblacion() {
-		poblacion = new IndividuoReal[tam_poblacion];
-		
+		poblacion = new Individuo[tam_poblacion];
+		for (int i = 0; i < tam_poblacion; i++) {
+			poblacion[i] = new Individuo(num_vuelos);
+		}
 		
 	}
 
 	private void evaluacion_poblacion() {
-		/*fitness_total = 0;
+		fitness_total = 0;
 		prob_seleccion = new double[tam_poblacion];
 		prob_seleccionAcum = new double[tam_poblacion];
 
-		double mejor_generacion = (funcion.opt ? Double.MIN_VALUE : Double.MAX_VALUE);
-		double peor_generacion = (funcion.opt ? Double.MAX_VALUE : Double.MIN_VALUE);
+		double mejor_generacion = (Double.MAX_VALUE);
+		double peor_generacion = (Double.MIN_VALUE);
 
 		double tmp;
-
-		if (funcion_idx < 4) {
-			for (int i = 0; i < tam_poblacion; i++) {
-				poblacion[i].calcular_fenotipo(funcion.maximos, funcion.minimos);
-			}
-		}
 
 		double fitnessTotalAdaptado = 0;
 		double fit;
 		for (int i = 0; i < tam_poblacion; i++) {
-			fit=funcion.fitness(poblacion[i].fenotipo);
-			
-			
+			fit = funcion.fitness(poblacion[i].gen.v);
 			poblacion[i].fitness = fit;
 			fitness_total += fit;
-			
-			if(elitQ.size()<tam_elite) elitQ.add(new Node(fit,poblacion[i]));
-			else if(tam_elite!=0&&funcion.cmp(elitQ.peek().getValue(), fit)==fit) {
+
+			if (elitQ.size() < tam_elite)
+				elitQ.add(new Node(fit, poblacion[i]));
+			else if (tam_elite != 0 && funcion.cmp(elitQ.peek().getValue(), fit) == fit) {
 				elitQ.poll();
-				elitQ.add(new Node(fit,poblacion[i]));
+				elitQ.add(new Node(fit, poblacion[i]));
 			}
 
 			mejor_generacion = funcion.cmp(mejor_generacion, fit);
-			peor_generacion = funcion.cmpPeor(peor_generacion, fit);		
-			 
+			peor_generacion = funcion.cmpPeor(peor_generacion, fit);
 		}
 
 		mejor_total = funcion.cmp(mejor_total, mejor_generacion);
@@ -279,16 +277,16 @@ public class AlgoritmoGenetico {
 				prob_seleccionAcum[i] = acum;
 			}
 		}
-	 	*/
+	 	
 	}
 
 	
-	private IndividuoReal[] seleccion_poblacion() {
-		IndividuoReal[] ret = null;
+	private Individuo[] seleccion_poblacion() {
+		Individuo[] ret = null;
 
 		switch (seleccion_idx) {
 			case 0:
-				ret = seleccion.ruleta(poblacion, prob_seleccion, tam_poblacion-tam_elite);
+				ret = seleccion.ruleta(poblacion, prob_seleccionAcum, tam_poblacion-tam_elite);
 				break;
 			case 1:
 				ret = seleccion.torneoDeterministico(poblacion, 3, tam_poblacion-tam_elite);
@@ -317,32 +315,26 @@ public class AlgoritmoGenetico {
 		return ret;
 	}
 
-	private IndividuoReal[] cruce_poblacion(IndividuoReal[] selec) {
-		IndividuoReal[] ret = null;
+	private Individuo[] cruce_poblacion(Individuo[] selec) {
+		Individuo[] ret = null;
 
 		switch (cruce_idx) {
 			case 0:				
-				ret = cruce.aritmetico(selec, num_genes, 0.6);
-				break;
-			case 1:
-				ret = cruce.BLX(selec, num_genes, 0.6);
-				break;
-			case 2:				
 				ret = cruce.PMX(selec);
 				break;
-			case 3:				
+			case 1:				
 				ret = cruce.OX(selec);
 				break;
-			case 4:				
-				ret = cruce.OX_PP(selec);	
+			case 2:				
+				ret = cruce.OX_PP(selec,3);	
 				break;
-			case 5:				
+			case 3:				
 				ret = cruce.CX(selec);
 				break;
-			case 6:				
+			case 4:				
 				ret = cruce.CO(selec);
 				break;
-			case 7:				
+			case 5:				
 				ret = cruce.custom(selec);
 				break;
 			default:
@@ -352,8 +344,8 @@ public class AlgoritmoGenetico {
 		return ret;
 	}
 
-	private IndividuoReal[] mutacion_poblacion() {
-		IndividuoReal[] ret = null;
+	private Individuo[] mutacion_poblacion() {
+		Individuo[] ret = null;
 
 		switch (mut_idx) {
 			case 0:				
@@ -366,7 +358,7 @@ public class AlgoritmoGenetico {
 				ret = mutacion.inversion(poblacion);				
 				break;
 			case 3:				
-				ret = mutacion.heuristica(poblacion);				
+				ret = mutacion.heuristica(poblacion,3);				
 				break;
 			case 4:				
 				ret = mutacion.custom(poblacion);				
@@ -374,41 +366,17 @@ public class AlgoritmoGenetico {
 			default:
 				break;
 		}
-		// System.out.println("Proceso de mutacion terminado: ");
-		// System.out.println();
-		// printPoblacion();
 		return ret;
 	}
 
 	private void printPoblacion() {
 		int cont = 0;
-		for (IndividuoReal ind : poblacion) {
+		for (Individuo ind : poblacion) {
 			ind.printIndividuo();
 		}
 	}
 
 	
-	/*private void funcionSelector() {
-	switch (funcion_idx) {
-		case 0:
-			funcion = new Funcion1();
-			break;
-		case 1:
-			funcion = new Funcion2();
-			break;
-		case 2:
-			funcion = new Funcion3();
-			break;
-		case 3:
-			funcion = new Funcion4(num_genes);
-			break;
-		case 4:
-			funcion = new Funcion5(num_genes);
-			break;
-
-		default:
-			break;
-	}
-}*/
+	
 
 }

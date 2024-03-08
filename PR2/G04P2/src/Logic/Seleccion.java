@@ -3,7 +3,7 @@ package Logic;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import Model.IndividuoReal;
+import Model.Individuo;
 import Utils.Pair;
 
 public class Seleccion {
@@ -32,22 +32,22 @@ public class Seleccion {
 		return i;
 	}
 
-	public IndividuoReal[] ruleta(IndividuoReal[] poblacion, double[] prob_acumulada, int tam_seleccionados) {
-		IndividuoReal[] seleccionados = new IndividuoReal[tam_seleccionados];
+	public Individuo[] ruleta(Individuo[] poblacion, double[] prob_acumulada, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
 		double rand;
 		for (int i = 0; i < tam_seleccionados; i++) {
 			rand = Math.random();
 			
 			
-			seleccionados[i] = new IndividuoReal(poblacion[busquedaBinaria(rand, prob_acumulada)]);
+			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(rand, prob_acumulada)]);
 		}
 
 		return seleccionados;
 	}
 
-	public IndividuoReal[] torneoDeterministico(IndividuoReal[] poblacion, int k, int tam_seleccionados) {
-		IndividuoReal[] seleccionados = new IndividuoReal[tam_seleccionados];
+	public Individuo[] torneoDeterministico(Individuo[] poblacion, int k, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
 		double randomFitness;
 		int indexMax, indexMin;
@@ -71,14 +71,14 @@ public class Seleccion {
 			}	
 			 
 			//seleccionados[i] = new IndividuoReal((opt ? poblacion[indexMax] : poblacion[indexMin]));
-			seleccionados[i] = new IndividuoReal(poblacion[indexMin]);
+			seleccionados[i] = new Individuo(poblacion[indexMin]);
 		}
 
 		return seleccionados;
 	}
 	
-	public IndividuoReal[] torneoProbabilistico(IndividuoReal[] poblacion, int k, double p, int tam_seleccionados) {
-		IndividuoReal[] seleccionados = new IndividuoReal[tam_seleccionados];
+	public Individuo[] torneoProbabilistico(Individuo[] poblacion, int k, double p, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
 		double randomFitness;
 		int indexMax, indexMin;
@@ -102,18 +102,18 @@ public class Seleccion {
 			}	
 			 
 			//seleccionados[i] = new IndividuoReal((opt && Math.random() <= p || !opt && Math.random() > p ? poblacion[indexMax] : poblacion[indexMin]));
-			seleccionados[i] = new IndividuoReal(poblacion[indexMin]);	
+			seleccionados[i] = new Individuo(poblacion[indexMin]);	
 		}
 
 		return seleccionados;
 	}
 	
-	public IndividuoReal[] estocasticoUniversal1(IndividuoReal[] poblacion, double[] prob_acumulada, int tam_seleccionados) {
-		IndividuoReal[] seleccionados = new IndividuoReal[tam_seleccionados];
+	public Individuo[] estocasticoUniversal1(Individuo[] poblacion, double[] prob_acumulada, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 		
 		double incr = 1.0 / tam_seleccionados, rand = Math.random() * incr;
 		for (int i = 0; i < tam_seleccionados; i++) {
-			seleccionados[i] = new IndividuoReal(poblacion[busquedaBinaria(rand, prob_acumulada)]);
+			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(rand, prob_acumulada)]);
 			
 			rand += incr;
 		}
@@ -121,24 +121,24 @@ public class Seleccion {
 		return seleccionados;
 	}
 	
-	public IndividuoReal[] estocasticoUniversal2(IndividuoReal[] poblacion, double[] prob_acumulada, int tam_seleccionados) {
-		IndividuoReal[] seleccionados = new IndividuoReal[tam_seleccionados];
+	public Individuo[] estocasticoUniversal2(Individuo[] poblacion, double[] prob_acumulada, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
 		double distMarca = 1.0 / tam_seleccionados, rand = Math.random() * distMarca;
 		for (int i = 0; i < tam_seleccionados; i++) {
 			double x = (rand + i) / tam_seleccionados;
 			
-			seleccionados[i] = new IndividuoReal(poblacion[busquedaBinaria(x, prob_acumulada)]);
+			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(x, prob_acumulada)]);
 		}
 
 		return seleccionados;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public IndividuoReal[] truncamiento(IndividuoReal[] poblacion, double[] prob_seleccion, double trunc, int tam_seleccionados) {
-		IndividuoReal[] seleccionados = new IndividuoReal[tam_seleccionados];
+	public Individuo[] truncamiento(Individuo[] poblacion, double[] prob_seleccion, double trunc, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
-		Pair<IndividuoReal, Double>[] pairs = new Pair[tam_seleccionados];
+		Pair<Individuo, Double>[] pairs = new Pair[tam_seleccionados];
 		for (int i = 0; i < tam_seleccionados; i++) {
 			pairs[i] = new Pair<>(poblacion[i], prob_seleccion[i]);
 		}
@@ -159,15 +159,15 @@ public class Seleccion {
 		
 		for (int i = 0; i < (tam_seleccionados) * trunc; i++) {
 			for (int j = 0; j < num && x<tam_seleccionados; j++) {
-				seleccionados[x++] = new IndividuoReal(poblacion[i]);
+				seleccionados[x++] = new Individuo(poblacion[i]);
 			}
 		}
 		
 		return seleccionados;
 	}
 
-	public IndividuoReal[] restos(IndividuoReal[] poblacion, double[] prob_seleccion, double[] prob_acumulada, int tam_seleccionados) {
-		IndividuoReal[] seleccionados = new IndividuoReal[tam_seleccionados];
+	public Individuo[] restos(Individuo[] poblacion, double[] prob_seleccion, double[] prob_acumulada, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
 		int x = 0, num;
 		double aux;		
@@ -175,13 +175,13 @@ public class Seleccion {
 			aux = prob_seleccion[i] * (tam_seleccionados);
 			num = (int) aux;
 			for (int j = 0; j < num; j++) {
-				seleccionados[x++] = new IndividuoReal(poblacion[i]);
+				seleccionados[x++] = new Individuo(poblacion[i]);
 			}
 
 		}
 		
 		
-		IndividuoReal[] resto = null;
+		Individuo[] resto = null;
 		int func=(int) (Math.random()*5);
 		switch (func) { // SE SUMA LA PARTE DE elitismo PORQUE SINO SE RESTA 2 VECES, 
 						// EN LA PARTE DE restos() Y LA FUNCION RANDOM
@@ -218,8 +218,8 @@ public class Seleccion {
 	}
 	
 	// TODO
-	public IndividuoReal[] ranking(IndividuoReal[] poblacion, double[] prob_seleccion, double[] prob_acumulada, int tam_seleccionados) {
-		IndividuoReal[] seleccionados = new IndividuoReal[tam_seleccionados];
+	public Individuo[] ranking(Individuo[] poblacion, double[] prob_seleccion, double[] prob_acumulada, int tam_seleccionados) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
 		
 

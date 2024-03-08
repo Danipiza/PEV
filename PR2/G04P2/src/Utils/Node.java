@@ -1,19 +1,19 @@
 package Utils;
 
-import Model.IndividuoReal;
+import Model.Individuo;
 
 public class Node {
 	
     private double value;
-    private IndividuoReal id;
+    private Individuo id;
 
-    public Node(double value, IndividuoReal id) {
+    public Node(double value, Individuo id) {
         this.value = value;
         this.id = id;
     }
 
     public double getValue() { return value; }
 
-    public IndividuoReal getId() { return id; }
+    public Individuo getId() { return id; }
 	
 }
