@@ -13,18 +13,18 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
-
 import Logic.AlgoritmoGenetico;
+import Model.Individuo;
+import Model.MejorIndividuo;
 import Model.Valores;
 //import Utils.BooleanSwitch;
 import Utils.Pair;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 
 public class ControlPanel extends JPanel {
@@ -34,6 +34,7 @@ public class ControlPanel extends JPanel {
 	AlgoritmoGenetico AG;
 
 	private JButton run_button;
+	private JButton resultados_button;
 
 	//private BooleanSwitch elitismo_button;
 
@@ -52,9 +53,22 @@ public class ControlPanel extends JPanel {
 	private JTextArea text_area;
 
 	private Plot2DPanel plot2D;
-	private Plot3DPanel plot3D;
 
 	private Valores valores;
+	
+	private MejorIndividuo mejor_individuo;
+	
+	private int num_vuelos;
+	private int num_pistas;
+	
+	private String[] vuelos_id;
+	
+	private int[][] TEL;
+	private int[] tipo_avion;
+
+	public double[][] sep = { 	{1, 1.5, 2},
+								{1, 1.5, 1.5},
+								{1, 1, 1} };
 
 	public ControlPanel() {
 		tam_poblacion = new JTextField("100", 16);
@@ -64,7 +78,7 @@ public class ControlPanel extends JPanel {
 		elitismo = new JTextField("0", 16);
 
 		AG = new AlgoritmoGenetico(this); // MEJORAR IMPLEMENTACION
-
+		mejor_individuo=null;
 		initGUI();
 	}
 
@@ -76,6 +90,14 @@ public class ControlPanel extends JPanel {
 
 		add(leftPanel, BorderLayout.WEST);
 		add(rightPanel, BorderLayout.CENTER);
+	}
+	
+	public void set_valores(int num_vuelos, int num_pistas, String[] vuelos_id, int[][] TEL, int[] tipo_avion) {
+		this.num_vuelos=num_vuelos;
+		this.num_pistas=num_pistas;		
+		this.vuelos_id=vuelos_id;		
+		this.TEL=TEL;
+		this.tipo_avion=tipo_avion;
 	}
 
 	private JPanel createLeftPanel() {
@@ -128,6 +150,16 @@ public class ControlPanel extends JPanel {
 				int tmp=Integer.parseInt(elitismo.getText());
 				if(tmp<0||tmp>100) actualiza_fallo("Elitismo porcentaje");
 				else run();
+			}
+		});
+		
+		resultados_button = new JButton();
+		resultados_button.setToolTipText("Resultados button");
+		resultados_button.setIcon(loadImage("resources/icons/Resultados.png"));
+		resultados_button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(mejor_individuo!=null) resultadosClass(mejor_individuo);
 			}
 		});
 
@@ -184,6 +216,8 @@ public class ControlPanel extends JPanel {
 		gbc.anchor = GridBagConstraints.SOUTH; // Align components to the left
 		gbc.gridy++;
 		leftPanel.add(run_button, gbc);
+		gbc.gridx--; //gbc.gridy++;
+		leftPanel.add(resultados_button, gbc);
 
 		return leftPanel;
 	}
@@ -211,16 +245,13 @@ public class ControlPanel extends JPanel {
 		return rightPanel;
 	}
 
-	public void actualiza_Grafico(double[][] vals, Pair<Double, Double> interval) {
+	public void actualiza_Grafico(double[][] vals, Pair<Double, Double> interval, Individuo mejor_individuo) {
 		plot2D.removeAllPlots();
 
 		double[] x = new double[vals[0].length];
 		for (int i = 0; i < vals[0].length; i++) {
 			x[i] = i;
 		}
-		// double[] y1 = {2, 3, 4, 5, 6};
-		// double[] y2 = {1, 4, 3, 2, 5};
-		// double[] y3 = {3, 2, 5, 4, 1};
 
 		// Add the lines to the plot with different colors
 		plot2D.addLinePlot("Mejor Absoluto", x, vals[0]);
@@ -230,12 +261,13 @@ public class ControlPanel extends JPanel {
 		// Customize the plot (optional)
 		plot2D.getAxis(0).setLabelText("Generacion");
 		plot2D.getAxis(1).setLabelText("Fitness");
-		plot2D.setFixedBounds(1, 0, 300); // Fix Y-axis bounds
+		plot2D.setFixedBounds(1, interval.getKey(), interval.getValue()); // Fix Y-axis bounds
 
 		//plot2D.addLegend("Mejor Absoluto");
 		plot2D.addLegend("SOUTH");
 		text_area.setText("" + vals[0][vals[0].length - 1]);
-
+		
+		this.mejor_individuo=new MejorIndividuo(num_pistas, num_vuelos, mejor_individuo, tipo_avion, TEL, sep, vuelos_id);	
 	}
 
 	public void actualiza_fallo(String s) {
@@ -269,27 +301,11 @@ public class ControlPanel extends JPanel {
 		return new ImageIcon(Toolkit.getDefaultToolkit().createImage(path));
 	}
 
-	@SuppressWarnings("unused")
-	private JPanel createRightPanel3D() {
-		JPanel rightPanel = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		rightPanel.setPreferredSize(new Dimension(475, 600));
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.weightx = 1.0; // Mas espacio horizontal
-		gbc.weighty = 1.0; // // Mas espacio vertical
-		gbc.fill = GridBagConstraints.BOTH; // Rellena el espacio disponible
-
-		plot3D = new Plot3DPanel();
-
-		plot3D.getAxis(0).setLabelText("X1");
-		plot3D.getAxis(1).setLabelText("X2");
-		plot3D.getAxis(2).setLabelText("Fitness");
-		// plot.removeAllPlots();
-		rightPanel.add(plot3D, gbc);
-
-		return rightPanel;
-	}
 	
+	public void resultadosClass(MejorIndividuo mejor_individuo) {
+		ResultadosDialog resultadosDialog = new ResultadosDialog((Frame) this.getTopLevelAncestor(), num_pistas);					
+		
+		resultadosDialog.open(mejor_individuo);					
+	}
 	
 }

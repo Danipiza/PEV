@@ -74,7 +74,7 @@ public class Mutacion {
 		Individuo act;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
 			act=poblacion[i];
-			poblacion[i].printIndividuo();
+			//poblacion[i].printIndividuo();
 			//System.out.print("muta en: ");				
 			if(Math.random()<p) {
 				int antiguaPosicion = (int) (Math.random() * (act.gen.v.length-1));
@@ -83,7 +83,7 @@ public class Mutacion {
 				while (nuevaPosicion == antiguaPosicion) {
 					nuevaPosicion = (int) (Math.random() * (act.gen.v.length-1));
 				}
-				System.out.println("Ant: "+ antiguaPosicion + " Nue: " + nuevaPosicion);
+				//System.out.println("Ant: "+ antiguaPosicion + " Nue: " + nuevaPosicion);
 				if (nuevaPosicion > antiguaPosicion) {
 					int tmp = act.gen.v[antiguaPosicion];
 					for (int k = antiguaPosicion; k < nuevaPosicion; k++) {
@@ -102,7 +102,7 @@ public class Mutacion {
 				
 			}
 			//System.out.println();			
-			poblacion[i].printIndividuo();
+			//poblacion[i].printIndividuo();
 			ret[i]=act;
 		}
 		return ret;

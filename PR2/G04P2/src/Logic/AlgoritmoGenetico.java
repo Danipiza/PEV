@@ -8,6 +8,7 @@ import java.util.function.Function;
 import Utils.Pair;
 
 import Model.Individuo;
+import Model.MejorIndividuo;
 import Model.Valores;
 import Utils.FuncionException;
 import Utils.Node;
@@ -56,6 +57,7 @@ public class AlgoritmoGenetico {
 	private int generacionActual;
 	private double[][] progreso_generaciones;
 	private double mejor_total;
+	private Individuo mejor_individuo;
 
 	private int elitismo;
 	private int tam_elite;
@@ -69,9 +71,9 @@ public class AlgoritmoGenetico {
 	private int num_pistas;
 	
 	private String[] vuelos_id;
-	private Map<Integer, String> vuelos_map; 
 	
 	private int[][] TEL;
+	private int[] tipo_avion;
 	
 
 	public AlgoritmoGenetico(ControlPanel ctrl) {
@@ -91,11 +93,11 @@ public class AlgoritmoGenetico {
 
 		tam_elite=(int) (tam_poblacion*(elitismo/100.0));
 
-		funcion = new Funcion();
 		seleccion = new Seleccion(tam_poblacion, funcion_idx);
 		cruce = new Cruce(prob_cruce, funcion_idx,tam_elite);
 		mutacion = new Mutacion(prob_mut,tam_elite);
 		lee_archivos();
+		ctrl.set_valores(num_vuelos, num_pistas, vuelos_id, TEL, tipo_avion);
 		
 		mejor_total = Double.MAX_VALUE;
 	}
@@ -145,7 +147,7 @@ public class AlgoritmoGenetico {
 		}
 
 		if (fallo.equals("")) { // TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
-			ctrl.actualiza_Grafico(progreso_generaciones, funcion.intervalosGrafico);
+			ctrl.actualiza_Grafico(progreso_generaciones, funcion.intervalosGrafico, mejor_individuo);
 		} else {
 			ctrl.actualiza_fallo(fallo);
 		}
@@ -170,7 +172,7 @@ public class AlgoritmoGenetico {
 		}
 		int i=0,j;
 		vuelos_id=new String[num_vuelos];
-		vuelos_map=new HashMap<Integer, String>();
+		tipo_avion=new int[num_vuelos];
 		TEL=new int[num_pistas][num_vuelos];
 		try {
             // Open the file
@@ -180,8 +182,11 @@ public class AlgoritmoGenetico {
             String line;
             while ((line = vuelos_reader.readLine()) != null) {
                 String[] tokens = line.split("\\s+");
-            	vuelos_map.put(i,tokens[1]);
-            	vuelos_id[i++]=tokens[0];
+            	vuelos_id[i]=tokens[0];
+            	if(tokens[1].equals("W")) tipo_avion[i]=0;
+            	else if(tokens[1].equals("G")) tipo_avion[i]=1;
+            	else tipo_avion[i]=2;
+        		i++;
             }
             i=0; 
             while ((line = TEL_reader.readLine()) != null) {
@@ -199,7 +204,7 @@ public class AlgoritmoGenetico {
         } catch (IOException e) {
             System.err.println("Error al leer archivos: " + e.getMessage());
         }
-		
+		funcion=new Funcion(tipo_avion,TEL);
 		/*for(String v:vuelos_id) {
 			System.out.println(v);
 		}*/
@@ -234,7 +239,8 @@ public class AlgoritmoGenetico {
 
 		double fitnessTotalAdaptado = 0;
 		double fit;
-		for (int i = 0; i < tam_poblacion; i++) {
+		int indexMG=0;
+		for (int i=0;i<tam_poblacion;i++) {
 			fit = funcion.fitness(poblacion[i].gen.v);
 			poblacion[i].fitness = fit;
 			fitness_total += fit;
@@ -245,13 +251,21 @@ public class AlgoritmoGenetico {
 				elitQ.poll();
 				elitQ.add(new Node(fit, poblacion[i]));
 			}
-
-			mejor_generacion = funcion.cmp(mejor_generacion, fit);
+			
+			if(mejor_generacion>fit) {
+				mejor_generacion=fit;
+				indexMG=i;
+			}
+			//mejor_generacion = funcion.cmp(mejor_generacion, fit);
 			peor_generacion = funcion.cmpPeor(peor_generacion, fit);
 		}
 
-		mejor_total = funcion.cmp(mejor_total, mejor_generacion);
-
+		if(mejor_total>mejor_generacion) {
+			mejor_total=mejor_generacion;
+			mejor_individuo=poblacion[indexMG];
+		}
+		//mejor_total = funcion.cmp(mejor_total, mejor_generacion);
+		
 		progreso_generaciones[0][generacionActual] = mejor_total; // Mejor Absoluto
 		progreso_generaciones[1][generacionActual] = mejor_generacion; // Mejor Local
 		progreso_generaciones[2][generacionActual++] = fitness_total / tam_poblacion; // Media

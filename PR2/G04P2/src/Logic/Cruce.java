@@ -21,7 +21,8 @@ public class Cruce {
 		this.tam_elite = tam_elite;
 		this.aviones = 12;
 	}
-
+	
+	// TODO PROBLEMA EN AEROPUERTO 2, SE QUEDA DANDO VUELTAS EN ALGUNA PARTE
 	public Individuo[] PMX(Individuo[] selec) {
 		int n = selec.length; // aviones = selec[0].gen.v.length;
 		Individuo[] ret = new Individuo[n + tam_elite];
