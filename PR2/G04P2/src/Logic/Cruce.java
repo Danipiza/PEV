@@ -21,8 +21,7 @@ public class Cruce {
 		this.tam_elite = tam_elite;
 		this.aviones = 12;
 	}
-	
-	// TODO PROBLEMA EN AEROPUERTO 2, SE QUEDA DANDO VUELTAS EN ALGUNA PARTE
+
 	public Individuo[] PMX(Individuo[] selec) {
 		int n = selec.length; // aviones = selec[0].gen.v.length;
 		Individuo[] ret = new Individuo[n + tam_elite];
@@ -154,16 +153,19 @@ public class Cruce {
 			n--; // descarta al ultimo si es impar
 		}
 
-		int i = 0, k;
+		int i = 0, k, ppi;
 		Individuo ind1, ind2;
-		int corte1, corte2;
+		int validos[] = new int[aviones-pp];
+
 		while (i < n) {
 			ind1 = new Individuo(selec[i]);
 			ind2 = new Individuo(selec[i + 1]);
 
-			// System.out.print("(ANTES) Ind1: "); ind1.printIndividuo();
-			// System.out.print("(ANTES) Ind2: "); ind2.printIndividuo();
+			
 			if (Math.random() < p) {
+				// System.out.print("(ANTES) Ind1: "); ind1.printIndividuo();
+				// System.out.print("(ANTES) Ind2: "); ind2.printIndividuo();
+
 				Set<Integer> puntos = new HashSet<>();
 				int puntosList[] = new int[n];
 				Set<Integer> set1 = new HashSet<>();
@@ -172,7 +174,7 @@ public class Cruce {
 				int punto;
 				for (int j = 0; j < pp; j++) {
 					punto = (int) (Math.random() * (aviones - 1));
-					while (!puntos.contains(punto)) {
+					while (puntos.contains(punto)) {
 						punto = (int) (Math.random() * (aviones - 1));
 					}
 
@@ -183,30 +185,34 @@ public class Cruce {
 					set2.add(ind1.gen.v[punto]);
 				}
 
-				int ji;
-
 				k = 0;
-				ji = 0;
-				while (k < aviones) {
-					if (puntos.contains(k)) {
-						k++;
-					} else if (!set1.contains(ind1.gen.v[ji % aviones])) {
-						ind1.gen.v[k++] = ind1.gen.v[ji];
+				for (int j = 0; j < aviones; j++) {
+					if (!set1.contains(ind1.gen.v[j])) {
+						validos[k++] = ind1.gen.v[j];
 					}
-					ji++;
-
 				}
 
+				ppi = 0;
 				k = 0;
-				ji = 0;
-				while (k < aviones) {
-					if (puntos.contains(k)) {
-						k++;
+				for (int j = 0; j < aviones; j++) {
+					if (!puntos.contains(j)) {
+						ind1.gen.v[j] = validos[k++];
 					}
-					if (!set2.contains(ind2.gen.v[ji])) {
-						ind2.gen.v[k++] = ind2.gen.v[ji];
+				}	
+				
+				k = 0;
+				for (int j = 0; j < aviones; j++) {
+					if (!set2.contains(ind2.gen.v[j])) {
+						validos[k++] = ind2.gen.v[j];
 					}
-					ji++;
+				}
+
+				ppi = 0;
+				k = 0;
+				for (int j = 0; j < aviones; j++) {
+					if (!puntos.contains(j)) {
+						ind2.gen.v[j] = validos[k++];
+					}
 				}
 
 				for (int j = 0; j < pp; j++) {
@@ -214,12 +220,13 @@ public class Cruce {
 					ind1.gen.v[puntosList[j]] = ind2.gen.v[puntosList[j]];
 					ind2.gen.v[puntosList[j]] = temp;
 				}
+				// System.out.print("(DESPUES) Ind1: "); ind1.printIndividuo();
+				// System.out.print("(DESPUES) Ind2: "); ind2.printIndividuo();
+				// System.out.println();
 			}
 			ret[i++] = ind1;
 			ret[i++] = ind2;
-			// System.out.print("(DESPUES) Ind1: "); ind1.printIndividuo();
-			// System.out.print("(DESPUES) Ind2: "); ind2.printIndividuo();
-			// System.out.println();
+			
 		}
 		return ret;
 	}
@@ -233,9 +240,8 @@ public class Cruce {
 			n--; // descarta al ultimo si es impar
 		}
 
-		int i = 0, k;
+		int i = 0;
 		Individuo ind1, ind2;
-		int corte1, corte2;
 		while (i < n) {
 			ind1 = new Individuo(selec[i]);
 			ind2 = new Individuo(selec[i + 1]);
@@ -244,32 +250,27 @@ public class Cruce {
 			// System.out.print("(ANTES) Ind2: "); ind2.printIndividuo();
 			if (Math.random() < p) {
 				Map<Integer, Integer> pareja1 = new HashMap<>();
-				Map<Integer, Integer> pareja2 = new HashMap<>();
 
-				for (int j = 0; j < n; j++) {
+				for (int j = 0; j < aviones; j++) {
 					pareja1.put(ind1.gen.v[j], ind2.gen.v[j]);
-					pareja2.put(ind2.gen.v[j], ind1.gen.v[j]);
 				}
 
 				Set<Integer> set1 = new HashSet<>();
-				Set<Integer> set2 = new HashSet<>();
 
 				int c1 = ind1.gen.v[0];
-				set1.add(c1);
-				while (pareja1.containsKey(c1)) {
+				set1.add(c1); 
+				c1 = pareja1.get(c1);
+				while (!set1.contains(c1)) {
+					set1.add(c1); 
 					c1 = pareja1.get(c1);
-					set1.add(c1);
-				}
-				int c2 = ind2.gen.v[0];
-				set2.add(c2);
-				while (pareja2.containsKey(c2)) {
-					c1 = pareja1.get(c1);
-					set1.add(c1);
 				}
 
-				for (int j = 0; j < n; j++) {
-					if (!set1.contains(ind1.gen.v[j]))
-						swap(ind1.gen.v[j], ind2.gen.v[j]);
+				for (int j = 0; j < aviones; j++) {
+					if (!set1.contains(ind1.gen.v[j])) {
+						int temp = ind1.gen.v[j];
+						ind1.gen.v[j] = ind2.gen.v[j];
+						ind2.gen.v[j] = temp;
+					}
 				}
 
 			}
@@ -291,9 +292,9 @@ public class Cruce {
 			n--; // descarta al ultimo si es impar
 		}
 
-		int i = 0, k, de;
+		int i = 0, k, e;
 		Individuo ind1, ind2;
-		int corte1, corte2;
+		int corte1;
 		while (i < n) {
 			ind1 = new Individuo(selec[i]);
 			ind2 = new Individuo(selec[i + 1]);
@@ -301,76 +302,84 @@ public class Cruce {
 			// System.out.print("(ANTES) Ind1: "); ind1.printIndividuo();
 			// System.out.print("(ANTES) Ind2: "); ind2.printIndividuo();
 			if (Math.random() < p) {
-				int[] listaDinamica = new int[n];
-				for (int j = 0; j < n; j++) {
+				int[] listaDinamica = new int[aviones];
+
+				// codificacion ind1
+				for (int j = 0; j < aviones; j++) {
 					listaDinamica[j] = j;
 				}
 
-				for (int j = 0; j < n; j++) {
+				for (int j = 0; j < aviones; j++) {
 					k = 0;
-					de = 0;
-					while (de < ind1.gen.v[j]) {
-						if (listaDinamica[k] != 0)
-							de++;
+					e = 1;
+					while (listaDinamica[k] != ind1.gen.v[j]) {
+						if (listaDinamica[k] != -1)
+							e++;
 						k++;
+					}
+					ind1.gen.v[j] = e;
+					listaDinamica[k] = -1;
+				}
+
+				// codificacion ind2
+				for (int j = 0; j < aviones; j++) {
+					listaDinamica[j] = j;
+				}
+
+				for (int j = 0; j < aviones; j++) {
+					k = 0;
+					e = 1;
+					while (listaDinamica[k] != ind2.gen.v[j]) {
+						if (listaDinamica[k] != -1)
+							e++;
+						k++;
+					}
+					ind2.gen.v[j] = e;
+					listaDinamica[k] = -1;
+				}
+
+				corte1 = (int) (Math.random() * aviones);
+
+				for (int j = 0; j < corte1; j++) {
+					int temp = ind1.gen.v[j];
+					ind1.gen.v[j] = ind2.gen.v[j];
+					ind2.gen.v[j] = temp;
+				}
+
+				// descodificacion ind1
+				for (int j = 0; j < aviones; j++) {
+					listaDinamica[j] = j;
+				}
+
+				for (int j = 0; j < aviones; j++) {
+					k = -1;
+					e = 0;
+					while (e < ind1.gen.v[j]) {
+						k++;
+						if (listaDinamica[k] != -1)
+							e++;
 					}
 					ind1.gen.v[j] = listaDinamica[k];
-					listaDinamica[k] = 0;
+					listaDinamica[k] = -1;
 				}
 
-				for (int j = 0; j < n; j++) {
+				// descodificacion ind2
+				for (int j = 0; j < aviones; j++) {
 					listaDinamica[j] = j;
 				}
 
-				for (int j = 0; j < n; j++) {
-					k = 0;
-					de = 0;
-					while (de < ind2.gen.v[j]) {
-						if (listaDinamica[k] != 0)
-							de++;
+				for (int j = 0; j < aviones; j++) {
+					k = -1;
+					e = 0;
+					while (e < ind2.gen.v[j]) {
 						k++;
+						if (listaDinamica[k] != -1)
+							e++;
 					}
 					ind2.gen.v[j] = listaDinamica[k];
-					listaDinamica[k] = 0;
+					listaDinamica[k] = -1;
 				}
 
-				corte1 = (int) (Math.random() * (ind1.gen.v.length - 1));
-
-				for (int j = 0; j < n; j++) {
-					swap(ind1.gen.v[j], ind2.gen.v[j]);
-				}
-
-				for (int j = 0; j < n; j++) {
-					listaDinamica[j] = j;
-				}
-
-				for (int j = 0; j < n; j++) {
-					k = 0;
-					de = 0;
-					while (de < ind1.gen.v[j]) {
-						if (listaDinamica[k] != 0)
-							de++;
-						k++;
-					}
-					ind1.gen.v[j] = listaDinamica[k];
-					listaDinamica[k] = 0;
-				}
-
-				for (int j = 0; j < n; j++) {
-					listaDinamica[j] = j;
-				}
-
-				for (int j = 0; j < n; j++) {
-					k = 0;
-					de = 0;
-					while (de < ind2.gen.v[j]) {
-						if (listaDinamica[k] != 0)
-							de++;
-						k++;
-					}
-					ind2.gen.v[j] = listaDinamica[k];
-					listaDinamica[k] = 0;
-				}
 			}
 			ret[i++] = ind1;
 			ret[i++] = ind2;
@@ -381,9 +390,6 @@ public class Cruce {
 		return ret;
 	}
 
-	static void swap(int x, int y) {
-
-	}
 	
 	public Individuo[] custom(Individuo[] selec) {
 		int n = selec.length;
