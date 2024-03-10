@@ -37,8 +37,7 @@ public class Seleccion {
 
 		double rand;
 		for (int i = 0; i < tam_seleccionados; i++) {
-			rand = Math.random();
-			
+			rand = Math.random();		
 			
 			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(rand, prob_acumulada)]);
 		}
@@ -143,23 +142,15 @@ public class Seleccion {
 			pairs[i] = new Pair<>(poblacion[i], prob_seleccion[i]);
 		}
 
-		//Arrays.sort(pairs, Comparator.comparingDouble(Pair<IndividuoReal, Double>::getKey));
 		Arrays.sort(pairs, Comparator.comparingDouble(p -> p.getValue()));
-		//Arrays.sort(pairs, Comparator.comparingDouble(p -> ((Pair<IndividuoReal, Double>) p).getValue()).reversed());
-		/*Arrays.sort(pairs, new Comparator<Pair<IndividuoReal, Double>>() {
-			public int compare(Pair<IndividuoReal, Double> a, Pair<IndividuoReal, Double> b) {
-				if (a.getValue() > b.getValue())
-					return -1;
-				else
-					return 1;
-			}
-		});*/
+		
 
 		int x = 0, num = (int) (1.0 / trunc);
-		
-		for (int i = 0; i < (tam_seleccionados) * trunc; i++) {
+		int n=pairs.length-1;
+	
+		for (int i = 0; i < (tam_seleccionados) * trunc; i++) {			
 			for (int j = 0; j < num && x<tam_seleccionados; j++) {
-				seleccionados[x++] = new Individuo(poblacion[i]);
+				seleccionados[x++] = new Individuo(pairs[n-i].getKey());
 			}
 		}
 		
@@ -218,11 +209,37 @@ public class Seleccion {
 	}
 	
 	// TODO
-	public Individuo[] ranking(Individuo[] poblacion, double[] prob_seleccion, double[] prob_acumulada, int tam_seleccionados) {
+	public Individuo[] ranking(Individuo[] poblacion, double[] prob_seleccion, int tam_seleccionados, double beta) {
 		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
-		
+		Pair<Individuo, Double>[] pairs=new Pair[tam_seleccionados];
+		for (int i=0;i<tam_seleccionados;i++) {
+			pairs[i]=new Pair<>(poblacion[i], prob_seleccion[i]);
+		}
 
+		//Arrays.sort(pairs, Comparator.comparingDouble(p -> p.getValue()));
+		Arrays.sort(pairs, Comparator.comparingDouble(p -> ((Pair<Individuo, Double>) p).getValue()).reversed());
+		
+		double val=0.0, acum=0.0;
+		double prob_acumulada[]=new double[tam_seleccionados];
+		//double probs[]=new double[tam_seleccionados];
+		
+		
+		for(int i=1;i<=tam_seleccionados;i++) {
+			val=(beta-(2*(beta-1)*((i-1)/(tam_seleccionados-1.0))))/tam_seleccionados;
+			acum+=val;
+			prob_acumulada[i-1]=acum;
+			//probs[i-1]=val;
+		}
+		
+		double rand;
+		for (int i = 0; i < tam_seleccionados; i++) {
+			rand = Math.random();		
+			
+			seleccionados[i] = new Individuo(pairs[busquedaBinaria(rand, prob_acumulada)].getKey());
+		}
+		
+		
 		return seleccionados;
 	}
 }

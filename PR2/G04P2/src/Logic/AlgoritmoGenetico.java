@@ -322,13 +322,13 @@ public class AlgoritmoGenetico {
 				ret = seleccion.estocasticoUniversal2(poblacion, prob_seleccionAcum, tam_poblacion-tam_elite);
 				break;
 			case 5:
-				ret = seleccion.truncamiento(poblacion, prob_seleccionAcum, 0.5, tam_poblacion-tam_elite);
+				ret = seleccion.truncamiento(poblacion, prob_seleccion, 0.5, tam_poblacion-tam_elite);
 				break;
 			case 6:
 				ret = seleccion.restos(poblacion, prob_seleccion, prob_seleccionAcum, tam_poblacion-tam_elite);
 				break;
 			case 7:
-				ret = seleccion.ranking(poblacion, prob_seleccion, prob_seleccionAcum, tam_poblacion-tam_elite);
+				ret = seleccion.ranking(poblacion, prob_seleccion, tam_poblacion-tam_elite,2);
 				break;
 			default:
 				break;

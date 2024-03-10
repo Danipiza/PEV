@@ -196,15 +196,26 @@ public class Mutacion {
 		
 		Individuo act;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
-			act=new Individuo(poblacion[i]);
-			
-			for(int j=0;j<poblacion[i].gen.v.length;j++) {					
-				if(Math.random()<p) {
-					
-
-					
+			act=new Individuo(poblacion[i]);		
+			if(Math.random()<p) {
+				//System.out.print("ANTES:"); act.printIndividuo();
+				int corte1 = (int) (Math.random() * (act.gen.v.length-2));
+				int corte2 = corte1 + (int) (Math.random() * (act.gen.v.length-corte1));
+				//System.out.println("Corte entre:" +corte1 + " " +corte2);
+				List<Integer> tmp=new ArrayList<Integer>();
+				for(int j=corte1;j<corte2;j++) {
+					tmp.add(act.gen.v[j]);
 				}
+				int indice=0;
+				for(;corte1<corte2;corte1++) {
+					indice=(int) (Math.random() * (tmp.size()));
+					act.gen.v[corte1]=tmp.get(indice);
+					tmp.remove(indice);
+				}
+				
+				//System.out.print("DESPUES:"); act.printIndividuo();
 			}
+			
 			ret[i]=act;
 		}
 		return ret;
