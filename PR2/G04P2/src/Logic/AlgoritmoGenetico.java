@@ -92,11 +92,12 @@ public class AlgoritmoGenetico {
 		this.elitismo = valores.elitismo;
 
 		tam_elite=(int) (tam_poblacion*(elitismo/100.0));
-
-		seleccion = new Seleccion(tam_poblacion, funcion_idx);
-		cruce = new Cruce(prob_cruce, funcion_idx,tam_elite);
-		mutacion = new Mutacion(prob_mut,tam_elite);
+		
 		lee_archivos();
+		seleccion = new Seleccion(tam_poblacion, funcion_idx);
+		cruce = new Cruce(prob_cruce, num_vuelos,tam_elite);
+		mutacion = new Mutacion(prob_mut,num_vuelos, tam_elite,funcion);
+		
 		ctrl.set_valores(num_vuelos, num_pistas, vuelos_id, TEL, tipo_avion);
 		
 		mejor_total = Double.MAX_VALUE;
@@ -124,6 +125,12 @@ public class AlgoritmoGenetico {
 		
 		
 		evaluacion_poblacion();
+
+		/*selec = seleccion_poblacion();
+		poblacion = cruce_poblacion(selec);
+		for(Individuo ind: poblacion) {
+			ind.gen.compruebaGen();
+		}*/
 		/*for(Individuo ind: poblacion) {
 			ind.printIndividuo();
 		}*/
@@ -132,7 +139,7 @@ public class AlgoritmoGenetico {
 		while (generaciones-- != 0) {
 			selec = seleccion_poblacion();
 			try {
-				poblacion = cruce_poblacion(selec);
+				poblacion = cruce_poblacion(selec);				
 				poblacion = mutacion_poblacion();
 				
 				// ELITISMO

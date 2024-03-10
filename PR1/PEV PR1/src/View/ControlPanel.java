@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
 import Logic.AlgoritmoGenetico;
+import Model.Individuo;
 import Model.Valores;
 //import Utils.BooleanSwitch;
 import Utils.Pair;
@@ -34,8 +35,6 @@ public class ControlPanel extends JPanel {
 	AlgoritmoGenetico AG;
 
 	private JButton run_button;
-
-	//private BooleanSwitch elitismo_button;
 
 	private JTextField tam_poblacion;
 	private JTextField generaciones;
@@ -86,7 +85,7 @@ public class ControlPanel extends JPanel {
 		JPanel leftPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
-		leftPanel.setPreferredSize(new Dimension(325, 600));
+		leftPanel.setPreferredSize(new Dimension(335, 600));
 
 		String[] funciones = { "F1: Calibracion y Prueba",
 				"F2: Mishra Bird",
@@ -205,7 +204,7 @@ public class ControlPanel extends JPanel {
 	private JPanel createRightPanel2D() {
 		JPanel rightPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		rightPanel.setPreferredSize(new Dimension(475, 600));
+		rightPanel.setPreferredSize(new Dimension(465, 600));
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1.0; // Mas espacio horizontal
@@ -223,36 +222,38 @@ public class ControlPanel extends JPanel {
 		return rightPanel;
 	}
 
-	public void actualiza_Grafico(double[][] vals, Pair<Double, Double> interval) {
+	public void actualiza_Grafico(double[][] vals, Pair<Double, Double> interval, Individuo mejor_ind) {
 		plot2D.removeAllPlots();
 
 		double[] x = new double[vals[0].length];
 		for (int i = 0; i < vals[0].length; i++) {
 			x[i] = i;
 		}
-		// double[] y1 = {2, 3, 4, 5, 6};
-		// double[] y2 = {1, 4, 3, 2, 5};
-		// double[] y3 = {3, 2, 5, 4, 1};
-
-		// Add the lines to the plot with different colors
+		
+		// Lineas
 		plot2D.addLinePlot("Mejor Absoluto", x, vals[0]);
 		plot2D.addLinePlot("Mejor de la Generacion", x, vals[1]);
 		plot2D.addLinePlot("Media", x, vals[2]);
 
-		// Customize the plot (optional)
+		// Añadir nombre de los ejes
 		plot2D.getAxis(0).setLabelText("Generacion");
 		plot2D.getAxis(1).setLabelText("Fitness");
 		plot2D.setFixedBounds(1, interval.getKey(), interval.getValue()); // Fix Y-axis bounds
 
-		//plot2D.addLegend("Mejor Absoluto");
+		
 		plot2D.addLegend("SOUTH");
-		text_area.setText("" + vals[0][vals[0].length - 1]);
+		String texto_salida="Fitness: "+mejor_ind.fitness+"\n";
+		int cont=1;
+		for(double cromosoma: mejor_ind.fenotipo) {
+			texto_salida+="Variable "+(cont++)+": "+cromosoma + "\n";
+		}
+		
+		text_area.setText(texto_salida);
 
 	}
 
 	public void actualiza_fallo(String s) {
 		plot2D.removeAllPlots();
-
 		text_area.setText(s);
 	}
 
@@ -273,7 +274,6 @@ public class ControlPanel extends JPanel {
 				funcion_CBox.getSelectedIndex(),
 				(int) genes_spinner.getValue(),
 				Integer.parseInt(elitismo.getText()));
-				//elitismo_button.getValor());
 	}
 
 	public Valores getValores() {

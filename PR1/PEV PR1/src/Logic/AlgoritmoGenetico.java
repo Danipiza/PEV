@@ -55,6 +55,7 @@ public class AlgoritmoGenetico {
 	private int generacionActual;
 	private double[][] progreso_generaciones;
 	private double mejor_total;
+	private Individuo mejor_ind;
 
 	private int elitismo;
 	private int tam_elite;
@@ -139,13 +140,14 @@ public class AlgoritmoGenetico {
 				fallo = e.getMessage();
 				break;
 			}
+			//System.out.println("GEN:");
 			evaluacion_poblacion();
-			// printPoblacion();
+			//printPoblacion();
 			// System.out.println("-------------------------------------------------------------");
 		}
 
 		if (fallo.equals("")) { // TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
-			ctrl.actualiza_Grafico(progreso_generaciones, funcion.intervalosGrafico);
+			ctrl.actualiza_Grafico(progreso_generaciones, funcion.intervalosGrafico, mejor_ind);
 		} else {
 			ctrl.actualiza_fallo(fallo);
 		}
@@ -185,7 +187,7 @@ public class AlgoritmoGenetico {
 
 		double mejor_generacion = (funcion.opt ? Double.MIN_VALUE : Double.MAX_VALUE);
 		double peor_generacion = (funcion.opt ? Double.MAX_VALUE : Double.MIN_VALUE);
-
+		Individuo mejor_generacionInd=null;
 		double tmp;
 
 		if (funcion_idx < 4) {
@@ -207,18 +209,23 @@ public class AlgoritmoGenetico {
 				elitQ.add(new Node(fit,poblacion[i]));
 			}
 
-			mejor_generacion = funcion.cmp(mejor_generacion, fit);
+			
+			if(funcion.cmpBool(fit, mejor_generacion)) {
+				mejor_generacion=fit;	
+				mejor_generacionInd=poblacion[i];
+			}
+			//mejor_generacion = funcion.cmp(mejor_generacion, fit);
 			peor_generacion = funcion.cmpPeor(peor_generacion, fit);
-			/*
-			 * GRAFICO 3D
-			 * valores_inds[pos_valores][0]=poblacion[i].fenotipo[0];
-			 * valores_inds[pos_valores][1]=poblacion[i].fenotipo[1];
-			 * valores_inds[pos_valores++][2]=fitness[i];
-			 */
 		}
-
-		mejor_total = funcion.cmp(mejor_total, mejor_generacion);
-
+		
+		if(funcion.cmpBool(mejor_generacion, mejor_total)) {
+			mejor_total=mejor_generacion;	
+			mejor_ind=mejor_generacionInd;
+		}
+		//mejor_total = funcion.cmp(mejor_total, mejor_generacion);
+		
+		
+		
 		progreso_generaciones[0][generacionActual] = mejor_total; // Mejor Absoluto
 		progreso_generaciones[1][generacionActual] = mejor_generacion; // Mejor Local
 		progreso_generaciones[2][generacionActual++] = fitness_total / tam_poblacion; // Media
@@ -275,7 +282,7 @@ public class AlgoritmoGenetico {
 
 		switch (seleccion_idx) {
 			case 0:
-				ret = seleccion.ruleta(poblacion, prob_seleccion, tam_poblacion-tam_elite);
+				ret = seleccion.ruleta(poblacion, prob_seleccionAcum, tam_poblacion-tam_elite);
 				break;
 			case 1:
 				ret = seleccion.torneoDeterministico(poblacion, 3, tam_poblacion-tam_elite);

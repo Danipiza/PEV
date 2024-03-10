@@ -1,5 +1,8 @@
 package Model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Gen {
 	public int[] v;
 
@@ -12,6 +15,14 @@ public class Gen {
 		v = new int[gen.v.length];
 		for (int i = 0; i < gen.v.length; i++) {
 			v[i] = gen.v[i];
+		}
+	}
+	
+	public Gen(int[] cromosoma) {
+		int n=cromosoma.length;
+		v = new int[n];
+		for (int i = 0; i < n; i++) {
+			v[i] = cromosoma[i];
 		}
 	}
 
@@ -27,7 +38,18 @@ public class Gen {
             int temp = v[i];
             v[i] = v[j];
             v[j] = temp;
-        }
+        }			
+	}
+	
+	public void compruebaGen() {
+		Set<Integer> setP=new HashSet<Integer>();
+		
+		for(int x: v) {
+			if(setP.contains(x)) {
+				System.out.println("AQUI");
+			}
+			else setP.add(x);
+		}
 	}
 
 }

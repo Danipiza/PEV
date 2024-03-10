@@ -15,6 +15,10 @@ public class Individuo {
 		gen = new Gen(individuo.gen);
 	}
 	
+	public Individuo(int[] cromosoma) {
+		gen = new Gen(cromosoma);
+	}
+	
 	public void printIndividuo() {
 		for (int a : gen.v) {
 			System.out.print(a + " ");

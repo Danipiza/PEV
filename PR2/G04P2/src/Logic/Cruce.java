@@ -3,6 +3,7 @@ package Logic;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import Model.Individuo;
@@ -16,10 +17,10 @@ public class Cruce {
 
 	// private boolean bin;
 
-	public Cruce(double p, int funcion_idx, int tam_elite) {
+	public Cruce(double p, int num_vuelos, int tam_elite) {
 		this.p = p;
 		this.tam_elite = tam_elite;
-		this.aviones = 12;
+		this.aviones = num_vuelos;
 	}
 
 	public Individuo[] PMX(Individuo[] selec) {
@@ -30,47 +31,59 @@ public class Cruce {
 			ret[n - 1] = selec[n - 1];
 			n--; // descarta al ultimo si es impar
 		}
-
+		
+		 
 		int i = 0, k;
 		Individuo ind1, ind2;
 		int corte1, corte2;
 		while (i < n) {
 			ind1 = new Individuo(selec[i]);
-			ind2 = new Individuo(selec[i + 1]);
+			ind2 = new Individuo(selec[i+1]);
 
-			//System.out.print("(ANTES) Ind1: "); ind1.printIndividuo();
-			//System.out.print("(ANTES) Ind2: "); ind2.printIndividuo();
+			
 			if (Math.random() < p) {
-
 				Map<Integer, Integer> pareja1 = new HashMap<>();
 				Map<Integer, Integer> pareja2 = new HashMap<>();
+
+				Random rand = new Random();
 				
+				//corte1=rand.nextInt(aviones)+3;
+				//corte2=rand.nextInt(aviones-corte1)+corte1+1;
 				corte1 = (int) (Math.random() * (aviones - 2));
 				corte2 = corte1 + (int) (Math.random() * (aviones - corte1));
+				
 				//System.out.println("Corte en " + corte1 + " "+ corte2);
-
-				for (int j = corte1; j < corte2; j++) {
+				
+				for (int j = corte1; j < corte2; j++) {									
 					int temp = ind1.gen.v[j];
-					ind1.gen.v[j] = ind2.gen.v[j];
-					ind2.gen.v[j] = temp;
-
+					ind1.gen.v[j] = ind2.gen.v[j];					
+					ind2.gen.v[j] = temp;		
+					
 					pareja1.put(ind1.gen.v[j], ind2.gen.v[j]);
 					pareja2.put(ind2.gen.v[j], ind1.gen.v[j]);
 				}
-
+				int x=2;
 				for (int j = 0; j < aviones - (corte2 - corte1); j++) {
 					if (pareja1.containsKey(ind1.gen.v[(corte2 + j) % aviones])) {
 						int p = pareja1.get(ind1.gen.v[(corte2 + j) % aviones]);
-						while (pareja1.containsKey(p))
+						while (pareja1.containsKey(p)) {
 							p = pareja1.get(p);
-
+							/*System.out.println("Cortes: " + corte1 + " " + corte2);
+							System.out.print("Ind1: "); ind1.printIndividuo();
+							System.out.print("Ind2: "); ind2.printIndividuo();
+							System.out.println("1: "+p);*/
+						}
 						ind1.gen.v[(corte2 + j) % aviones] = p;
 					} 
 					if (pareja2.containsKey(ind2.gen.v[(corte2 + j) % aviones])) {
 						int p = pareja2.get(ind2.gen.v[(corte2 + j) % aviones]);
-						while (pareja2.containsKey(p))
+						while (pareja2.containsKey(p)) {
 							p = pareja2.get(p);
-
+							/*System.out.println("Cortes: " + corte1 + " " + corte2);
+							System.out.print("Ind1: "); ind1.printIndividuo();
+							System.out.print("Ind2: "); ind2.printIndividuo();
+							System.out.println("2: "+p);*/
+						}
 						ind2.gen.v[(corte2 + j) % aviones] = p;
 					}
 				}

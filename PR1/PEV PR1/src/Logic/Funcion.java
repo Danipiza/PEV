@@ -12,8 +12,10 @@ public abstract class Funcion {
 	public abstract double fitness(double[] nums);
 
 	public abstract double cmp(double a, double b);
+	public abstract boolean cmpBool(double a, double b);
 
 	public abstract double cmpPeor(double a, double b);
+	public abstract boolean cmpPeorBool(double a, double b);
 }
 
 class Funcion1 extends Funcion {
@@ -31,18 +33,20 @@ class Funcion1 extends Funcion {
 
 	@Override
 	public double cmp(double a, double b) {
-		if (a > b)
-			return a;
-		else
-			return b;
+		return (a>b?a:b);
 	}
-
+	@Override
+	public boolean cmpBool(double a, double b) {
+		return (a>b?true:false);		
+	}
+	
 	@Override
 	public double cmpPeor(double a, double b) {
-		if (a < b)
-			return a;
-		else
-			return b;
+		return (a<b?a:b);
+	}
+	@Override
+	public boolean cmpPeorBool(double a, double b) {
+		return (a<b?true:false);	
 	}
 }
 
@@ -63,18 +67,20 @@ class Funcion2 extends Funcion {
 
 	@Override
 	public double cmp(double a, double b) {
-		if (a < b)
-			return a;
-		else
-			return b;
+		return (a<b?a:b);
 	}
-
+	@Override
+	public boolean cmpBool(double a, double b) {
+		return (a<b?true:false);		
+	}
+	
 	@Override
 	public double cmpPeor(double a, double b) {
-		if (a > b)
-			return a;
-		else
-			return b;
+		return (a>b?a:b);
+	}
+	@Override
+	public boolean cmpPeorBool(double a, double b) {
+		return (a>b?true:false);	
 	}
 }
 
@@ -96,18 +102,20 @@ class Funcion3 extends Funcion {
 
 	@Override
 	public double cmp(double a, double b) {
-		if (a < b)
-			return a;
-		else
-			return b;
+		return (a<b?a:b);
 	}
-
+	@Override
+	public boolean cmpBool(double a, double b) {
+		return (a<b?true:false);		
+	}
+	
 	@Override
 	public double cmpPeor(double a, double b) {
-		if (a > b)
-			return a;
-		else
-			return b;
+		return (a>b?a:b);
+	}
+	@Override
+	public boolean cmpPeorBool(double a, double b) {
+		return (a>b?true:false);	
 	}
 }
 
@@ -137,21 +145,23 @@ class Funcion4 extends Funcion {
 		}
 		return ret * -1;
 	}
-
+	
 	@Override
 	public double cmp(double a, double b) {
-		if (a < b)
-			return a;
-		else
-			return b;
+		return (a<b?a:b);
 	}
-
+	@Override
+	public boolean cmpBool(double a, double b) {
+		return (a<b?true:false);		
+	}
+	
 	@Override
 	public double cmpPeor(double a, double b) {
-		if (a > b)
-			return a;
-		else
-			return b;
+		return (a>b?a:b);
+	}
+	@Override
+	public boolean cmpPeorBool(double a, double b) {
+		return (a>b?true:false);	
 	}
 }
 
@@ -177,20 +187,23 @@ class Funcion5 extends Funcion {
 		}
 		return ret * -1;
 	}
+	
 
 	@Override
 	public double cmp(double a, double b) {
-		if (a < b)
-			return a;
-		else
-			return b;
+		return (a<b?a:b);
 	}
-
+	@Override
+	public boolean cmpBool(double a, double b) {
+		return (a<b?true:false);		
+	}
+	
 	@Override
 	public double cmpPeor(double a, double b) {
-		if (a > b)
-			return a;
-		else
-			return b;
+		return (a>b?a:b);
+	}
+	@Override
+	public boolean cmpPeorBool(double a, double b) {
+		return (a>b?true:false);	
 	}
 }

@@ -1,3 +1,6 @@
+/* UNUSED
+
+
 package Utils;
 
 import javax.swing.*;
@@ -39,9 +42,10 @@ public class BooleanSwitch extends JToggleButton {
 		return new ImageIcon(Toolkit.getDefaultToolkit().createImage(path));
 	}
 
-    /*public void setSwitchedOn(boolean switchedOn) {
+    public void setSwitchedOn(boolean switchedOn) {
         this.encendido = switchedOn;
         setSelected(switchedOn);
         updateAppearance();
-    }*/
+    }
 }
+*/

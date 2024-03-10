@@ -151,24 +151,16 @@ public class Seleccion {
 			pairs[i] = new Pair<>(poblacion[i], prob_seleccion[i]);
 		}
 
-		//Arrays.sort(pairs, Comparator.comparingDouble(Pair<Individuo, Double>::getKey));
 		Arrays.sort(pairs, Comparator.comparingDouble(p -> p.getValue()));
-		//Arrays.sort(pairs, Comparator.comparingDouble(p -> ((Pair<Individuo, Double>) p).getValue()).reversed());
-		/*Arrays.sort(pairs, new Comparator<Pair<Individuo, Double>>() {
-			public int compare(Pair<Individuo, Double> a, Pair<Individuo, Double> b) {
-				if (a.getValue() > b.getValue())
-					return -1;
-				else
-					return 1;
-			}
-		});*/
+		
 
 		int x = 0, num = (int) (1.0 / trunc);
-		
-		for (int i = 0; i < (tam_seleccionados) * trunc; i++) {
+		int n=pairs.length-1;
+	
+		for (int i = 0; i < (tam_seleccionados) * trunc; i++) {			
 			for (int j = 0; j < num && x<tam_seleccionados; j++) {
-				if(bin) seleccionados[x++] = new IndividuoBin(poblacion[i]);
-				else seleccionados[x++] = new IndividuoReal(poblacion[i]);
+				if(bin) seleccionados[x++] = new IndividuoBin(pairs[n-i].getKey());
+				else seleccionados[x++] = new IndividuoReal(pairs[n-i].getKey());
 			}
 		}
 		
