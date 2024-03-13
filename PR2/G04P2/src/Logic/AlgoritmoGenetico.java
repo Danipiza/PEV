@@ -64,17 +64,15 @@ public class AlgoritmoGenetico {
 	PriorityQueue<Node> elitQ;
 
 	private ControlPanel ctrl;
-	
-	
+
 	// NUEVO
 	private int num_vuelos;
 	private int num_pistas;
-	
+
 	private String[] vuelos_id;
-	
+
 	private int[][] TEL;
 	private int[] tipo_avion;
-	
 
 	public AlgoritmoGenetico(ControlPanel ctrl) {
 		this.ctrl = ctrl;
@@ -91,60 +89,61 @@ public class AlgoritmoGenetico {
 		this.funcion_idx = valores.funcion_idx;
 		this.elitismo = valores.elitismo;
 
-		tam_elite=(int) (tam_poblacion*(elitismo/100.0));
-		
+		tam_elite = (int) (tam_poblacion * (elitismo / 100.0));
+
 		lee_archivos();
 		seleccion = new Seleccion(tam_poblacion, funcion_idx);
-		cruce = new Cruce(prob_cruce, num_vuelos,tam_elite);
-		mutacion = new Mutacion(prob_mut,num_vuelos, tam_elite,funcion);
-		
+		cruce = new Cruce(prob_cruce, num_vuelos, tam_elite);
+		mutacion = new Mutacion(prob_mut, num_vuelos, tam_elite, funcion);
+
 		ctrl.set_valores(num_vuelos, num_pistas, vuelos_id, TEL, tipo_avion);
-		
+
 		mejor_total = Double.MAX_VALUE;
 	}
 
 	public void ejecuta(Valores valores) {
-		Individuo[] selec = null;				
-		
+		Individuo[] selec = null;
+
 		String fallo = "";
 		setValores(valores);
-		
+
 		// ELITISMO
 		Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
-		if(funcion_idx!=0) {
+		if (funcion_idx != 0) {
 			elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
-		}
-		else elitQ = new PriorityQueue<>(comparator);
-		
+		} else
+			elitQ = new PriorityQueue<>(comparator);
+
 		// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 		progreso_generaciones = new double[3][generaciones + 1];
 		generacionActual = 0;
 
-		
 		init_poblacion();
-		
-		
+
 		evaluacion_poblacion();
 
-		/*selec = seleccion_poblacion();
-		poblacion = cruce_poblacion(selec);
-		for(Individuo ind: poblacion) {
-			ind.gen.compruebaGen();
-		}*/
-		/*for(Individuo ind: poblacion) {
-			ind.printIndividuo();
-		}*/
-
+		/*
+		 * selec = seleccion_poblacion();
+		 * poblacion = cruce_poblacion(selec);
+		 * for(Individuo ind: poblacion) {
+		 * ind.gen.compruebaGen();
+		 * }
+		 */
+		/*
+		 * for(Individuo ind: poblacion) {
+		 * ind.printIndividuo();
+		 * }
+		 */
 
 		while (generaciones-- != 0) {
 			selec = seleccion_poblacion();
 			try {
-				poblacion = cruce_poblacion(selec);				
+				poblacion = cruce_poblacion(selec);
 				poblacion = mutacion_poblacion();
-				
+
 				// ELITISMO
-				while(elitQ.size()!=0) {
-					poblacion[tam_poblacion-elitQ.size()]=elitQ.poll().getId();
+				while (elitQ.size() != 0) {
+					poblacion[tam_poblacion - elitQ.size()] = elitQ.poll().getId();
 				}
 			} catch (Exception e) {
 				fallo = e.getMessage();
@@ -160,78 +159,81 @@ public class AlgoritmoGenetico {
 		}
 	}
 
-	
 	private void lee_archivos() {
-		String vuelos_txt= "data/", TEL_txt="data/";
-		
+		String vuelos_txt = "data/", TEL_txt = "data/";
+
 		// LEE DE LOS TXT
-		if (funcion_idx==0) {
-			this.num_vuelos=12;
-			this.num_pistas=3;
-			vuelos_txt+="vuelos1.txt";
-			TEL_txt+="TEL1.txt";
+		if (funcion_idx == 0) {
+			this.num_vuelos = 12;
+			this.num_pistas = 3;
+			vuelos_txt += "vuelos1.txt";
+			TEL_txt += "TEL1.txt";
+		} else {
+			this.num_vuelos = 25;
+			this.num_pistas = 5;
+			vuelos_txt += "vuelos2.txt";
+			TEL_txt += "TEL2.txt";
 		}
-		else {
-			this.num_vuelos=25;
-			this.num_pistas=5;
-			vuelos_txt+="vuelos2.txt";
-			TEL_txt+="TEL2.txt";
-		}
-		int i=0,j;
-		vuelos_id=new String[num_vuelos];
-		tipo_avion=new int[num_vuelos];
-		TEL=new int[num_pistas][num_vuelos];
+		int i = 0, j;
+		vuelos_id = new String[num_vuelos];
+		tipo_avion = new int[num_vuelos];
+		TEL = new int[num_pistas][num_vuelos];
 		try {
-            // Open the file
-            BufferedReader vuelos_reader = new BufferedReader(new FileReader(vuelos_txt));
-            BufferedReader TEL_reader = new BufferedReader(new FileReader(TEL_txt));
-            
-            String line;
-            while ((line = vuelos_reader.readLine()) != null) {
-                String[] tokens = line.split("\\s+");
-            	vuelos_id[i]=tokens[0];
-            	if(tokens[1].equals("W")) tipo_avion[i]=0;
-            	else if(tokens[1].equals("G")) tipo_avion[i]=1;
-            	else tipo_avion[i]=2;
-        		i++;
-            }
-            i=0; 
-            while ((line = TEL_reader.readLine()) != null) {
-                String[] tokens = line.split("\t");
-                j=0;
-                for(String t: tokens) {
-                	TEL[i][j++]=Integer.parseInt(t);
-                }
-                i++;
-            }
+			// Open the file
+			BufferedReader vuelos_reader = new BufferedReader(new FileReader(vuelos_txt));
+			BufferedReader TEL_reader = new BufferedReader(new FileReader(TEL_txt));
 
-            
-            vuelos_reader.close();
-            TEL_reader.close();
-        } catch (IOException e) {
-            System.err.println("Error al leer archivos: " + e.getMessage());
-        }
-		funcion=new Funcion(tipo_avion,TEL);
-		/*for(String v:vuelos_id) {
-			System.out.println(v);
-		}*/
-		
-		/*for(i=0;i<num_pistas;i++) {
-			for(j=0;j<num_vuelos;j++) {
-				System.out.print(TEL[i][j] + " ");
+			String line;
+			while ((line = vuelos_reader.readLine()) != null) {
+				String[] tokens = line.split("\\s+");
+				vuelos_id[i] = tokens[0];
+				if (tokens[1].equals("W"))
+					tipo_avion[i] = 0;
+				else if (tokens[1].equals("G"))
+					tipo_avion[i] = 1;
+				else
+					tipo_avion[i] = 2;
+				i++;
 			}
-			System.out.println();
-		}*/
-	}
+			i = 0;
+			while ((line = TEL_reader.readLine()) != null) {
+				String[] tokens = line.split("\t");
+				j = 0;
+				for (String t : tokens) {
+					TEL[i][j++] = Integer.parseInt(t);
+				}
+				i++;
+			}
 
-	
+			vuelos_reader.close();
+			TEL_reader.close();
+		} catch (IOException e) {
+			System.err.println("Error al leer archivos: " + e.getMessage());
+		}
+		funcion = new Funcion(tipo_avion, TEL);
+		
+		/*
+		 * for(String v:vuelos_id) {
+		 * System.out.println(v);
+		 * }
+		 */
+
+		/*
+		 * for(i=0;i<num_pistas;i++) {
+		 * for(j=0;j<num_vuelos;j++) {
+		 * System.out.print(TEL[i][j] + " ");
+		 * }
+		 * System.out.println();
+		 * }
+		 */
+	}
 
 	private void init_poblacion() {
 		poblacion = new Individuo[tam_poblacion];
 		for (int i = 0; i < tam_poblacion; i++) {
 			poblacion[i] = new Individuo(num_vuelos);
 		}
-		
+
 	}
 
 	private void evaluacion_poblacion() {
@@ -246,8 +248,8 @@ public class AlgoritmoGenetico {
 
 		double fitnessTotalAdaptado = 0;
 		double fit;
-		int indexMG=0;
-		for (int i=0;i<tam_poblacion;i++) {
+		int indexMG = 0;
+		for (int i = 0; i < tam_poblacion; i++) {
 			fit = funcion.fitness(poblacion[i].gen.v);
 			poblacion[i].fitness = fit;
 			fitness_total += fit;
@@ -258,21 +260,22 @@ public class AlgoritmoGenetico {
 				elitQ.poll();
 				elitQ.add(new Node(fit, poblacion[i]));
 			}
-			
-			if(mejor_generacion>fit) {
-				mejor_generacion=fit;
-				indexMG=i;
+
+			if (mejor_generacion > fit) {
+				mejor_generacion = fit;
+				indexMG = i;
 			}
-			//mejor_generacion = funcion.cmp(mejor_generacion, fit);
+			// mejor_generacion = funcion.cmp(mejor_generacion, fit);
 			peor_generacion = funcion.cmpPeor(peor_generacion, fit);
 		}
 
-		if(mejor_total>mejor_generacion) {
-			mejor_total=mejor_generacion;
-			mejor_individuo=poblacion[indexMG];
+		if (mejor_total > mejor_generacion) {
+			mejor_total = mejor_generacion;
+			// mejor_individuo=poblacion[indexMG];
+			mejor_individuo = new Individuo(poblacion[indexMG]);
 		}
-		//mejor_total = funcion.cmp(mejor_total, mejor_generacion);
-		
+		// mejor_total = funcion.cmp(mejor_total, mejor_generacion);
+
 		progreso_generaciones[0][generacionActual] = mejor_total; // Mejor Absoluto
 		progreso_generaciones[1][generacionActual] = mejor_generacion; // Mejor Local
 		progreso_generaciones[2][generacionActual++] = fitness_total / tam_poblacion; // Media
@@ -298,37 +301,36 @@ public class AlgoritmoGenetico {
 				prob_seleccionAcum[i] = acum;
 			}
 		}
-	 	
+
 	}
 
-	
 	private Individuo[] seleccion_poblacion() {
 		Individuo[] ret = null;
 
 		switch (seleccion_idx) {
 			case 0:
-				ret = seleccion.ruleta(poblacion, prob_seleccionAcum, tam_poblacion-tam_elite);
+				ret = seleccion.ruleta(poblacion, prob_seleccionAcum, tam_poblacion - tam_elite);
 				break;
 			case 1:
-				ret = seleccion.torneoDeterministico(poblacion, 3, tam_poblacion-tam_elite);
+				ret = seleccion.torneoDeterministico(poblacion, 3, tam_poblacion - tam_elite);
 				break;
 			case 2:
-				ret = seleccion.torneoProbabilistico(poblacion, 3, 0.9, tam_poblacion-tam_elite);
+				ret = seleccion.torneoProbabilistico(poblacion, 3, 0.9, tam_poblacion - tam_elite);
 				break;
 			case 3:
-				ret = seleccion.estocasticoUniversal1(poblacion, prob_seleccionAcum, tam_poblacion-tam_elite);
+				ret = seleccion.estocasticoUniversal1(poblacion, prob_seleccionAcum, tam_poblacion - tam_elite);
 				break;
 			case 4:
-				ret = seleccion.estocasticoUniversal2(poblacion, prob_seleccionAcum, tam_poblacion-tam_elite);
+				ret = seleccion.estocasticoUniversal2(poblacion, prob_seleccionAcum, tam_poblacion - tam_elite);
 				break;
 			case 5:
-				ret = seleccion.truncamiento(poblacion, prob_seleccion, 0.5, tam_poblacion-tam_elite);
+				ret = seleccion.truncamiento(poblacion, prob_seleccion, 0.5, tam_poblacion - tam_elite);
 				break;
 			case 6:
-				ret = seleccion.restos(poblacion, prob_seleccion, prob_seleccionAcum, tam_poblacion-tam_elite);
+				ret = seleccion.restos(poblacion, prob_seleccion, prob_seleccionAcum, tam_poblacion - tam_elite);
 				break;
 			case 7:
-				ret = seleccion.ranking(poblacion, prob_seleccion, tam_poblacion-tam_elite,2);
+				ret = seleccion.ranking(poblacion, prob_seleccion, tam_poblacion - tam_elite, 2);
 				break;
 			default:
 				break;
@@ -340,22 +342,22 @@ public class AlgoritmoGenetico {
 		Individuo[] ret = null;
 
 		switch (cruce_idx) {
-			case 0:				
+			case 0:
 				ret = cruce.PMX(selec);
 				break;
-			case 1:				
+			case 1:
 				ret = cruce.OX(selec);
 				break;
-			case 2:				
-				ret = cruce.OX_PP(selec,3);	
+			case 2:
+				ret = cruce.OX_PP(selec, 3);
 				break;
-			case 3:				
+			case 3:
 				ret = cruce.CX(selec);
 				break;
-			case 4:				
+			case 4:
 				ret = cruce.CO(selec);
 				break;
-			case 5:				
+			case 5:
 				ret = cruce.custom(selec);
 				break;
 			default:
@@ -369,20 +371,20 @@ public class AlgoritmoGenetico {
 		Individuo[] ret = null;
 
 		switch (mut_idx) {
-			case 0:				
-				ret = mutacion.insercion(poblacion);				
+			case 0:
+				ret = mutacion.insercion(poblacion);
 				break;
-			case 1:				
-				ret = mutacion.intercambio(poblacion);				
+			case 1:
+				ret = mutacion.intercambio(poblacion);
 				break;
-			case 2:				
-				ret = mutacion.inversion(poblacion);				
+			case 2:
+				ret = mutacion.inversion(poblacion);
 				break;
-			case 3:				
-				ret = mutacion.heuristica(poblacion,3);				
+			case 3:
+				ret = mutacion.heuristica(poblacion, 3);
 				break;
-			case 4:				
-				ret = mutacion.custom(poblacion);				
+			case 4:
+				ret = mutacion.custom(poblacion);
 				break;
 			default:
 				break;
@@ -396,8 +398,5 @@ public class AlgoritmoGenetico {
 			ind.printIndividuo();
 		}
 	}
-
-	
-	
 
 }

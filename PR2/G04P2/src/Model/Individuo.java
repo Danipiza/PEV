@@ -13,6 +13,7 @@ public class Individuo {
 	
 	public Individuo(Individuo individuo) {
 		gen = new Gen(individuo.gen);
+		fitness=individuo.fitness;
 	}
 	
 	public Individuo(int[] cromosoma) {

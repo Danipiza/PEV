@@ -104,7 +104,7 @@ public class ControlPanel extends JPanel {
 		JPanel leftPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
-		leftPanel.setPreferredSize(new Dimension(325, 600));
+		leftPanel.setPreferredSize(new Dimension(375, 600));
 
 		String[] funciones = { 	"Aeropuerto 1",
 								"Aeropuerto 2"};
@@ -227,7 +227,7 @@ public class ControlPanel extends JPanel {
 	private JPanel createRightPanel2D() {
 		JPanel rightPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		rightPanel.setPreferredSize(new Dimension(475, 600));
+		rightPanel.setPreferredSize(new Dimension(425, 600));
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1.0; // Mas espacio horizontal
@@ -265,9 +265,23 @@ public class ControlPanel extends JPanel {
 
 		//plot2D.addLegend("Mejor Absoluto");
 		plot2D.addLegend("SOUTH");
-		text_area.setText("" + vals[0][vals[0].length - 1]);
 		
-		this.mejor_individuo=new MejorIndividuo(num_pistas, num_vuelos, mejor_individuo, tipo_avion, TEL, sep, vuelos_id);	
+		//System.out.println(vals[0][vals[0].length-1]);
+		System.out.println("(CONTROLP) "+mejor_individuo.fitness);
+		
+		this.mejor_individuo=new MejorIndividuo(num_pistas, num_vuelos, mejor_individuo, tipo_avion, TEL, sep, vuelos_id);
+		
+		String cromosoma="";
+		int i=0;
+		for(int a: mejor_individuo.gen.v) {
+			cromosoma+=a+1 + " ";
+			i++;
+			if(i==num_vuelos/2) cromosoma+="\n";
+		}
+		text_area.setText(	"" + mejor_individuo.fitness+"\n"
+				+cromosoma);
+		
+			
 	}
 
 	public void actualiza_fallo(String s) {

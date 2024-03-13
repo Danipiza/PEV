@@ -81,22 +81,6 @@ public class ResultadosDialog extends JDialog {
 	    }
 	        
 		
-		/*JPanel view1 =
-				createViewPanel(new JTable(model1),"Pista 1");
-		view1.setPreferredSize(new Dimension(250, 250));	
-		tablesPanel.add(view1);
-
-		
-		JPanel view2 =
-				createViewPanel(new JTable(model1),"Pista 2");
-		view2.setPreferredSize(new Dimension(250, 250));
-		tablesPanel.add(view2);
-		
-		JPanel view3 =
-				createViewPanel(new JTable(model1),"Pista 3");
-		view3.setPreferredSize(new Dimension(250, 250));
-		tablesPanel.add(view3);*/
-		
 		
         
         
@@ -110,7 +94,7 @@ public class ResultadosDialog extends JDialog {
 	public void open(MejorIndividuo mejor_individuo) {
 		setLocation(getParent().getLocation().x+600, getParent().getLocation().y + 180);
 
-		
+				
 		for(int i=0;i<num_pistas;i++) {
 			for(FilaInd fila: mejor_individuo.l[i]) {
 				models[i].addRow(new Object[]{fila.vuelo+1, fila.Nombre, fila.TEL, fila.TLA, fila.RET});

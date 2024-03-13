@@ -48,7 +48,7 @@ public class Funcion {
 
 		double fitness = 0.0;
 		for (int i = 0; i < aviones; i++) {
-			double newTla, menor_tla = 24.0;
+			double newTla = 0, menor_tla = 24.0;
 			int indexPista = 0;
 			for (int j = 0; j < pistas; j++) {
 				newTla = Math.max(tla[j].peek().getValue() + sep[tla[j].peek().getKey()][tipo_avion[avion[i]]], TEL[j][avion[i]]);
@@ -64,7 +64,7 @@ public class Funcion {
 			for (int j = 0; j < pistas; j++) {
 				if (TEL[j][avion[i]] < menor_tel) menor_tel = TEL[j][avion[i]];
 			}
-
+			
 			fitness += Math.pow(menor_tla - menor_tel, 2);
 		}
 		return fitness;
