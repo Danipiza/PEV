@@ -153,7 +153,7 @@ public class AlgoritmoGenetico {
 		}
 
 		if (fallo.equals("")) { // TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
-			ctrl.actualiza_Grafico(progreso_generaciones, funcion.intervalosGrafico, mejor_individuo);
+			ctrl.actualiza_Grafico(progreso_generaciones, funcion.intervalosGrafico, funcion, mejor_individuo);
 		} else {
 			ctrl.actualiza_fallo(fallo);
 		}
@@ -210,7 +210,7 @@ public class AlgoritmoGenetico {
 		} catch (IOException e) {
 			System.err.println("Error al leer archivos: " + e.getMessage());
 		}
-		funcion = new Funcion(tipo_avion, TEL);
+		funcion = new Funcion(num_vuelos, num_pistas, tipo_avion, TEL);
 		
 		/*
 		 * for(String v:vuelos_id) {

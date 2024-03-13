@@ -8,8 +8,8 @@ public class Funcion {
 	public Pair<Double, Double> intervalosGrafico;
 	public boolean opt = false;
 
-	public int aviones = 12;
-	public int pistas = 3;
+	public int aviones;
+	public int pistas;
 	
 	
 	// 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1
@@ -29,7 +29,10 @@ public class Funcion {
 		{1, 1, 1}
 	};
 	
-	public Funcion(int[] tipo_avion, int[][] TEL) {
+	public Funcion(int aviones, int pistas, int[] tipo_avion, int[][] TEL) {
+		this.aviones=aviones;
+		this.pistas=pistas;
+		
 		this.tipo_avion=tipo_avion;
 		this.TEL=TEL;
 		intervalosGrafico=new Pair<Double, Double>(0.0, 0.0);

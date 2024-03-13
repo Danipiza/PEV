@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import Logic.AlgoritmoGenetico;
+import Logic.Funcion;
 import Model.Individuo;
 import Model.MejorIndividuo;
 import Model.Valores;
@@ -245,7 +246,8 @@ public class ControlPanel extends JPanel {
 		return rightPanel;
 	}
 
-	public void actualiza_Grafico(double[][] vals, Pair<Double, Double> interval, Individuo mejor_individuo) {
+	public void actualiza_Grafico(double[][] vals, Pair<Double, Double> interval, 
+			Funcion f,Individuo mejor_individuo) {
 		plot2D.removeAllPlots();
 
 		double[] x = new double[vals[0].length];
@@ -267,9 +269,10 @@ public class ControlPanel extends JPanel {
 		plot2D.addLegend("SOUTH");
 		
 		//System.out.println(vals[0][vals[0].length-1]);
-		System.out.println("(CONTROLP) "+mejor_individuo.fitness);
+		System.out.println("(CONTROLP) "+mejor_individuo.fitness);		
+		System.out.println("(FUNCION) "+f.fitness(mejor_individuo.gen.v));
 		
-		this.mejor_individuo=new MejorIndividuo(num_pistas, num_vuelos, mejor_individuo, tipo_avion, TEL, sep, vuelos_id);
+		this.mejor_individuo=new MejorIndividuo(f, num_pistas, num_vuelos, mejor_individuo, tipo_avion, TEL, sep, vuelos_id);
 		
 		String cromosoma="";
 		int i=0;
