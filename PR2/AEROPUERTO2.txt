@@ -1,0 +1,313 @@
+Aeropuerto 2:
+
+
+RULETA ------------------------------
+
+Insercion
+	Insercion, media de: 78.4625
+	Intercambio, media de: 80.3125
+	Inversion, media de: 91.6375
+	Heuristica, media de: 54.275
+	Custom..., media de: 75.4125
+OX
+	Insercion, media de: 111.3375
+	Intercambio, media de: 112.95
+	Inversion, media de: 119.9125
+	Heuristica, media de: 129.5125
+	Custom..., media de: 127.3625
+OX-PP
+	Insercion, media de: 26.95
+	Intercambio, media de: 23.9375
+	Inversion, media de: 48.8
+	Heuristica, media de: 31.05
+	Custom..., media de: 31.3875
+CX
+	Insercion, media de: 35.3625
+	Intercambio, media de: 35.475
+	Inversion, media de: 55.3625
+	Heuristica, media de: 80.025
+	Custom..., media de: 40.025
+CO
+	Insercion, media de: 38.9875
+	Intercambio, media de: 43.175
+	Inversion, media de: 61.425
+	Heuristica, media de: 85.5375
+	Custom..., media de: 48.8625
+Custom...
+	Insercion, media de: 33.6
+	Intercambio, media de: 50.7125
+	Inversion, media de: 68.275
+	Heuristica, media de: 126.425
+	Custom..., media de: 50.8
+
+---------------------------------------
+---------------------------------------
+
+
+TORNEO DETERMINISTA -------------------
+
+
+Insercion
+	Insercion, media de: 16.6375
+	Intercambio, media de: 18.225
+	Inversion, media de: 27.525
+	Heuristica, media de: 50.1375
+	Custom..., media de: 24.65
+OX
+	Insercion, media de: 18.75
+	Intercambio, media de: 21.2625
+	Inversion, media de: 41.975
+	Heuristica, media de: 78.425
+	Custom..., media de: 30.8625
+OX-PP
+	Insercion, media de: 15.975
+	Intercambio, media de: 18.4875
+	Inversion, media de: 19.9375
+	Heuristica, media de: 34.5
+	Custom..., media de: 20.25
+CX
+	Insercion, media de: 17.375
+	Intercambio, media de: 19.4875
+	Inversion, media de: 28.1
+	Heuristica, media de: 89.0
+	Custom..., media de: 26.35
+CO
+	Insercion, media de: 15.25
+	Intercambio, media de: 16.8875
+	Inversion, media de: 43.175
+	Heuristica, media de: 100.2125
+	Custom..., media de: 28.8125
+Custom...
+	Insercion, media de: 17.8625
+	Intercambio, media de: 21.425
+	Inversion, media de: 43.8375
+	Heuristica, media de: 128.4375
+	Custom..., media de: 31.6375
+
+
+
+---------------------------------------
+---------------------------------------
+
+TORNEO PROBABILISTICO -----------------
+
+Insercion
+	Insercion, media de: 17.05
+	Intercambio, media de: 18.825
+	Inversion, media de: 29.1125
+	Heuristica, media de: 60.7625
+	Custom..., media de: 21.1
+OX
+	Insercion, media de: 20.7375
+	Intercambio, media de: 17.55
+	Inversion, media de: 38.125
+	Heuristica, media de: 98.9875
+	Custom..., media de: 38.775
+OX-PP
+	Insercion, media de: 15.3625
+	Intercambio, media de: 16.2625
+	Inversion, media de: 21.2125
+	Heuristica, media de: 37.075
+	Custom..., media de: 23.8
+CX
+	Insercion, media de: 17.6625
+	Intercambio, media de: 21.05
+	Inversion, media de: 29.7
+	Heuristica, media de: 94.35
+	Custom..., media de: 26.275
+CO
+	Insercion, media de: 16.25
+	Intercambio, media de: 18.8875
+	Inversion, media de: 37.9125
+	Heuristica, media de: 94.6375
+	Custom..., media de: 21.55
+Custom...
+	Insercion, media de: 19.5
+	Intercambio, media de: 20.4375
+	Inversion, media de: 42.175
+	Heuristica, media de: 107.05
+	Custom..., media de: 29.4125
+
+
+---------------------------------------
+---------------------------------------
+
+ESTOCASTICO UNIVERSAL1 ----------------
+
+Insercion
+	Insercion, media de: 44.4125
+	Intercambio, media de: 42.9625
+	Inversion, media de: 69.7625
+	Heuristica, media de: 104.6625
+	Custom..., media de: 54.4
+OX
+	Insercion, media de: 93.75
+	Intercambio, media de: 88.0625
+	Inversion, media de: 105.3
+	Heuristica, media de: 138.525
+	Custom..., media de: 97.725
+OX-PP
+	Insercion, media de: 35.0875
+	Intercambio, media de: 35.025
+	Inversion, media de: 52.7125
+	Heuristica, media de: 110.2125
+	Custom..., media de: 37.5375
+CX
+	Insercion, media de: 29.1125
+	Intercambio, media de: 42.0875
+	Inversion, media de: 60.5875
+	Heuristica, media de: 150.925
+	Custom..., media de: 46.5625
+CO
+	Insercion, media de: 33.35
+	Intercambio, media de: 40.2625
+	Inversion, media de: 57.15
+	Heuristica, media de: 122.8125
+	Custom..., media de: 42.775
+Custom...
+	Insercion, media de: 33.0875
+	Intercambio, media de: 41.975
+	Inversion, media de: 56.225
+	Heuristica, media de: 124.95
+	Custom..., media de: 35.2
+
+
+
+---------------------------------------
+---------------------------------------
+
+TRUNCAMIENTO --------------------------
+
+Insercion
+	Insercion, media de: 21.575
+	Intercambio, media de: 21.7875
+	Inversion, media de: 54.9625
+	Heuristica, media de: 223.5125
+	Custom..., media de: 39.4375
+OX
+	Insercion, media de: 27.3875
+	Intercambio, media de: 26.0125
+	Inversion, media de: 54.925
+	Heuristica, media de: 227.4125
+	Custom..., media de: 44.5125
+OX-PP
+	Insercion, media de: 23.7
+	Intercambio, media de: 27.1625
+	Inversion, media de: 57.0625
+	Heuristica, media de: 223.5875
+	Custom..., media de: 42.375
+CX
+	Insercion, media de: 21.6875
+	Intercambio, media de: 24.2375
+	Inversion, media de: 52.8125
+	Heuristica, media de: 251.95
+	Custom..., media de: 40.075
+CO
+	Insercion, media de: 24.7375
+	Intercambio, media de: 30.2125
+	Inversion, media de: 50.075
+	Heuristica, media de: 223.8375
+	Custom..., media de: 35.125
+Custom...
+	Insercion, media de: 24.525
+	Intercambio, media de: 28.2
+	Inversion, media de: 55.1625
+	Heuristica, media de: 236.1125
+	Custom..., media de: 39.25
+
+
+
+
+---------------------------------------
+---------------------------------------
+
+RESTOS -------------------------------
+
+
+Insercion
+	Insercion, media de: 22.075
+	Intercambio, media de: 21.1625
+	Inversion, media de: 33.375
+	Heuristica, media de: 21.35
+	Custom..., media de: 22.4125
+OX
+	Insercion, media de: 90.1375
+	Intercambio, media de: 96.4
+	Inversion, media de: 96.8625
+	Heuristica, media de: 96.2875
+	Custom..., media de: 87.4
+OX-PP
+	Insercion, media de: 15.3
+	Intercambio, media de: 15.3
+	Inversion, media de: 15.975
+	Heuristica, media de: 22.7125
+	Custom..., media de: 16.15
+CX
+	Insercion, media de: 16.7125
+	Intercambio, media de: 20.75
+	Inversion, media de: 24.8875
+	Heuristica, media de: 70.0
+	Custom..., media de: 19.8625
+CO
+	Insercion, media de: 18.3125
+	Intercambio, media de: 22.65
+	Inversion, media de: 30.25
+	Heuristica, media de: 61.9375
+	Custom..., media de: 28.4875
+Custom...
+	Insercion, media de: 18.3125
+	Intercambio, media de: 19.8
+	Inversion, media de: 21.35
+	Heuristica, media de: 98.6125
+	Custom..., media de: 24.4375
+
+
+
+
+---------------------------------------
+---------------------------------------
+
+
+RANKING -------------------------------
+
+Insercion
+	Insercion, media de: 16.55
+	Intercambio, media de: 16.725
+	Inversion, media de: 19.9125
+	Heuristica, media de: 40.075
+	Custom..., media de: 21.2125
+OX
+	Insercion, media de: 55.6
+	Intercambio, media de: 61.0125
+	Inversion, media de: 76.9875
+	Heuristica, media de: 92.4875
+	Custom..., media de: 65.4375
+OX-PP
+	Insercion, media de: 16.125
+	Intercambio, media de: 17.4125
+	Inversion, media de: 17.55
+	Heuristica, media de: 28.625
+	Custom..., media de: 18.4625
+CX
+	Insercion, media de: 17.2125
+	Intercambio, media de: 18.45
+	Inversion, media de: 26.175
+	Heuristica, media de: 85.7
+	Custom..., media de: 22.2375
+CO
+	Insercion, media de: 16.8125
+	Intercambio, media de: 17.25
+	Inversion, media de: 34.1625
+	Heuristica, media de: 83.2625
+	Custom..., media de: 31.775
+Custom...
+	Insercion, media de: 18.5125
+	Intercambio, media de: 24.475
+	Inversion, media de: 32.175
+	Heuristica, media de: 131.85
+	Custom..., media de: 32.4875
+
+
+
+---------------------------------------
+---------------------------------------

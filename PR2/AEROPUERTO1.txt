@@ -1,0 +1,316 @@
+Aeropuerto1:
+
+RULETA ------------------------------
+
+Insercion
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+OX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+OX-PP
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+CX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.3125
+	Custom..., media de: 11.25
+CO
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.3125
+	Custom..., media de: 11.25
+Custom...
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.4375
+	Custom..., media de: 11.25
+	
+	
+
+
+
+
+---------------------------------------
+---------------------------------------
+
+
+TORNEO DETERMINISTA -------------------
+
+Insercion
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+OX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.375
+	Custom..., media de: 11.25
+OX-PP
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+CX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.5875
+	Custom..., media de: 11.25
+CO
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.3125
+	Custom..., media de: 11.25
+Custom...
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.375
+	Custom..., media de: 11.25
+
+
+
+---------------------------------------
+---------------------------------------
+
+TORNEO PROBABILISTICO -----------------
+
+Insercion
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.4375
+	Custom..., media de: 11.25
+OX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.5875
+	Custom..., media de: 11.25
+OX-PP
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+CX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.525
+	Custom..., media de: 11.25
+CO
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+Custom...
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.7125
+	Custom..., media de: 11.25
+
+
+---------------------------------------
+---------------------------------------
+
+ESTOCASTICO UNIVERSAL1 ----------------
+
+Insercion
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.3125
+	Custom..., media de: 11.25
+OX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.625
+	Custom..., media de: 11.25
+OX-PP
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+CX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 12.1875
+	Custom..., media de: 11.25
+CO
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.4375
+	Custom..., media de: 11.25
+Custom...
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.5625
+	Custom..., media de: 11.25
+
+
+
+---------------------------------------
+---------------------------------------
+
+TRUNCAMIENTO --------------------------
+
+Insercion
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.3125
+	Heuristica, media de: 17.4625
+	Custom..., media de: 11.25
+OX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 16.7375
+	Custom..., media de: 11.25
+OX-PP
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.3125
+	Heuristica, media de: 16.65
+	Custom..., media de: 11.25
+CX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 18.1375
+	Custom..., media de: 11.25
+CO
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 16.4125
+	Custom..., media de: 11.25
+Custom...
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 16.0375
+	Custom..., media de: 11.25
+
+
+
+
+---------------------------------------
+---------------------------------------
+
+RESTOS -------------------------------
+
+
+Insercion
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+OX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+OX-PP
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+CX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+CO
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.3125
+	Custom..., media de: 11.25
+Custom...
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.375
+	Custom..., media de: 11.25
+
+
+
+---------------------------------------
+---------------------------------------
+
+
+RANKING -------------------------------
+
+Insercion
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+OX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.3125
+	Custom..., media de: 11.25
+OX-PP
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.25
+	Custom..., media de: 11.25
+CX
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.4375
+	Custom..., media de: 11.25
+CO
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.5
+	Custom..., media de: 11.25
+Custom...
+	Insercion, media de: 11.25
+	Intercambio, media de: 11.25
+	Inversion, media de: 11.25
+	Heuristica, media de: 11.4625
+	Custom..., media de: 11.25
+
+
+
+---------------------------------------
+---------------------------------------
+

@@ -263,16 +263,15 @@ public class ControlPanel extends JPanel {
 		// Customize the plot (optional)
 		plot2D.getAxis(0).setLabelText("Generacion");
 		plot2D.getAxis(1).setLabelText("Fitness");
-		plot2D.setFixedBounds(1, interval.getKey(), interval.getValue()); // Fix Y-axis bounds
+		plot2D.setFixedBounds(1, interval.getKey(), vals[2][0]); // Fix Y-axis bounds
 
 		//plot2D.addLegend("Mejor Absoluto");
 		plot2D.addLegend("SOUTH");
 		
-		//System.out.println(vals[0][vals[0].length-1]);
-		System.out.println("(CONTROLP) "+mejor_individuo.fitness);		
-		System.out.println("(FUNCION) "+f.fitness(mejor_individuo.gen.v));
 		
-		this.mejor_individuo=new MejorIndividuo(f, num_pistas, num_vuelos, mejor_individuo, tipo_avion, TEL, sep, vuelos_id);
+
+		//this.mejor_individuo=new MejorIndividuo(f, num_pistas, num_vuelos, mejor_individuo, tipo_avion, TEL, sep, vuelos_id);
+		this.mejor_individuo=new MejorIndividuo(f, mejor_individuo, vuelos_id);
 		
 		String cromosoma="";
 		int i=0;
@@ -295,6 +294,7 @@ public class ControlPanel extends JPanel {
 
 	private void run() {
 		setValores();
+		//AG.ejecuta_calculo_medias(valores);
 		AG.ejecuta(valores);
 	}
 

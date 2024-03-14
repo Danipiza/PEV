@@ -122,18 +122,6 @@ public class AlgoritmoGenetico {
 
 		evaluacion_poblacion();
 
-		/*
-		 * selec = seleccion_poblacion();
-		 * poblacion = cruce_poblacion(selec);
-		 * for(Individuo ind: poblacion) {
-		 * ind.gen.compruebaGen();
-		 * }
-		 */
-		/*
-		 * for(Individuo ind: poblacion) {
-		 * ind.printIndividuo();
-		 * }
-		 */
 
 		while (generaciones-- != 0) {
 			selec = seleccion_poblacion();
@@ -156,6 +144,80 @@ public class AlgoritmoGenetico {
 			ctrl.actualiza_Grafico(progreso_generaciones, funcion.intervalosGrafico, funcion, mejor_individuo);
 		} else {
 			ctrl.actualiza_fallo(fallo);
+		}
+	}
+	
+	public void ejecuta_calculo_medias(Valores valores) {
+		double media=0.0;
+		String[] cruce = { 	"PMX",
+				"OX",
+				"OX-PP",
+				"CX",
+				"CO",
+				"Custom..."};
+
+		String[] mutacion = { 	"Insercion",
+							"Intercambio",
+							"Inversion",
+							"Heuristica",
+							"Custom..."};
+		
+		System.out.println("Insercion");
+		
+		while(valores.cruce_idx!=6) {	
+			media=0.0;
+			for(int i=0;i<20;i++) {
+				Individuo[] selec = null;
+		
+				
+				String fallo = "";
+				setValores(valores);
+				
+				// ELITISMO
+				Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
+				if (funcion_idx != 0) {
+					elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
+				} else
+					elitQ = new PriorityQueue<>(comparator);
+		
+				// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
+				progreso_generaciones = new double[3][generaciones + 1];
+				generacionActual = 0;
+		
+				init_poblacion();
+				evaluacion_poblacion();
+				while (generaciones-- != 0) {
+					selec = seleccion_poblacion();
+					try {
+						poblacion = cruce_poblacion(selec);
+						poblacion = mutacion_poblacion();
+		
+						// ELITISMO
+						while (elitQ.size() != 0) {
+							poblacion[tam_poblacion - elitQ.size()] = elitQ.poll().getId();
+						}
+					} catch (Exception e) {
+						fallo = e.getMessage();
+						break;
+					}
+					evaluacion_poblacion();
+				}
+		
+				if (fallo.equals("")) { 
+					media+=mejor_total;
+				} else {
+					System.out.println("Fallo");
+					System.exit(0);
+				}
+			}
+			media/=20;
+			System.out.println("\t"+mutacion[valores.mut_idx]+", media de: " + media);
+			valores.mut_idx++;
+			if(valores.mut_idx==5) {
+				valores.mut_idx=0;
+				valores.cruce_idx++;
+				if(valores.cruce_idx!=6) System.out.println(cruce[valores.cruce_idx]);
+			}
 		}
 	}
 
@@ -212,20 +274,7 @@ public class AlgoritmoGenetico {
 		}
 		funcion = new Funcion(num_vuelos, num_pistas, tipo_avion, TEL);
 		
-		/*
-		 * for(String v:vuelos_id) {
-		 * System.out.println(v);
-		 * }
-		 */
-
-		/*
-		 * for(i=0;i<num_pistas;i++) {
-		 * for(j=0;j<num_vuelos;j++) {
-		 * System.out.print(TEL[i][j] + " ");
-		 * }
-		 * System.out.println();
-		 * }
-		 */
+		
 	}
 
 	private void init_poblacion() {
@@ -275,7 +324,8 @@ public class AlgoritmoGenetico {
 			mejor_individuo = new Individuo(poblacion[indexMG]);
 		}
 		// mejor_total = funcion.cmp(mejor_total, mejor_generacion);
-
+		
+		
 		progreso_generaciones[0][generacionActual] = mejor_total; // Mejor Absoluto
 		progreso_generaciones[1][generacionActual] = mejor_generacion; // Mejor Local
 		progreso_generaciones[2][generacionActual++] = fitness_total / tam_poblacion; // Media

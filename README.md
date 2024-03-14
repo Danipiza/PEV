@@ -1,7 +1,13 @@
 # PEV
 
 # IMPORTANTE
+
+## PR2 
+En la funcion run() de ControlPanel se puede cambiar el modo, GUI o imprime media del optimo por terminal
+
 ## EN LOS PORTATILES DE LA FACULTAD NO SE PUEDE VINCULAR UN PROYECTO DE GITHUB PARA HACER PUSH Y COMMITS
+
+
 
 
 ## Tema 1

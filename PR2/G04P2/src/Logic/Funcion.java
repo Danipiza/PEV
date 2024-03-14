@@ -22,7 +22,7 @@ public class Funcion {
 	
 	// 0: Pesado (W)
 	// 1: Grande
-	// 2: Pequeño
+	// 2: PequeÃ±o
 	public double[][] sep = {
 		{1, 1.5, 2},
 		{1, 1.5, 1.5},

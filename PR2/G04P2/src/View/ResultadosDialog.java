@@ -112,7 +112,7 @@ public class ResultadosDialog extends JDialog {
 	private JPanel createViewPanel(JComponent c, String title) {
 		JPanel p = new JPanel( new BorderLayout());
 		
-		// AÑADE UN BORDE
+		// AÃ‘ADE UN BORDE
 		p.setBorder(BorderFactory.createTitledBorder(border, title, TitledBorder.LEFT, TitledBorder.TOP));
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
