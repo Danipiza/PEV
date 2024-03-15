@@ -46,7 +46,7 @@ public class Funcion {
 		Stack<Pair<Integer, Double>>[] tla = new Stack[pistas];
 		for (int i = 0; i < pistas; i++) {
 			tla[i] = new Stack<>();
-			tla[i].push(new Pair<>(2, 0.0)); 
+			tla[i].push(new Pair<>(2, -10.0)); 
 		}
 
 		double fitness = 0.0;

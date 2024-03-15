@@ -26,7 +26,7 @@ public class MejorIndividuo {
 		Stack<Pair<Integer, Double>>[] tla = new Stack[f.pistas];
 		for (int i = 0; i < f.pistas; i++) {
 			tla[i] = new Stack<>();
-			tla[i].push(new Pair<>(2, 0.0)); 
+			tla[i].push(new Pair<>(2, -10.0)); 
 		}
 		
 

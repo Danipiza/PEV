@@ -24,6 +24,7 @@ import Model.Valores;
 import Utils.Pair;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -108,7 +109,8 @@ public class ControlPanel extends JPanel {
 		leftPanel.setPreferredSize(new Dimension(375, 600));
 
 		String[] funciones = { 	"Aeropuerto 1",
-								"Aeropuerto 2"};
+								"Aeropuerto 2",
+								"Aeropuerto 3"};
 		
 		String[] seleccion = { "Ruleta",
 								"Torneo Deterministico",
@@ -253,12 +255,16 @@ public class ControlPanel extends JPanel {
 		double[] x = new double[vals[0].length];
 		for (int i = 0; i < vals[0].length; i++) {
 			x[i] = i;
+			
 		}
+		
 
 		// Add the lines to the plot with different colors
 		plot2D.addLinePlot("Mejor Absoluto", x, vals[0]);
 		plot2D.addLinePlot("Mejor de la Generacion", x, vals[1]);
 		plot2D.addLinePlot("Media", x, vals[2]);
+		plot2D.addLinePlot("Presion Selectiva Generacion", Color.BLACK, x, vals[3]);
+		
 
 		// Customize the plot (optional)
 		plot2D.getAxis(0).setLabelText("Generacion");
@@ -278,7 +284,7 @@ public class ControlPanel extends JPanel {
 		for(int a: mejor_individuo.gen.v) {
 			cromosoma+=a+1 + " ";
 			i++;
-			if(i==num_vuelos/2) cromosoma+="\n";
+			if(i%10==0) cromosoma+="\n";
 		}
 		text_area.setText(	"" + mejor_individuo.fitness+"\n"
 				+cromosoma);

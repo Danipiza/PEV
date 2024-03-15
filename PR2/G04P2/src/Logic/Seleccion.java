@@ -8,15 +8,17 @@ import Utils.Pair;
 
 public class Seleccion {
 	private int tam_poblacion;
+	private int tam_elite;
 	
-	public Seleccion(int _tam_poblacion, int funcion_idx) {
+	public Seleccion(int _tam_poblacion, int tam_elite, int funcion_idx) {
 		this.tam_poblacion = _tam_poblacion;
+		this.tam_elite = tam_elite;
 		//this.tam_elite=tam_elite;
 	}
 
 
 	protected int busquedaBinaria(double x, double[] prob_acumulada) {
-		int i = 0, j = tam_poblacion - 1;
+		int i = 0, j = tam_poblacion-tam_elite - 1;
 		int m = 0;
 		while (i < j) {
 			m = (j + i) / 2;

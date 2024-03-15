@@ -92,7 +92,7 @@ public class AlgoritmoGenetico {
 		tam_elite = (int) (tam_poblacion * (elitismo / 100.0));
 
 		lee_archivos();
-		seleccion = new Seleccion(tam_poblacion, funcion_idx);
+		seleccion = new Seleccion(tam_poblacion, tam_elite, funcion_idx);
 		cruce = new Cruce(prob_cruce, num_vuelos, tam_elite);
 		mutacion = new Mutacion(prob_mut, num_vuelos, tam_elite, funcion);
 
@@ -115,7 +115,7 @@ public class AlgoritmoGenetico {
 			elitQ = new PriorityQueue<>(comparator);
 
 		// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
-		progreso_generaciones = new double[3][generaciones + 1];
+		progreso_generaciones = new double[4][generaciones + 1];
 		generacionActual = 0;
 
 		init_poblacion();
@@ -181,7 +181,7 @@ public class AlgoritmoGenetico {
 					elitQ = new PriorityQueue<>(comparator);
 		
 				// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
-				progreso_generaciones = new double[3][generaciones + 1];
+				progreso_generaciones = new double[4][generaciones + 1];
 				generacionActual = 0;
 		
 				init_poblacion();
@@ -230,11 +230,17 @@ public class AlgoritmoGenetico {
 			this.num_pistas = 3;
 			vuelos_txt += "vuelos1.txt";
 			TEL_txt += "TEL1.txt";
-		} else {
+		} else if(funcion_idx==1) {
 			this.num_vuelos = 25;
 			this.num_pistas = 5;
 			vuelos_txt += "vuelos2.txt";
 			TEL_txt += "TEL2.txt";
+		}
+		else {
+			this.num_vuelos = 100;
+			this.num_pistas = 10;
+			vuelos_txt += "vuelos3.txt";
+			TEL_txt += "TEL3.txt";
 		}
 		int i = 0, j;
 		vuelos_id = new String[num_vuelos];
@@ -328,7 +334,7 @@ public class AlgoritmoGenetico {
 		
 		progreso_generaciones[0][generacionActual] = mejor_total; // Mejor Absoluto
 		progreso_generaciones[1][generacionActual] = mejor_generacion; // Mejor Local
-		progreso_generaciones[2][generacionActual++] = fitness_total / tam_poblacion; // Media
+		progreso_generaciones[2][generacionActual] = fitness_total / tam_poblacion; // Media
 
 		double acum = 0;
 		if (peor_generacion < 0)
@@ -351,6 +357,8 @@ public class AlgoritmoGenetico {
 				prob_seleccionAcum[i] = acum;
 			}
 		}
+		
+		progreso_generaciones[3][generacionActual++] = tam_poblacion*prob_seleccion[indexMG]; // Media
 
 	}
 
@@ -362,7 +370,7 @@ public class AlgoritmoGenetico {
 				ret = seleccion.ruleta(poblacion, prob_seleccionAcum, tam_poblacion - tam_elite);
 				break;
 			case 1:
-				ret = seleccion.torneoDeterministico(poblacion, 3, tam_poblacion - tam_elite);
+				ret = seleccion.torneoDeterministico(poblacion, 20, tam_poblacion - tam_elite);
 				break;
 			case 2:
 				ret = seleccion.torneoProbabilistico(poblacion, 3, 0.9, tam_poblacion - tam_elite);
