@@ -248,8 +248,7 @@ public class ControlPanel extends JPanel {
 		return rightPanel;
 	}
 
-	public void actualiza_Grafico(double[][] vals, Pair<Double, Double> interval, 
-			Funcion f,Individuo mejor_individuo) {
+	public void actualiza_Grafico(double[][] vals, Funcion f,Individuo mejor_individuo) {
 		plot2D.removeAllPlots();
 
 		double[] x = new double[vals[0].length];
@@ -269,7 +268,7 @@ public class ControlPanel extends JPanel {
 		// Customize the plot (optional)
 		plot2D.getAxis(0).setLabelText("Generacion");
 		plot2D.getAxis(1).setLabelText("Fitness");
-		plot2D.setFixedBounds(1, interval.getKey(), vals[2][0]); // Fix Y-axis bounds
+		plot2D.setFixedBounds(1, 0, vals[2][0]); // Fix Y-axis bounds
 
 		//plot2D.addLegend("Mejor Absoluto");
 		plot2D.addLegend("SOUTH");

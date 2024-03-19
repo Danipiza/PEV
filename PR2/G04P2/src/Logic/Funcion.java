@@ -5,8 +5,6 @@ import java.util.Stack;
 import Utils.Pair;
 
 public class Funcion {
-	public Pair<Double, Double> intervalosGrafico;
-	public boolean opt = false;
 
 	public int aviones;
 	public int pistas;
@@ -35,10 +33,6 @@ public class Funcion {
 		
 		this.tipo_avion=tipo_avion;
 		this.TEL=TEL;
-		intervalosGrafico=new Pair<Double, Double>(0.0, 0.0);
-		
-		if(tipo_avion.length==12) intervalosGrafico.setValue(150.0);
-		else intervalosGrafico.setValue(450.0);
 	}
 	
 	
