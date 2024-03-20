@@ -265,8 +265,34 @@ public class AlgoritmoGenetico {
 		double acum = 0;
 		if (peor_generacion < 0)
 			peor_generacion *= -1;
-
 		
+		double P=2;
+		double media=fitness_total/tam_poblacion;
+		double a=((P-1)*media)/(peor_generacion-media);
+		double b=(1-a)*media;
+		
+		fitness_total=0;
+		for (int i = 0; i < tam_poblacion; i++) {
+			fit= a*poblacion[i].fitness+b;
+			poblacion[i].fitness=fit;
+			fitness_total += fit;
+			
+			if (elitQ.size() < tam_elite)
+				elitQ.add(new Node(fit, poblacion[i]));
+			else if (tam_elite != 0 && funcion.cmp(elitQ.peek().getValue(), fit) == fit) {
+				elitQ.poll();
+				elitQ.add(new Node(fit, poblacion[i]));
+			}
+
+			if (mejor_generacion > fit) {
+				mejor_generacion = fit;
+				indexMG = i;
+			}
+			peor_generacion = funcion.cmpPeor(peor_generacion, fit);
+		}
+		
+		
+		// Desplazamiento
 		fitness_total = tam_poblacion * 1.05 * peor_generacion - fitness_total;
 		for (int i = 0; i < tam_poblacion; i++) {
 			prob_seleccion[i] = 1.05 * peor_generacion - poblacion[i].fitness;
@@ -274,6 +300,9 @@ public class AlgoritmoGenetico {
 			acum += prob_seleccion[i];
 			prob_seleccionAcum[i] = acum;
 		}
+		
+		
+		// Escalado lineal
 		
 		
 		progreso_generaciones[3][generacionActual++] = tam_poblacion*prob_seleccion[indexMG]; // Media

@@ -402,12 +402,9 @@ public class Cruce {
 
 			
 			if (Math.random() < p) {
-				//System.out.print("(ANTES) Ind1: "); ind1.printIndividuo();
-				//System.out.print("(ANTES) Ind2: "); ind2.printIndividuo();
 				set1.clear();
 				set2.clear();
 				
-				// 1. Intercambio
 				for(int j=0;j<num_vuelos;j+=2) {
 					indE1[j]=ind2.gen.v[j];
 					indE2[j]=ind1.gen.v[j];
@@ -431,8 +428,6 @@ public class Cruce {
 				}
 				ind1=new Individuo(indE1);
 				ind2=new Individuo(indE2);
-				//System.out.print("(DESPUES) Ind1: "); ind1.printIndividuo();
-				//System.out.print("(DESPUES) Ind2: "); ind2.printIndividuo();
 			}
 			ret[i++] = ind1;
 			ret[i++] = ind2;
