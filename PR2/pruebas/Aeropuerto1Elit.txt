@@ -1,0 +1,296 @@
+Ruleta -------------------------
+PMX:
+	Insercion,   media de: 11.6125 Tiempo de ejecucion: 0.080795099s
+	Intercambio, media de: 11.675 Tiempo de ejecucion: 0.0398575s
+	Inversion,   media de: 11.6875 Tiempo de ejecucion: 0.039325s
+	Heuristica,  media de: 12.75 Tiempo de ejecucion: 0.077998399s
+	Custom,      media de: 11.7625 Tiempo de ejecucion: 0.042245699s
+OX:
+	Insercion,   media de: 12.2 Tiempo de ejecucion: 0.042117401s
+	Intercambio, media de: 11.925 Tiempo de ejecucion: 0.0386669s
+	Inversion,   media de: 11.7125 Tiempo de ejecucion: 0.0375847s
+	Heuristica,  media de: 14.7625 Tiempo de ejecucion: 0.0722068s
+	Custom,      media de: 12.275 Tiempo de ejecucion: 0.0326906s
+OX-PP:
+	Insercion,   media de: 11.375 Tiempo de ejecucion: 0.0515394s
+	Intercambio, media de: 11.25 Tiempo de ejecucion: 0.0496637s
+	Inversion,   media de: 11.525 Tiempo de ejecucion: 0.0492543s
+	Heuristica,  media de: 12.2375 Tiempo de ejecucion: 0.070628499s
+	Custom,      media de: 11.375 Tiempo de ejecucion: 0.0500555s
+CX:
+	Insercion,   media de: 11.5 Tiempo de ejecucion: 0.0315422s
+	Intercambio, media de: 11.4625 Tiempo de ejecucion: 0.026337001s
+	Inversion,   media de: 11.7625 Tiempo de ejecucion: 0.0266702s
+	Heuristica,  media de: 15.65 Tiempo de ejecucion: 0.0522353s
+	Custom,      media de: 12.425 Tiempo de ejecucion: 0.0275261s
+CO:
+	Insercion,   media de: 11.3125 Tiempo de ejecucion: 0.0675463s
+	Intercambio, media de: 11.625 Tiempo de ejecucion: 0.046075699s
+	Inversion,   media de: 11.65 Tiempo de ejecucion: 0.0463854s
+	Heuristica,  media de: 14.2875 Tiempo de ejecucion: 0.0483131s
+	Custom,      media de: 11.5 Tiempo de ejecucion: 0.0266728s
+Custom:
+	Insercion,   media de: 11.3125 Tiempo de ejecucion: 0.0293628s
+	Intercambio, media de: 11.8 Tiempo de ejecucion: 0.0294308s
+	Inversion,   media de: 11.4375 Tiempo de ejecucion: 0.0280235s
+	Heuristica,  media de: 17.025 Tiempo de ejecucion: 0.0478376s
+	Custom,      media de: 11.7125 Tiempo de ejecucion: 0.0293278s
+Torneo Deterministico ---------
+PMX:
+	Insercion,   media de: 12.05 Tiempo de ejecucion: 0.0371813s
+	Intercambio, media de: 13.3125 Tiempo de ejecucion: 0.0259511s
+	Inversion,   media de: 11.7125 Tiempo de ejecucion: 0.025460901s
+	Heuristica,  media de: 17.9875 Tiempo de ejecucion: 0.046701001s
+	Custom,      media de: 11.8625 Tiempo de ejecucion: 0.026822199s
+OX:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.029358s
+	Intercambio, media de: 11.525 Tiempo de ejecucion: 0.0258394s
+	Inversion,   media de: 12.0375 Tiempo de ejecucion: 0.026341s
+	Heuristica,  media de: 20.2125 Tiempo de ejecucion: 0.046420599s
+	Custom,      media de: 12.7 Tiempo de ejecucion: 0.0270521s
+OX-PP:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.0467158s
+	Intercambio, media de: 13.0375 Tiempo de ejecucion: 0.0470141s
+	Inversion,   media de: 12.2625 Tiempo de ejecucion: 0.0456966s
+	Heuristica,  media de: 14.8125 Tiempo de ejecucion: 0.0664101s
+	Custom,      media de: 14.2125 Tiempo de ejecucion: 0.0284895s
+CX:
+	Insercion,   media de: 12.8125 Tiempo de ejecucion: 0.0262578s
+	Intercambio, media de: 11.3125 Tiempo de ejecucion: 0.0255322s
+	Inversion,   media de: 12.2 Tiempo de ejecucion: 0.026061999s
+	Heuristica,  media de: 19.1625 Tiempo de ejecucion: 0.0457283s
+	Custom,      media de: 12.45 Tiempo de ejecucion: 0.0265486s
+CO:
+	Insercion,   media de: 11.65 Tiempo de ejecucion: 0.027101299s
+	Intercambio, media de: 11.9 Tiempo de ejecucion: 0.0258513s
+	Inversion,   media de: 11.8625 Tiempo de ejecucion: 0.025941401s
+	Heuristica,  media de: 16.475 Tiempo de ejecucion: 0.0492828s
+	Custom,      media de: 11.5 Tiempo de ejecucion: 0.0271731s
+Custom:
+	Insercion,   media de: 11.65 Tiempo de ejecucion: 0.0258485s
+	Intercambio, media de: 11.25 Tiempo de ejecucion: 0.0251257s
+	Inversion,   media de: 11.5625 Tiempo de ejecucion: 0.0253625s
+	Heuristica,  media de: 15.6375 Tiempo de ejecucion: 0.0463731s
+	Custom,      media de: 11.9 Tiempo de ejecucion: 0.026533301s
+Torneo Probabilistico ---------
+PMX:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.024081601s
+	Intercambio, media de: 11.65 Tiempo de ejecucion: 0.026561399s
+	Inversion,   media de: 11.7375 Tiempo de ejecucion: 0.0223586s
+	Heuristica,  media de: 13.7125 Tiempo de ejecucion: 0.0437187s
+	Custom,      media de: 11.375 Tiempo de ejecucion: 0.023827201s
+OX:
+	Insercion,   media de: 12.05 Tiempo de ejecucion: 0.0228586s
+	Intercambio, media de: 11.775 Tiempo de ejecucion: 0.0233139s
+	Inversion,   media de: 11.5625 Tiempo de ejecucion: 0.023670899s
+	Heuristica,  media de: 16.825 Tiempo de ejecucion: 0.043095001s
+	Custom,      media de: 11.775 Tiempo de ejecucion: 0.0244314s
+OX-PP:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.027448199s
+	Intercambio, media de: 11.25 Tiempo de ejecucion: 0.0240456s
+	Inversion,   media de: 11.4375 Tiempo de ejecucion: 0.0242283s
+	Heuristica,  media de: 11.85 Tiempo de ejecucion: 0.0452539s
+	Custom,      media de: 11.7125 Tiempo de ejecucion: 0.0252589s
+CX:
+	Insercion,   media de: 11.65 Tiempo de ejecucion: 0.022935299s
+	Intercambio, media de: 12.65 Tiempo de ejecucion: 0.022472501s
+	Inversion,   media de: 12.1125 Tiempo de ejecucion: 0.022405601s
+	Heuristica,  media de: 15.675 Tiempo de ejecucion: 0.047186s
+	Custom,      media de: 11.9 Tiempo de ejecucion: 0.024241501s
+CO:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.0245088s
+	Intercambio, media de: 11.4 Tiempo de ejecucion: 0.0238972s
+	Inversion,   media de: 11.9125 Tiempo de ejecucion: 0.0235252s
+	Heuristica,  media de: 14.325 Tiempo de ejecucion: 0.044221399s
+	Custom,      media de: 11.5 Tiempo de ejecucion: 0.0263063s
+Custom:
+	Insercion,   media de: 11.3125 Tiempo de ejecucion: 0.023225801s
+	Intercambio, media de: 11.85 Tiempo de ejecucion: 0.0228418s
+	Inversion,   media de: 12.2 Tiempo de ejecucion: 0.0228309s
+	Heuristica,  media de: 15.15 Tiempo de ejecucion: 0.0464546s
+	Custom,      media de: 11.5625 Tiempo de ejecucion: 0.024164599s
+Estocastico Universal1 --------
+PMX:
+	Insercion,   media de: 11.375 Tiempo de ejecucion: 0.0238647s
+	Intercambio, media de: 11.375 Tiempo de ejecucion: 0.022224799s
+	Inversion,   media de: 11.5875 Tiempo de ejecucion: 0.0244427s
+	Heuristica,  media de: 13.05 Tiempo de ejecucion: 0.0454968s
+	Custom,      media de: 11.4375 Tiempo de ejecucion: 0.024793801s
+OX:
+	Insercion,   media de: 11.775 Tiempo de ejecucion: 0.0237432s
+	Intercambio, media de: 11.8 Tiempo de ejecucion: 0.027133899s
+	Inversion,   media de: 11.65 Tiempo de ejecucion: 0.0239935s
+	Heuristica,  media de: 15.5375 Tiempo de ejecucion: 0.0449096s
+	Custom,      media de: 12.45 Tiempo de ejecucion: 0.024822499s
+OX-PP:
+	Insercion,   media de: 11.3125 Tiempo de ejecucion: 0.024552s
+	Intercambio, media de: 11.3125 Tiempo de ejecucion: 0.025449299s
+	Inversion,   media de: 11.4375 Tiempo de ejecucion: 0.024880299s
+	Heuristica,  media de: 12.475 Tiempo de ejecucion: 0.0455418s
+	Custom,      media de: 11.7 Tiempo de ejecucion: 0.0260062s
+CX:
+	Insercion,   media de: 11.7125 Tiempo de ejecucion: 0.027664801s
+	Intercambio, media de: 11.925 Tiempo de ejecucion: 0.023196201s
+	Inversion,   media de: 11.8 Tiempo de ejecucion: 0.023002201s
+	Heuristica,  media de: 15.55 Tiempo de ejecucion: 0.044764201s
+	Custom,      media de: 11.525 Tiempo de ejecucion: 0.024420799s
+CO:
+	Insercion,   media de: 11.5875 Tiempo de ejecucion: 0.0263724s
+	Intercambio, media de: 11.3125 Tiempo de ejecucion: 0.0253491s
+	Inversion,   media de: 11.5 Tiempo de ejecucion: 0.0252989s
+	Heuristica,  media de: 13.05 Tiempo de ejecucion: 0.048777999s
+	Custom,      media de: 11.3125 Tiempo de ejecucion: 0.0265858s
+Custom:
+	Insercion,   media de: 11.375 Tiempo de ejecucion: 0.0239107s
+	Intercambio, media de: 11.3125 Tiempo de ejecucion: 0.0232694s
+	Inversion,   media de: 11.4375 Tiempo de ejecucion: 0.0238341s
+	Heuristica,  media de: 13.0625 Tiempo de ejecucion: 0.043809901s
+	Custom,      media de: 11.65 Tiempo de ejecucion: 0.0248243s
+Estocastico Universal2 --------
+PMX:
+	Insercion,   media de: 11.375 Tiempo de ejecucion: 0.0235296s
+	Intercambio, media de: 11.4625 Tiempo de ejecucion: 0.0223443s
+	Inversion,   media de: 12.1625 Tiempo de ejecucion: 0.0227524s
+	Heuristica,  media de: 13.1125 Tiempo de ejecucion: 0.0469248s
+	Custom,      media de: 11.5 Tiempo de ejecucion: 0.0234895s
+OX:
+	Insercion,   media de: 11.9 Tiempo de ejecucion: 0.023793701s
+	Intercambio, media de: 12.0875 Tiempo de ejecucion: 0.0231536s
+	Inversion,   media de: 12.3 Tiempo de ejecucion: 0.023375s
+	Heuristica,  media de: 14.4375 Tiempo de ejecucion: 0.0443368s
+	Custom,      media de: 11.95 Tiempo de ejecucion: 0.0244199s
+OX-PP:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.0240115s
+	Intercambio, media de: 11.4375 Tiempo de ejecucion: 0.0240947s
+	Inversion,   media de: 11.3125 Tiempo de ejecucion: 0.0272021s
+	Heuristica,  media de: 13.45 Tiempo de ejecucion: 0.0468932s
+	Custom,      media de: 11.7 Tiempo de ejecucion: 0.0260326s
+CX:
+	Insercion,   media de: 11.3125 Tiempo de ejecucion: 0.0231728s
+	Intercambio, media de: 11.7125 Tiempo de ejecucion: 0.023041801s
+	Inversion,   media de: 11.775 Tiempo de ejecucion: 0.022680999s
+	Heuristica,  media de: 16.6 Tiempo de ejecucion: 0.0435615s
+	Custom,      media de: 11.8875 Tiempo de ejecucion: 0.0245419s
+CO:
+	Insercion,   media de: 11.4 Tiempo de ejecucion: 0.026371399s
+	Intercambio, media de: 11.525 Tiempo de ejecucion: 0.0251856s
+	Inversion,   media de: 11.7375 Tiempo de ejecucion: 0.0251054s
+	Heuristica,  media de: 13.7125 Tiempo de ejecucion: 0.046226201s
+	Custom,      media de: 12.2 Tiempo de ejecucion: 0.026850599s
+Custom:
+	Insercion,   media de: 11.3125 Tiempo de ejecucion: 0.0234179s
+	Intercambio, media de: 11.5 Tiempo de ejecucion: 0.0229515s
+	Inversion,   media de: 11.5 Tiempo de ejecucion: 0.023518899s
+	Heuristica,  media de: 15.0 Tiempo de ejecucion: 0.0442232s
+	Custom,      media de: 11.9875 Tiempo de ejecucion: 0.025499s
+Truncamiento ------------------
+PMX:
+	Insercion,   media de: 11.3125 Tiempo de ejecucion: 0.0273378s
+	Intercambio, media de: 11.7125 Tiempo de ejecucion: 0.023654901s
+	Inversion,   media de: 12.325 Tiempo de ejecucion: 0.0272572s
+	Heuristica,  media de: 28.6 Tiempo de ejecucion: 0.044029s
+	Custom,      media de: 13.8125 Tiempo de ejecucion: 0.0286593s
+OX:
+	Insercion,   media de: 12.05 Tiempo de ejecucion: 0.0262175s
+	Intercambio, media de: 12.2625 Tiempo de ejecucion: 0.0229165s
+	Inversion,   media de: 11.7625 Tiempo de ejecucion: 0.0232728s
+	Heuristica,  media de: 26.35 Tiempo de ejecucion: 0.0451002s
+	Custom,      media de: 14.5625 Tiempo de ejecucion: 0.0238724s
+OX-PP:
+	Insercion,   media de: 13.25 Tiempo de ejecucion: 0.0238719s
+	Intercambio, media de: 14.275 Tiempo de ejecucion: 0.023996699s
+	Inversion,   media de: 11.375 Tiempo de ejecucion: 0.0242281s
+	Heuristica,  media de: 22.8625 Tiempo de ejecucion: 0.0447651s
+	Custom,      media de: 13.2375 Tiempo de ejecucion: 0.0253745s
+CX:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.0233148s
+	Intercambio, media de: 12.1125 Tiempo de ejecucion: 0.023504001s
+	Inversion,   media de: 11.5875 Tiempo de ejecucion: 0.0234738s
+	Heuristica,  media de: 23.325 Tiempo de ejecucion: 0.0492767s
+	Custom,      media de: 13.0375 Tiempo de ejecucion: 0.024948299s
+CO:
+	Insercion,   media de: 11.775 Tiempo de ejecucion: 0.026636901s
+	Intercambio, media de: 12.8375 Tiempo de ejecucion: 0.0258738s
+	Inversion,   media de: 11.4 Tiempo de ejecucion: 0.0249434s
+	Heuristica,  media de: 24.2375 Tiempo de ejecucion: 0.046041801s
+	Custom,      media de: 13.5125 Tiempo de ejecucion: 0.0258142s
+Custom:
+	Insercion,   media de: 12.45 Tiempo de ejecucion: 0.024074099s
+	Intercambio, media de: 12.4 Tiempo de ejecucion: 0.0231178s
+	Inversion,   media de: 12.1125 Tiempo de ejecucion: 0.023394701s
+	Heuristica,  media de: 24.8875 Tiempo de ejecucion: 0.0446484s
+	Custom,      media de: 11.5 Tiempo de ejecucion: 0.024620501s
+Restos ------------------------
+PMX:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.024405999s
+	Intercambio, media de: 11.3125 Tiempo de ejecucion: 0.023953899s
+	Inversion,   media de: 11.25 Tiempo de ejecucion: 0.0244854s
+	Heuristica,  media de: 12.2 Tiempo de ejecucion: 0.0473485s
+	Custom,      media de: 11.4 Tiempo de ejecucion: 0.0248189s
+OX:
+	Insercion,   media de: 11.3125 Tiempo de ejecucion: 0.024916201s
+	Intercambio, media de: 11.3125 Tiempo de ejecucion: 0.024727699s
+	Inversion,   media de: 11.5 Tiempo de ejecucion: 0.025192301s
+	Heuristica,  media de: 12.45 Tiempo de ejecucion: 0.0486033s
+	Custom,      media de: 12.1375 Tiempo de ejecucion: 0.0263608s
+OX-PP:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.0267049s
+	Intercambio, media de: 11.25 Tiempo de ejecucion: 0.026171299s
+	Inversion,   media de: 11.3125 Tiempo de ejecucion: 0.0256693s
+	Heuristica,  media de: 11.3125 Tiempo de ejecucion: 0.0480049s
+	Custom,      media de: 11.25 Tiempo de ejecucion: 0.0261185s
+CX:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.0242993s
+	Intercambio, media de: 11.25 Tiempo de ejecucion: 0.0230822s
+	Inversion,   media de: 11.3125 Tiempo de ejecucion: 0.023327899s
+	Heuristica,  media de: 13.825 Tiempo de ejecucion: 0.0447508s
+	Custom,      media de: 11.7125 Tiempo de ejecucion: 0.0238315s
+CO:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.0252334s
+	Intercambio, media de: 11.375 Tiempo de ejecucion: 0.0261024s
+	Inversion,   media de: 11.975 Tiempo de ejecucion: 0.024432401s
+	Heuristica,  media de: 12.4375 Tiempo de ejecucion: 0.045401299s
+	Custom,      media de: 11.3125 Tiempo de ejecucion: 0.0257938s
+Custom:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.024429s
+	Intercambio, media de: 12.175 Tiempo de ejecucion: 0.0234995s
+	Inversion,   media de: 11.375 Tiempo de ejecucion: 0.0241575s
+	Heuristica,  media de: 13.475 Tiempo de ejecucion: 0.044235301s
+	Custom,      media de: 11.3125 Tiempo de ejecucion: 0.0250184s
+Ranking -----------------------
+PMX:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.032941199s
+	Intercambio, media de: 11.6375 Tiempo de ejecucion: 0.0265256s
+	Inversion,   media de: 11.3125 Tiempo de ejecucion: 0.0268025s
+	Heuristica,  media de: 14.5125 Tiempo de ejecucion: 0.0476519s
+	Custom,      media de: 11.3125 Tiempo de ejecucion: 0.0267089s
+OX:
+	Insercion,   media de: 11.3125 Tiempo de ejecucion: 0.0271951s
+	Intercambio, media de: 12.3875 Tiempo de ejecucion: 0.026855801s
+	Inversion,   media de: 11.5625 Tiempo de ejecucion: 0.026712499s
+	Heuristica,  media de: 14.9875 Tiempo de ejecucion: 0.0477058s
+	Custom,      media de: 11.6125 Tiempo de ejecucion: 0.027333599s
+OX-PP:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.027003099s
+	Intercambio, media de: 11.25 Tiempo de ejecucion: 0.027127899s
+	Inversion,   media de: 11.25 Tiempo de ejecucion: 0.0272575s
+	Heuristica,  media de: 11.4375 Tiempo de ejecucion: 0.048805101s
+	Custom,      media de: 11.25 Tiempo de ejecucion: 0.02718s
+CX:
+	Insercion,   media de: 11.3125 Tiempo de ejecucion: 0.024959101s
+	Intercambio, media de: 12.575 Tiempo de ejecucion: 0.0243451s
+	Inversion,   media de: 11.8375 Tiempo de ejecucion: 0.0254433s
+	Heuristica,  media de: 18.6 Tiempo de ejecucion: 0.0447218s
+	Custom,      media de: 11.25 Tiempo de ejecucion: 0.0255957s
+CO:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.0282736s
+	Intercambio, media de: 11.25 Tiempo de ejecucion: 0.0287667s
+	Inversion,   media de: 11.4375 Tiempo de ejecucion: 0.028020301s
+	Heuristica,  media de: 13.7625 Tiempo de ejecucion: 0.046091601s
+	Custom,      media de: 11.3125 Tiempo de ejecucion: 0.027066999s
+Custom:
+	Insercion,   media de: 11.25 Tiempo de ejecucion: 0.0254859s
+	Intercambio, media de: 11.25 Tiempo de ejecucion: 0.0253738s
+	Inversion,   media de: 11.3125 Tiempo de ejecucion: 0.0250277s
+	Heuristica,  media de: 12.375 Tiempo de ejecucion: 0.045303201s
+	Custom,      media de: 11.375 Tiempo de ejecucion: 0.0258195s

@@ -119,6 +119,7 @@ public class Mutacion {
 		
 		double mejor_fit=Double.MAX_VALUE;		
 		int[] mejor=new int[num_vuelos];
+		int[] tmp=new int[num_vuelos];
 		
 		Individuo act;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
@@ -138,15 +139,16 @@ public class Mutacion {
 					}						
 				}
 				
+				tmp=act.gen.v;
 				// Recorre las permutaciones
 				for (List<Integer> l:permutaciones) {
 					// Cambia los valores
-					for(int x:l) act.gen.v[elegidos_indx[x]]=elegidos_vals[x];					
+					for(int x:l) tmp[elegidos_indx[x]]=elegidos_vals[x];					
 					
 					double fit =funcion.fitness(act.gen.v);					
 					if(fit<mejor_fit) {
 						mejor_fit=fit;
-						mejor=act.gen.v;
+						mejor=tmp;
 					}
 				}
 				
@@ -188,7 +190,7 @@ public class Mutacion {
 		y = temp;
 	}
 	
-	// TODO
+	
 	public Individuo[] custom(Individuo[] poblacion) {
 		int tam_poblacion=poblacion.length;
 		Individuo[] ret = new Individuo[tam_poblacion];
@@ -198,10 +200,8 @@ public class Mutacion {
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
 			act=new Individuo(poblacion[i]);		
 			if(Math.random()<p) {
-				//System.out.print("ANTES:"); act.printIndividuo();
 				int corte1 = (int) (Math.random() * (act.gen.v.length-2));
 				int corte2 = corte1 + (int) (Math.random() * (act.gen.v.length-corte1));
-				//System.out.println("Corte entre:" +corte1 + " " +corte2);
 				List<Integer> tmp=new ArrayList<Integer>();
 				for(int j=corte1;j<corte2;j++) {
 					tmp.add(act.gen.v[j]);
@@ -213,7 +213,6 @@ public class Mutacion {
 					tmp.remove(indice);
 				}
 				
-				//System.out.print("DESPUES:"); act.printIndividuo();
 			}
 			
 			ret[i]=act;

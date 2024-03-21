@@ -109,10 +109,7 @@ public class AlgoritmoGenetico {
 
 		// ELITISMO
 		Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
-		if (funcion_idx != 0) {
-			elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
-		} else
-			elitQ = new PriorityQueue<>(comparator);
+		elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
 
 		// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 		progreso_generaciones = new double[4][generaciones + 1];
@@ -122,8 +119,9 @@ public class AlgoritmoGenetico {
 
 		evaluacion_poblacion();
 
-
+		int cont=1;
 		while (generaciones-- != 0) {
+			if(cont%250==0) poblacion=reinicia(10);
 			selec = seleccion_poblacion();
 			try {
 				poblacion = cruce_poblacion(selec);
@@ -138,6 +136,7 @@ public class AlgoritmoGenetico {
 				break;
 			}
 			evaluacion_poblacion();
+			cont++;
 		}
 
 		if (fallo.equals("")) { // TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
@@ -209,6 +208,33 @@ public class AlgoritmoGenetico {
 		
 	}
 
+	private Individuo[] reinicia(int porcentaje) {
+		Individuo[] ret= new Individuo[tam_poblacion];
+		int tam=tam_poblacion/porcentaje;
+		for (int i = tam; i < tam_poblacion; i++) {
+			ret[i] = new Individuo(num_vuelos);
+		}
+		Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
+		PriorityQueue<Node> Q = new PriorityQueue<>(Collections.reverseOrder(comparator));
+		
+		
+		for(Individuo ind: poblacion) {
+			if(Q.size()<tam) Q.add(new Node(ind.fitness, ind));
+			else if (funcion.cmp(Q.peek().getValue(), ind.fitness) == ind.fitness) {
+				Q.poll();
+				Q.add(new Node(ind.fitness, ind));
+			}
+		}
+		
+		for(int i=0;i<tam;i++) {
+			ret[i]=Q.peek().getId();
+		}
+		
+		
+		
+		return ret;
+	}
+	
 	private void init_poblacion() {
 		poblacion = new Individuo[tam_poblacion];
 		for (int i = 0; i < tam_poblacion; i++) {
@@ -266,6 +292,7 @@ public class AlgoritmoGenetico {
 		if (peor_generacion < 0)
 			peor_generacion *= -1;
 		
+		// No usamos porque cambia a peor los resultados
 		double P=2;
 		double media=fitness_total/tam_poblacion;
 		double a=((P-1)*media)/(peor_generacion-media);
@@ -273,7 +300,8 @@ public class AlgoritmoGenetico {
 		
 		fitness_total=0;
 		for (int i = 0; i < tam_poblacion; i++) {
-			fit= a*poblacion[i].fitness+b;
+			//fit= a*poblacion[i].fitness+b;
+			fit= poblacion[i].fitness;
 			poblacion[i].fitness=fit;
 			fitness_total += fit;
 			
@@ -408,23 +436,35 @@ public class AlgoritmoGenetico {
 
 	public void ejecuta_calculo_medias(Valores valores) {
 		double media=0.0;
-		String[] cruce = { 	"PMX",
-				"OX",
-				"OX-PP",
-				"CX",
-				"CO",
-				"Custom..."};
+		
+		String[] seleccion = { "Ruleta -------------------------",
+								"Torneo Deterministico ---------",
+								"Torneo Probabilistico ---------",
+								"Estocastico Universal1 --------",
+								"Estocastico Universal2 --------",
+								"Truncamiento ------------------",
+								"Restos ------------------------",
+								"Ranking -----------------------"};
+		
+		String[] cruce = { 	"PMX:",
+							"OX:",
+							"OX-PP:",
+							"CX:",
+							"CO:",
+							"Custom:"};
 
-		String[] mutacion = { 	"Insercion",
-							"Intercambio",
-							"Inversion",
-							"Heuristica",
-							"Custom..."};
+		String[] mutacion = { 	"Insercion,  ",
+								"Intercambio,",
+								"Inversion,  ",
+								"Heuristica, ",
+								"Custom,     "};
 		
-		System.out.println("Insercion");
+		System.out.println("Ruleta -------------------------");
+		System.out.println("PMX:");
 		
-		while(valores.cruce_idx!=6) {	
+		while(valores.seleccion_idx!=8) {	
 			media=0.0;
+			long startTime = System.nanoTime();
 			for(int i=0;i<20;i++) {
 				Individuo[] selec = null;
 		
@@ -434,11 +474,9 @@ public class AlgoritmoGenetico {
 				
 				// ELITISMO
 				Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
-				if (funcion_idx != 0) {
-					elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
-				} else
-					elitQ = new PriorityQueue<>(comparator);
-		
+				
+				elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
+	
 				// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 				progreso_generaciones = new double[4][generaciones + 1];
 				generacionActual = 0;
@@ -470,11 +508,19 @@ public class AlgoritmoGenetico {
 				}
 			}
 			media/=20;
-			System.out.println("\t"+mutacion[valores.mut_idx]+", media de: " + media);
+			long endTime = System.nanoTime();
+			double tiempo = (endTime - startTime) / 1e9;
+			System.out.println("\t"+mutacion[valores.mut_idx]+" media de: " + media +
+								" Tiempo de ejecucion: "+ tiempo+"s");
 			valores.mut_idx++;
 			if(valores.mut_idx==5) {
 				valores.mut_idx=0;
 				valores.cruce_idx++;
+				if(valores.cruce_idx==6) {
+					valores.cruce_idx=0;
+					valores.seleccion_idx++;
+					if(valores.seleccion_idx!=8) System.out.println(seleccion[valores.seleccion_idx]);
+				}
 				if(valores.cruce_idx!=6) System.out.println(cruce[valores.cruce_idx]);
 			}
 		}
