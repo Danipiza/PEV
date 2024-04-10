@@ -41,15 +41,6 @@ public class Gen {
         }			
 	}
 	
-	public void compruebaGen() {
-		Set<Integer> setP=new HashSet<Integer>();
-		
-		for(int x: v) {
-			if(setP.contains(x)) {
-				System.out.println("AQUI");
-			}
-			else setP.add(x);
-		}
-	}
+	
 
 }

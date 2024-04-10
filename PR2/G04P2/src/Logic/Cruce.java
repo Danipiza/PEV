@@ -178,7 +178,7 @@ public class Cruce {
 				// System.out.print("(ANTES) Ind2: "); ind2.printIndividuo();
 
 				Set<Integer> puntos = new HashSet<>();
-				int puntosList[] = new int[n];
+				int puntosList[] = new int[pp];
 				Set<Integer> set1 = new HashSet<>();
 				Set<Integer> set2 = new HashSet<>();
 

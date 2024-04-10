@@ -145,7 +145,7 @@ public class Mutacion {
 					// Cambia los valores
 					for(int x:l) tmp[elegidos_indx[x]]=elegidos_vals[x];					
 					
-					double fit =funcion.fitness(act.gen.v);					
+					double fit =funcion.fitness(tmp);					
 					if(fit<mejor_fit) {
 						mejor_fit=fit;
 						mejor=tmp;

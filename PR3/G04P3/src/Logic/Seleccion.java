@@ -4,25 +4,20 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import Model.Individuo;
-import Model.IndividuoBin;
-import Model.IndividuoReal;
 import Utils.Pair;
 
 public class Seleccion {
 	private int tam_poblacion;
-	private boolean opt;
-	private boolean bin;
+	private int tam_elite;
 	
-	public Seleccion(int _tam_poblacion, boolean _opt, int funcion_idx) {
+	public Seleccion(int _tam_poblacion, int tam_elite) {
 		this.tam_poblacion = _tam_poblacion;
-		this.opt = _opt;
-		//this.tam_elite=tam_elite;
-		this.bin=(funcion_idx<4?true:false);
+		this.tam_elite = tam_elite;
 	}
 
-
+	
 	protected int busquedaBinaria(double x, double[] prob_acumulada) {
-		int i = 0, j = tam_poblacion - 1;
+		int i = 0, j = tam_poblacion-tam_elite - 1;
 		int m = 0;
 		while (i < j) {
 			m = (j + i) / 2;
@@ -43,10 +38,9 @@ public class Seleccion {
 
 		double rand;
 		for (int i = 0; i < tam_seleccionados; i++) {
-			rand = Math.random();
+			rand = Math.random();		
 			
-			if(bin) seleccionados[i] = new IndividuoBin(poblacion[busquedaBinaria(rand, prob_acumulada)]);
-			else seleccionados[i] = new IndividuoReal(poblacion[busquedaBinaria(rand, prob_acumulada)]);
+			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(rand, prob_acumulada)]);
 		}
 
 		return seleccionados;
@@ -76,8 +70,8 @@ public class Seleccion {
 				}
 			}	
 			 
-			if(bin) seleccionados[i] = new IndividuoBin((opt ? poblacion[indexMax] : poblacion[indexMin]));
-			else seleccionados[i] = new IndividuoReal((opt ? poblacion[indexMax] : poblacion[indexMin]));
+			//seleccionados[i] = new IndividuoReal((opt ? poblacion[indexMax] : poblacion[indexMin]));
+			seleccionados[i] = new Individuo(poblacion[indexMin]);
 		}
 
 		return seleccionados;
@@ -107,8 +101,8 @@ public class Seleccion {
 				}
 			}	
 			 
-			if(bin) seleccionados[i] = new IndividuoBin((opt && Math.random() <= p || !opt && Math.random() > p ? poblacion[indexMax] : poblacion[indexMin]));
-			else seleccionados[i] = new IndividuoReal((opt && Math.random() <= p || !opt && Math.random() > p ? poblacion[indexMax] : poblacion[indexMin]));			
+			//seleccionados[i] = new IndividuoReal((opt && Math.random() <= p || !opt && Math.random() > p ? poblacion[indexMax] : poblacion[indexMin]));
+			seleccionados[i] = new Individuo(poblacion[indexMin]);	
 		}
 
 		return seleccionados;
@@ -119,8 +113,7 @@ public class Seleccion {
 		
 		double incr = 1.0 / tam_seleccionados, rand = Math.random() * incr;
 		for (int i = 0; i < tam_seleccionados; i++) {
-			if(bin) seleccionados[i] = new IndividuoBin(poblacion[busquedaBinaria(rand, prob_acumulada)]);
-			else seleccionados[i] = new IndividuoReal(poblacion[busquedaBinaria(rand, prob_acumulada)]);
+			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(rand, prob_acumulada)]);
 			
 			rand += incr;
 		}
@@ -135,8 +128,7 @@ public class Seleccion {
 		for (int i = 0; i < tam_seleccionados; i++) {
 			double x = (rand + i) / tam_seleccionados;
 			
-			if(bin) seleccionados[i] = new IndividuoBin(poblacion[busquedaBinaria(x, prob_acumulada)]);
-			else seleccionados[i] = new IndividuoReal(poblacion[busquedaBinaria(x, prob_acumulada)]);
+			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(x, prob_acumulada)]);
 		}
 
 		return seleccionados;
@@ -159,8 +151,7 @@ public class Seleccion {
 	
 		for (int i = 0; i < (tam_seleccionados) * trunc; i++) {			
 			for (int j = 0; j < num && x<tam_seleccionados; j++) {
-				if(bin) seleccionados[x++] = new IndividuoBin(pairs[n-i].getKey());
-				else seleccionados[x++] = new IndividuoReal(pairs[n-i].getKey());
+				seleccionados[x++] = new Individuo(pairs[n-i].getKey());
 			}
 		}
 		
@@ -176,14 +167,14 @@ public class Seleccion {
 			aux = prob_seleccion[i] * (tam_seleccionados);
 			num = (int) aux;
 			for (int j = 0; j < num; j++) {
-				if(bin) seleccionados[x++] = new IndividuoBin(poblacion[i]);
-				else seleccionados[x++] = new IndividuoReal(poblacion[i]);
+				seleccionados[x++] = new Individuo(poblacion[i]);
 			}
 
 		}
 		
+		
 		Individuo[] resto = null;
-		int func=(int) (Math.random()*6);
+		int func=(int) (Math.random()*5);
 		switch (func) { // SE SUMA LA PARTE DE elitismo PORQUE SINO SE RESTA 2 VECES, 
 						// EN LA PARTE DE restos() Y LA FUNCION RANDOM
 		case 0:
@@ -215,6 +206,40 @@ public class Seleccion {
 			seleccionados[x++] = resto[i++];
 		}
 
+		return seleccionados;
+	}
+
+	public Individuo[] ranking(Individuo[] poblacion, double[] prob_seleccion, int tam_seleccionados, double beta) {
+		Individuo[] seleccionados = new Individuo[tam_seleccionados];
+
+		Pair<Individuo, Double>[] pairs=new Pair[tam_seleccionados];
+		for (int i=0;i<tam_seleccionados;i++) {
+			pairs[i]=new Pair<>(poblacion[i], prob_seleccion[i]);
+		}
+
+		//Arrays.sort(pairs, Comparator.comparingDouble(p -> p.getValue()));
+		Arrays.sort(pairs, Comparator.comparingDouble(p -> ((Pair<Individuo, Double>) p).getValue()).reversed());
+		
+		double val=0.0, acum=0.0;
+		double prob_acumulada[]=new double[tam_seleccionados];
+		//double probs[]=new double[tam_seleccionados];
+		
+		
+		for(int i=1;i<=tam_seleccionados;i++) {
+			val=(beta-(2*(beta-1)*((i-1)/(tam_seleccionados-1.0))))/tam_seleccionados;
+			acum+=val;
+			prob_acumulada[i-1]=acum;
+			//probs[i-1]=val;
+		}
+		
+		double rand;
+		for (int i = 0; i < tam_seleccionados; i++) {
+			rand = Math.random();		
+			
+			seleccionados[i] = new Individuo(pairs[busquedaBinaria(rand, prob_acumulada)].getKey());
+		}
+		
+		
 		return seleccionados;
 	}
 }
