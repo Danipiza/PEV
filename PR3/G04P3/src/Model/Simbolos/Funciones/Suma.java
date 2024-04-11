@@ -3,27 +3,41 @@ package Model.Simbolos.Funciones;
 import Model.Simbolos.Exp;
 
 public class Suma extends Exp{
+		
+	public Exp ops[]=new Exp[2];
 	
-	public Exp v1;
-	public Exp v2;
-	
-	public Suma(Exp v1, Exp v2) {
-		this.v1=v1;
-		this.v2=v2;
+	public Suma() {
+		this.putTam(2); 				// Numero de hijos
+		this.putOperacion("Suma"); 		// Nombre de la operacion
+		this.ops[0]=null;				// Hijo 1
+		this.ops[1]=null;				// Hijo 2
 	}
 	
-	@Override
-	public int getX() {
-		return v1.getX()+v2.getX();
-	}
-
-	@Override
-	public int getY() {
-		return v1.getY()+v2.getY();
+	public Suma(Exp ops[]) {
+		this.putTam(2); 				// Numero de hijos
+		this.putOperacion("Suma"); 	// Nombre de la operacion
+		this.ops[0]=ops[0];
+		this.ops[1]=ops[1];
+		this.putX((this.ops[0].getX()+this.ops[1].getX())%8);
+		this.putY((this.ops[0].getY()+this.ops[1].getY())%8);
 	}
 	
+		
 	public String toString() {
-	   return "SUMA(("+v1+"), ("+v2+"))";
+	   return "SUMA(("+ops[0]+"), ("+ops[1]+"))";
     }
+	
+	@Override
+	public void setHijo(int i, Exp hijo) { // Añade hijo
+		this.ops[i]=hijo;	
+		this.putX((this.getX()+hijo.getX())%8);
+		this.putY((this.getY()+hijo.getY())%8);
+	}
+	
+	@Override
+	public Exp getHijo(int i) {		
+		return ops[i];
+	}
+	
 
 }

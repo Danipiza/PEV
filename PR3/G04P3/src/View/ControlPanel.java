@@ -3,6 +3,7 @@ package View;
 import org.math.plot.*;
 
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -15,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
 import Logic.AlgoritmoGenetico;
 import Logic.Funcion;
 import Model.Individuo;
@@ -43,6 +46,8 @@ public class ControlPanel extends JPanel {
 	private JTextField prob_cruce;
 	private JTextField prob_mut;
 	private JTextField elitismo;
+	private JTextField filas_text;
+	private JTextField columnas_text;
 
 	private JComboBox<String> funcion_CBox;
 	private JComboBox<String> seleccion_CBox;
@@ -51,77 +56,93 @@ public class ControlPanel extends JPanel {
 
 
 	private JTextArea text_area;
+	private JTextArea text_area2;
 
 	private Plot2DPanel plot2D;
 
 	private Valores valores;
 	
 	
-	private int num_vuelos;
-	private int num_pistas;
 	
-	private String[] vuelos_id;
+	GridBagConstraints gbc;
 	
-	private int[][] TEL;
-	private int[] tipo_avion;
-
-	public double[][] sep = { 	{1, 1.5, 2},
-								{1, 1.5, 1.5},
-								{1, 1, 1} };
+	private int filas;
+	private int columnas;
 
 	public ControlPanel() {
-		tam_poblacion = new JTextField("100", 16);
-		generaciones = new JTextField("100", 16);
-		prob_cruce = new JTextField("0.6", 16);
-		prob_mut = new JTextField("0.3", 16);
-		elitismo = new JTextField("0", 16);
+		tam_poblacion = new JTextField("100", 11);
+		generaciones = new JTextField("100", 11);
+		prob_cruce = new JTextField("0.6", 11);
+		prob_mut = new JTextField("0.3", 11);
+		elitismo = new JTextField("0", 11);
+		filas_text = new JTextField("8", 11);
+		columnas_text= new JTextField("8", 11);
+		
+		gbc = new GridBagConstraints();
+		
+		// TODO
+		this.filas=8;
+		this.columnas=8;
 
 		AG = new AlgoritmoGenetico(this); // MEJORAR IMPLEMENTACION
 		initGUI();
 	}
 
-	private void initGUI() {
-		setLayout(new BorderLayout());
-
-		JPanel leftPanel = createLeftPanel();
-		JPanel rightPanel = createRightPanel2D();
-
-		add(leftPanel, BorderLayout.WEST);
-		add(rightPanel, BorderLayout.CENTER);
-	}
 	
+	private void initGUI() {
+	    setLayout(new GridBagLayout());
+
+	    JPanel leftPanel = createLeftPanel();
+	    JPanel rightPanel = createRightPanel2D();
+	    int[][] M=new int[filas][columnas];
+	    JPanel matrixPanel = createMatrixPanel(M, 8, 8);
+
+	    
+	    gbc.gridx = 0;
+	    gbc.gridy = 0;
+	    gbc.weightx = 0.125; // Make the left panel smaller
+	    gbc.weighty = 1.0; // Equal vertical weight for all panels
+	    gbc.fill = GridBagConstraints.BOTH; // Fill both horizontal and vertical space
+
+	    add(leftPanel, gbc);
+
+	    gbc.gridx = 1;
+	    gbc.weightx = 0.4; // Make the center panel larger
+	    add(rightPanel, gbc);
+
+	    gbc.gridx = 2;
+	    gbc.weightx = 0.4; // Make the right panel larger
+	    add(matrixPanel, gbc);
+	}
 	
 	private JPanel createLeftPanel() {
 		JPanel leftPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
-		leftPanel.setPreferredSize(new Dimension(375, 600));
+		leftPanel.setPreferredSize(new Dimension(300, 600));
 
 		String[] funciones = { 	"Aeropuerto 1",
 								"Aeropuerto 2",
 								"Aeropuerto 3"};
 		
-		String[] seleccion = { "Ruleta",
-								"Torneo Deterministico",
-								"Torneo Probabilistico",
-								"Estocastico Universal1",
-								"Estocastico Universal2",
+		String[] seleccion = { 	"Ruleta",
+								"T. Deterministico",
+								"T. Probabilistico",
+								"Estocastico Univ",
 								"Truncamiento",
 								"Restos",
 								"Ranking"};
 		
-		String[] cruce = { 	"PMX",
-							"OX",
-							"OX-PP",
-							"CX",
-							"CO",
-							"Custom..."};
+		String[] cruce = { 		"Intercambio"};
 		
-		String[] mutacion = { 	"Insercion",
-								"Intercambio",
-								"Inversion",
-								"Heuristica",
-								"Custom..."};
+		String[] mutacion = { 	"Terminal",
+								"Funcional",
+								"Arbol",
+								"Permutacion",
+								"Subarbol",
+								"Hoist",
+								"Contraccion",
+								"Espansion"};
 
 		//elitismo_button = new BooleanSwitch();
 
@@ -129,9 +150,11 @@ public class ControlPanel extends JPanel {
 		seleccion_CBox = new JComboBox<>(seleccion);
 		cruce_CBox = new JComboBox<>(cruce);
 		mutacion_CBox = new JComboBox<>(mutacion);
+		
 		text_area = new JTextArea(2, 2);
-
 		text_area.append("Esperando una ejecucion...");
+		text_area2 = new JTextArea(2, 2);
+		text_area2.append("Esperando una ejecucion...");
 
 		run_button = new JButton();
 		run_button.setToolTipText("Run button");
@@ -164,12 +187,16 @@ public class ControlPanel extends JPanel {
 		gbc.gridy++;
 		leftPanel.add(new JLabel("  Prob. Mutacion:"), gbc);
 		gbc.gridy++;
-		leftPanel.add(new JLabel("  Funcion:"), gbc);
+		leftPanel.add(new JLabel("  Num. Filas:"), gbc);
+		gbc.gridy++;
+		leftPanel.add(new JLabel("  Num. Columnas:"), gbc);
 		gbc.gridy++;
 		leftPanel.add(new JLabel("  Elitismo:"), gbc);
 		gbc.anchor = GridBagConstraints.EAST;
 		gbc.gridy++;
-		leftPanel.add(new JLabel("Valor optimo:  "), gbc);
+		leftPanel.add(new JLabel("Valor optimo:"), gbc);
+		gbc.gridy++;
+		leftPanel.add(new JLabel("Arbol:"), gbc);
 		gbc.anchor = GridBagConstraints.WEST;
 
 		gbc.gridx++;
@@ -189,11 +216,16 @@ public class ControlPanel extends JPanel {
 		gbc.gridy++;
 		leftPanel.add(prob_mut, gbc);
 		gbc.gridy++;
-		leftPanel.add(funcion_CBox, gbc);
+		leftPanel.add(filas_text, gbc);
+		gbc.gridy++;
+		leftPanel.add(columnas_text, gbc);
 		gbc.gridy++;
 		leftPanel.add(elitismo, gbc); //elitismo_button
 		gbc.gridy++;
 		leftPanel.add(text_area, gbc);
+		gbc.gridy+=2;
+		gbc.gridx--;
+		leftPanel.add(text_area2, gbc);
 
 		gbc.anchor = GridBagConstraints.SOUTH; // Align components to the left
 		gbc.gridy++;
@@ -207,7 +239,7 @@ public class ControlPanel extends JPanel {
 	private JPanel createRightPanel2D() {
 		JPanel rightPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		rightPanel.setPreferredSize(new Dimension(425, 600));
+		rightPanel.setPreferredSize(new Dimension(450, 600));
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1.0; // Mas espacio horizontal
@@ -223,6 +255,36 @@ public class ControlPanel extends JPanel {
 		rightPanel.add(plot2D, gbc);
 
 		return rightPanel;
+	}
+	
+	
+	
+	private JPanel createMatrixPanel(int[][] M,int rows, int cols) {
+		int gap=2;
+		int borderGap = 10;
+		JPanel gridPanel = new JPanel(new GridLayout(rows, cols, gap, gap));
+        gridPanel.setBorder(new EmptyBorder(borderGap, borderGap, borderGap, borderGap)); // Add empty border
+        gridPanel.setPreferredSize(new Dimension(450, 600));
+        Color lightGreen = Color.decode("#00CC66"); // Light green color
+        Color darkGreen = Color.decode("#028A46"); // Dark green color
+
+        
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                JPanel square = new JPanel();
+                //square.setPreferredSize(new Dimension(50, 50)); // Adjust size as needed
+
+                // Alternate colors for the squares
+                if (M[i][j]==1) {
+                    square.setBackground(lightGreen);
+                } else {
+                    square.setBackground(darkGreen);
+                }
+                gridPanel.add(square);
+            }
+        }
+        return gridPanel;
 	}
 
 	public void actualiza_Grafico(double[][] vals, Funcion f,Individuo mejor_individuo) {
@@ -249,6 +311,23 @@ public class ControlPanel extends JPanel {
 
 		//plot2D.addLegend("Mejor Absoluto");
 		plot2D.addLegend("SOUTH");
+		
+		// TODO
+		// Actualiza la matriz
+		
+		int[][] M=new int[filas][columnas];
+		
+		for(int i=0;i<filas;i++) {
+			for(int j=0;j<columnas;j++) {
+				M[i][j]=1;
+			}
+		}
+		
+		JPanel matrixPanel = createMatrixPanel(M, filas, columnas);
+		
+		gbc.gridx = 2;
+	    gbc.weightx = 0.4; // Make the right panel larger
+	    add(matrixPanel, gbc);
 		
 		
 		/*

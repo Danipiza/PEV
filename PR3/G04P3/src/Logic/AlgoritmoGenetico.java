@@ -63,7 +63,12 @@ public class AlgoritmoGenetico {
 	PriorityQueue<Node> elitQ;
 
 	private ControlPanel ctrl;
-
+	
+	// Nuevos
+	private int filas;
+	private int columnas;
+	
+	
 	
 
 	public AlgoritmoGenetico(ControlPanel ctrl) {
@@ -85,7 +90,9 @@ public class AlgoritmoGenetico {
 
 		seleccion = new Seleccion(tam_poblacion, tam_elite);
 		cruce = new Cruce(prob_cruce, tam_elite);
-		mutacion = new Mutacion(prob_mut, funcion);
+		mutacion = new Mutacion(prob_mut, tam_elite, funcion);
+		if(funcion_idx==0) filas=columnas=8;
+		funcion = new Funcion(filas, columnas);
 
 
 		mejor_total = Double.MAX_VALUE;
@@ -104,7 +111,24 @@ public class AlgoritmoGenetico {
 		// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 		progreso_generaciones = new double[4][generaciones + 1];
 		generacionActual = 0;
-
+		
+		Individuo[] poblacion=new Individuo[1];
+		Individuo ind = new Individuo(1,2);
+		poblacion[0]=ind;
+		System.out.println(ind);
+		/*System.out.println("Casilla: " + ind.gen.raiz.getX() + ", " + ind.gen.raiz.getY());
+		System.out.println("Operaciones:");
+		for(String x: ind.operaciones) {
+			System.out.print(x+", ");
+		}
+		System.out.println("Funciones= "+ ind.tamFunciones+", Terminales= "+ind.tamTerminales);
+		System.out.println();
+		System.out.println(funcion.fitness(ind));*/
+		poblacion=mutacion.funcional(poblacion);
+		System.out.println(poblacion[0]);
+		
+		
+		
 		//init_poblacion();
 
 		//evaluacion_poblacion();
