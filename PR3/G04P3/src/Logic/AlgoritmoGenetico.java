@@ -136,7 +136,7 @@ public class AlgoritmoGenetico {
 		int cont=1;
 		while (generaciones-- != 0) {
 			
-			/*selec = seleccion_poblacion();
+			selec = seleccion_poblacion();
 			try {
 				poblacion = cruce_poblacion(selec);
 				poblacion = mutacion_poblacion();
@@ -149,7 +149,7 @@ public class AlgoritmoGenetico {
 				fallo = e.getMessage();
 				break;
 			}
-			evaluacion_poblacion();*/
+			evaluacion_poblacion();
 			cont++;
 		}
 
@@ -190,7 +190,7 @@ public class AlgoritmoGenetico {
 	private void init_poblacion() {
 		poblacion = new Individuo[tam_poblacion];
 		for (int i = 0; i < tam_poblacion; i++) {
-			
+			poblacion[i] = new Individuo(0, 4);
 		}
 
 	}
@@ -342,14 +342,16 @@ public class AlgoritmoGenetico {
 				ret = mutacion.funcional(poblacion);
 				break;
 			case 2:
-				ret = mutacion.arbol(poblacion);
+				ret = mutacion.permutacion(poblacion);
 				break;
 			case 3:
 				ret = mutacion.permutacion(poblacion);
 				break;
 			case 4:
-				// TODO MAS?
+				ret = mutacion.hoist(poblacion);
 				break;
+			case 6:
+				ret = mutacion.contraccion(poblacion);
 			default:
 				break;
 		}

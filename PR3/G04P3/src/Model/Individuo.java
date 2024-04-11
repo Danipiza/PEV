@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.Simbolos.Exp;
+import Model.Simbolos.Funciones.Salta;
+import Utils.Pair;
 
 public class Individuo {
 	
@@ -11,14 +13,20 @@ public class Individuo {
 	public double fitness;
 	// A: avanza, I: izquierda, SXY: salto x y
 	public List<String> operaciones;
-	public int tamFunciones;
-	public int tamTerminales;
+	public List<Pair<Exp,Integer>> funcionales;
+	public List<Pair<Exp,Integer>> terminales;
 	
 	public Individuo(int modo, int profundidad) {
-		this.tamTerminales=0;
 		this.gen=new Arbol(modo, profundidad);
 		this.fitness=0;
 		operaciones=new ArrayList<String>();
+
+		funcionales = new ArrayList<Pair<Exp,Integer>>();
+		Exp invisible = new Salta();
+		invisible.setHijo(0, gen.raiz);
+		funcionales.add(new Pair<>(invisible, 0));
+		terminales = new ArrayList<Pair<Exp,Integer>>();
+
 		recorreArbol(gen.raiz);
 	}
 	
@@ -31,16 +39,14 @@ public class Individuo {
 	}
 	
 	public void recorreArbol(Exp nodo) {		
-		int hijos=nodo.getTam();		
-		for(int i=0;i<hijos;i++) {					
+		for(int i=0;i<nodo.getTam();i++) {				
 			recorreArbol(nodo.getHijo(i));
+			if(nodo.getHijo(i).getTam() == 0) terminales.add(new Pair<>(nodo.getHijo(i), i));
+			else funcionales.add(new Pair<>(nodo.getHijo(i), i));	
 		}	
 		
-		if(nodo.getOperacion().equals("Avanza")) operaciones.add("A");
-		if(nodo.getOperacion().equals("Izquierda")) operaciones.add("I");
-		else if(nodo.getOperacion().equals("Salta")) operaciones.add("S"+nodo.getX()+nodo.getY());
-		if(hijos==0) this.tamTerminales++;	
-		else this.tamFunciones++;
+		operaciones.add(nodo.getOp());
+		
 	}
 	
 	public void printIndividuo() {

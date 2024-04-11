@@ -36,8 +36,15 @@ public class Mutacion {
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
 			act=new Individuo(poblacion[i]);		
 			if(Math.random()<p) {
-				int tmp=random.nextInt(act.tamTerminales);				
-				dfs_terminal(0,tmp,act.gen.raiz);
+				
+				int rand=random.nextInt(3);
+				Exp newTerminal;
+				if(rand==0) newTerminal = new Avanza();
+				if(rand==1) newTerminal = new Constante();
+				else newTerminal = new Izquierda();
+
+				int tmp=random.nextInt(act.terminales.size());		
+				act.terminales.get(tmp).getKey().setHijo(act.terminales.get(tmp).getValue(), newTerminal);
 			}
 			ret[i]=act;
 		}
@@ -46,47 +53,6 @@ public class Mutacion {
 	}
 	
 	
-	public int dfs_terminal(int cont, int rand, Exp nodo) {		
-		
-		if(nodo.getHijo(0).getTam()==0) {
-			if (cont==rand) {
-		    	int tmp=random.nextInt(3);
-		    	if(tmp==0) nodo.setHijo(0, new Avanza());
-	    		if(tmp==1) nodo.setHijo(0, new Constante());
-	    		else nodo.setHijo(0, new Izquierda());
-		        return -1;
-		    }
-		    cont++;			
-		}
-		else {
-			int tmp=dfs_terminal(cont,rand, nodo.getHijo(0));
-			if (tmp==-1) return -1;
-			else cont+=tmp;
-		}
-		
-		if(nodo.getTam()==2&&nodo.getHijo(1).getTam()==0) {
-			if (cont==rand) {
-		    	int tmp=random.nextInt(3);
-		    	if(tmp==0) nodo.setHijo(1, new Avanza());
-	    		if(tmp==1) nodo.setHijo(1, new Constante());
-	    		else nodo.setHijo(1, new Izquierda());
-		        return -1;
-		    }
-		    cont++;			
-		}
-		else {			
-			if(nodo.getTam()==2) {
-				int tmp=dfs_terminal(cont,rand, nodo.getHijo(1));
-				if(tmp==-1) return -1;
-				cont+=tmp;
-			}
-			
-		}
-		
-		return cont;
-	}
-	
-	// TODO
 	public Individuo[] funcional(Individuo[] poblacion) {
 		int tam_poblacion=poblacion.length;
 		Individuo[] ret = new Individuo[tam_poblacion];
@@ -96,8 +62,20 @@ public class Mutacion {
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
 			act=new Individuo(poblacion[i]);		
 			//if(Math.random()<p) {
-				int tmp=0;
-				dfs_funcional(0, tmp, act.gen.raiz, null, -1);
+				
+				int tmp=random.nextInt(act.funcionales.size());
+				Exp funcional = act.funcionales.get(tmp).getKey().getHijo(act.funcionales.get(tmp).getValue());
+				
+				Exp newFuncional = null;
+				if (funcional.getOperacion().equals("Suma")) newFuncional = new Progn();
+				else if (funcional.getOperacion().equals("Progn")) newFuncional = new Progn();
+				if (newFuncional != null) {
+					newFuncional.setHijo(0, funcional.getHijo(0));
+					newFuncional.setHijo(1, funcional.getHijo(1));
+
+					act.funcionales.get(tmp).getKey().setHijo(act.funcionales.get(tmp).getValue(), funcional);
+				}
+				
 			//}
 			ret[i]=act;
 		}
@@ -105,90 +83,23 @@ public class Mutacion {
 		return ret;
 	}
 	
-	public Exp funcionalAux(Exp nodo) {
-		int n=nodo.getTam();
-		Exp[] hijos=new Exp[n];
-		for(int i=0;i<n;i++) hijos[i]=nodo.getHijo(i);
-		
-		Exp nuevo=null;
-		int func=random.nextInt(3);
-		if(func==0) nuevo=new Progn();
-		else if(func==1) nuevo=new Salta();
-		else nuevo=new Suma();
-		
-		return nuevo;
-	}
 	
-	public int dfs_funcional(int cont, int rand, Exp nodo, Exp padre, int nuevoHijo) {		
-		
-		if (cont==rand) {
-			int n=nodo.getTam();
-			Exp[] hijos=new Exp[n];
-			for(int i=0;i<n;i++) hijos[i]=nodo.getHijo(i);
-			
-			if(nuevoHijo==-1) {
-				int func=random.nextInt(3);
-				if(func==0) nodo=new Progn();
-				else if(func==1) nodo=new Salta();
-				else nodo=new Suma();
-				
-				for(int i=0;i<n;i++) nodo.setHijo(i, hijos[i]);				
-			}
-			else {
-				Exp nuevo=null;
-				int func=random.nextInt(3);
-				if(func==0) nuevo=new Progn();
-				else if(func==1) nuevo=new Salta();
-				else nuevo=new Suma();
-				
-				for(int i=0;i<n;i++) nuevo.setHijo(i, hijos[i]);
-				
-				padre.setHijo(nuevoHijo, nuevo);
-			}
-			return -1;
-			
-		}
-		cont++;
-		
-		if(nodo.getHijo(0).getTam()!=0) {
-		    int tmp=dfs_funcional(cont,rand, nodo.getHijo(0), nodo, 0);
-		    if (tmp==-1) return -1;
-		    else cont+=tmp;
-		}			
-		
-
-		if(nodo.getTam()==2&&nodo.getHijo(1).getTam()!=0) {
-		    int tmp=dfs_funcional(cont,rand, nodo.getHijo(1),nodo, 1);
-		    if (tmp==-1) return -1;
-		    else cont+=tmp;
-		}
-		return cont;
-	}
-	
-	// TODO
-	public Individuo[] arbol(Individuo[] poblacion) {
-		int tam_poblacion=poblacion.length;
-		Individuo[] ret = new Individuo[tam_poblacion];
-		
-		
-		Individuo act;
-		for (int i=0;i<tam_poblacion-tam_elite;i++) {
-			
-		}
-		
-		return ret;
-	}
-	
-	
-	// TODO
 	public Individuo[] permutacion(Individuo[] poblacion) {
 		int tam_poblacion=poblacion.length;
 		Individuo[] ret = new Individuo[tam_poblacion];
 		
 		
-		Individuo act;
+		Individuo act = null;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
-			
+			act=new Individuo(poblacion[i]);		
+			//if(Math.random()<p) {
+				int tmp=random.nextInt(act.funcionales.size());
+				Exp funcional = act.funcionales.get(tmp).getKey().getHijo(act.funcionales.get(tmp).getValue());
+				Exp temp = funcional.getHijo(0);
+				funcional.setHijo(0, funcional.getHijo(1));
+				funcional.setHijo(1, temp);
+			//}
+			ret[i]=act;
 		}
 		
 		return ret;
@@ -201,10 +112,57 @@ public class Mutacion {
 		
 		Individuo act;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
+			act=new Individuo(poblacion[i]);		
+			//if(Math.random()<p) {
+				int tmp=random.nextInt(act.funcionales.size());
+				act.gen.raiz = act.funcionales.get(tmp).getKey().getHijo(act.funcionales.get(tmp).getValue());
+			//}
+			ret[i]=act;
+		}
+		
+		return ret;
+	}
+
+	public Individuo[] contraccion(Individuo[] poblacion) {
+		int tam_poblacion=poblacion.length;
+		Individuo[] ret = new Individuo[tam_poblacion];
+		
+		
+		Individuo act = null;
+		for (int i=0;i<tam_poblacion-tam_elite;i++) {
+			act=new Individuo(poblacion[i]);		
+			//if(Math.random()<p) {
+
+				int rand=random.nextInt(3);
+				Exp newExp;
+				if(rand==0) newExp = new Avanza();
+				if(rand==1) newExp = new Constante();
+				else newExp = new Izquierda();
+				
+				int tmp=random.nextInt(act.funcionales.size());
+				act.funcionales.get(tmp).getKey().setHijo(act.funcionales.get(tmp).getValue(), newExp);
+				
+				
+			//}
+			ret[i]=act;
+		}
+		
+		return ret;
+	}
+
+
+	public Individuo[] template(Individuo[] poblacion) {
+		int tam_poblacion=poblacion.length;
+		Individuo[] ret = new Individuo[tam_poblacion];
+		
+		
+		Individuo act;
+		for (int i=0;i<tam_poblacion-tam_elite;i++) {
 			
 		}
 		
 		return ret;
 	}
+
 
 }

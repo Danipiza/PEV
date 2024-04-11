@@ -28,7 +28,7 @@ public class Progn extends Exp {
     }
 
 	@Override
-	public void setHijo(int i, Exp hijo) { // Añade hijo
+	public void setHijo(int i, Exp hijo) { // Aï¿½ade hijo
 		this.ops[i]=hijo;	
 		this.putX(hijo.getX());
 		this.putY(hijo.getY());
@@ -38,5 +38,6 @@ public class Progn extends Exp {
 	public Exp getHijo(int i) {		
 		return ops[i];
 	}
+
 
 }

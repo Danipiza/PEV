@@ -10,7 +10,7 @@ public abstract class Exp {
 	public Exp() {}
 	
 	
-	public abstract void setHijo(int i, Exp hijo);	
+	public abstract void setHijo(int i, Exp hijo);
 	public abstract Exp getHijo(int i);
 	
 	public void putX(int x) { this.x=x; }
@@ -24,4 +24,15 @@ public abstract class Exp {
 	
 	public void putOperacion(String op) { this.operacion=op; }
 	public String getOperacion() { return this.operacion; }
+
+
+
+	public String getOp() {
+		if (this.operacion.equals("Salta")) {
+			return String.valueOf(this.operacion.charAt(0)) + x + y;
+		} else {
+			return String.valueOf(this.operacion.charAt(0));
+		}
+	}
+
 }

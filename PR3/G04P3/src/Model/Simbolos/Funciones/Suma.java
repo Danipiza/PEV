@@ -28,7 +28,7 @@ public class Suma extends Exp{
     }
 	
 	@Override
-	public void setHijo(int i, Exp hijo) { // Añade hijo
+	public void setHijo(int i, Exp hijo) { // Aï¿½ade hijo
 		this.ops[i]=hijo;	
 		this.putX((this.getX()+hijo.getX())%8);
 		this.putY((this.getY()+hijo.getY())%8);
@@ -38,6 +38,5 @@ public class Suma extends Exp{
 	public Exp getHijo(int i) {		
 		return ops[i];
 	}
-	
 
 }

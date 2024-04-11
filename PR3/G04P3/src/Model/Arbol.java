@@ -15,17 +15,22 @@ public class Arbol {
 		profMax=profundidad;
 		init_raiz();		
 		
+		inicializa_arbol(raiz, modo);
+	}
+
+	public void inicializa_arbol(Exp exp, int modo) {
 		switch (modo) {
-		case 0: { // CRECIENTE
-			creciente(raiz,0);
-			break;
-		}
-		case 1: { // COMPLETO
-			completo(raiz,0);
-			break;
-		}	
-		default:
-			System.out.println("Valor inexperado al crear arbol: " + modo);
+			case 0: { // CRECIENTE
+				creciente(exp,0);
+				break;
+			}
+			case 1: { // COMPLETO
+				completo(exp,0);
+				break;
+			}	
+			default: {
+				System.out.println("Valor inexperado al crear arbol: " + modo);
+			}
 		}
 	}
 	
