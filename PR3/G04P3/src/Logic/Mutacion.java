@@ -34,7 +34,8 @@ public class Mutacion {
 				
 		Individuo act=null;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
-			act=new Individuo(poblacion[i]);		
+			// TODO
+			act=poblacion[i];//new Individuo(poblacion[i]);		
 			if(Math.random()<p) {
 				
 				int rand=random.nextInt(3);

@@ -32,9 +32,11 @@ public class Cruce {
 
 		int i = 0;
 		Individuo ind1, ind2;
+
 		while (i < n) {
-			ind1 = new Individuo(selec[i]);
-			ind2 = new Individuo(selec[i+1]);
+			// TODO
+			ind1 = selec[i];//new Individuo(selec[i]);
+			ind2 = selec[i+1];//new Individuo(selec[i+1]);
 			if(Math.random()<p) { // Funcional
 
 				int rand1=(int)Math.random()*ind1.funcionales.size();

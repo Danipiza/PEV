@@ -50,13 +50,11 @@ public class Seleccion {
 		Individuo[] seleccionados = new Individuo[tam_seleccionados];
 
 		double randomFitness;
-		int indexMax, indexMin;
-		double max, min;
+		int indexMax;
+		double max;
 		for (int i = 0; i < tam_seleccionados; i++) {
 			max = Double.NEGATIVE_INFINITY;
-			min = Double.MAX_VALUE;
 			indexMax = -1;
-			indexMin = -1;
 			for (int j = 0; j < k; j++) {
 				int randomIndex = (int) (Math.random() * tam_poblacion);
 				randomFitness = poblacion[randomIndex].fitness;
@@ -64,14 +62,11 @@ public class Seleccion {
 					max = randomFitness;
 					indexMax = randomIndex;
 				} 
-				if (randomFitness < min) {
-					min = randomFitness;
-					indexMin = randomIndex;
-				}
 			}	
 			 
 			//seleccionados[i] = new IndividuoReal((opt ? poblacion[indexMax] : poblacion[indexMin]));
-			seleccionados[i] = new Individuo(poblacion[indexMin]);
+			// TODO
+			seleccionados[i] = poblacion[indexMax]; //new Individuo(poblacion[indexMin]);
 		}
 
 		return seleccionados;

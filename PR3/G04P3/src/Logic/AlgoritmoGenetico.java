@@ -28,12 +28,12 @@ public class AlgoritmoGenetico {
 	// Parametros interfaz
 	private int tam_poblacion;
 	private int generaciones;
+	private int ini_idx;
 	private int seleccion_idx;
 	private int cruce_idx;
 	private double prob_cruce;
 	private int mut_idx;
-	private double prob_mut;
-	private int funcion_idx;
+	private double prob_mut;	
 	private int num_genes;
 
 	// Init
@@ -65,6 +65,7 @@ public class AlgoritmoGenetico {
 	private ControlPanel ctrl;
 	
 	// Nuevos
+	private int profundidad;
 	private int filas;
 	private int columnas;
 	
@@ -78,24 +79,26 @@ public class AlgoritmoGenetico {
 	private void setValores(Valores valores) {
 		this.tam_poblacion = valores.tam_poblacion;
 		this.generaciones = valores.generaciones;
+		this.ini_idx = valores.ini_idx;
 		this.seleccion_idx = valores.seleccion_idx;
 		this.cruce_idx = valores.cruce_idx;
 		this.prob_cruce = valores.prob_cruce;
 		this.mut_idx = valores.mut_idx;
 		this.prob_mut = valores.prob_mut;
-		this.funcion_idx = valores.funcion_idx;
+		this.profundidad=valores.profundidad;
+		this.filas=valores.filas;
+		this.columnas=valores.columnas;
 		this.elitismo = valores.elitismo;
 
 		tam_elite = (int) (tam_poblacion * (elitismo / 100.0));
 
 		seleccion = new Seleccion(tam_poblacion, tam_elite);
 		cruce = new Cruce(prob_cruce, tam_elite);
-		mutacion = new Mutacion(prob_mut, tam_elite, funcion);
-		if(funcion_idx==0) filas=columnas=8;
+		mutacion = new Mutacion(prob_mut, tam_elite, funcion);		
 		funcion = new Funcion(filas, columnas);
 
 
-		mejor_total = Double.MAX_VALUE;
+		mejor_total = Double.MIN_VALUE;
 	}
 
 	public void ejecuta(Valores valores) {
@@ -106,16 +109,17 @@ public class AlgoritmoGenetico {
 
 		// ELITISMO
 		Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
-		elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
+		//elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
+		elitQ = new PriorityQueue<>(comparator);
 
 		// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 		progreso_generaciones = new double[4][generaciones + 1];
 		generacionActual = 0;
 		
-		Individuo[] poblacion=new Individuo[1];
+		/*Individuo[] poblacion=new Individuo[1];
 		Individuo ind = new Individuo(1,2);
 		poblacion[0]=ind;
-		System.out.println(ind);
+		System.out.println(ind);*/
 		/*System.out.println("Casilla: " + ind.gen.raiz.getX() + ", " + ind.gen.raiz.getY());
 		System.out.println("Operaciones:");
 		for(String x: ind.operaciones) {
@@ -124,14 +128,14 @@ public class AlgoritmoGenetico {
 		System.out.println("Funciones= "+ ind.tamFunciones+", Terminales= "+ind.tamTerminales);
 		System.out.println();
 		System.out.println(funcion.fitness(ind));*/
-		poblacion=mutacion.funcional(poblacion);
-		System.out.println(poblacion[0]);
+		//poblacion=mutacion.funcional(poblacion);
+		//System.out.println(poblacion[0]);
 		
 		
 		
-		//init_poblacion();
+		init_poblacion();
 
-		//evaluacion_poblacion();
+		evaluacion_poblacion();
 
 		int cont=1;
 		while (generaciones-- != 0) {
@@ -139,7 +143,7 @@ public class AlgoritmoGenetico {
 			selec = seleccion_poblacion();
 			try {
 				poblacion = cruce_poblacion(selec);
-				poblacion = mutacion_poblacion();
+				//poblacion = mutacion_poblacion();
 
 				// ELITISMO
 				while (elitQ.size() != 0) {
@@ -154,7 +158,7 @@ public class AlgoritmoGenetico {
 		}
 
 		if (fallo.equals("")) { // TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
-			ctrl.actualiza_Grafico(progreso_generaciones, funcion, mejor_individuo);
+			ctrl.actualiza_Grafico(progreso_generaciones, funcion, mejor_individuo,filas,columnas);
 		} else {
 			ctrl.actualiza_fallo(fallo);
 		}
@@ -189,10 +193,49 @@ public class AlgoritmoGenetico {
 	
 	private void init_poblacion() {
 		poblacion = new Individuo[tam_poblacion];
-		for (int i = 0; i < tam_poblacion; i++) {
-			poblacion[i] = new Individuo(0, 4);
+		int cont=0;
+		if(ini_idx==2) { // RAMPED & HALF			
+			int D=profundidad-1;
+			int tam=tam_poblacion/D;
+			int mod=tam_poblacion%D;	
+			int mod2=tam%2;
+			
+			
+			
+			if(mod!=0) {
+				mod2=(tam+1)%2;
+				for (int d=profundidad;d>profundidad-mod;d--) {
+					for(int i=0;i<(tam/2)+1;i++) {						
+						poblacion[cont++]=new Individuo(0, d);
+						poblacion[cont++]=new Individuo(1, d);
+					}
+					if(mod2==1) poblacion[cont++]=new Individuo(1, d);
+				}
+				mod2=tam%2;
+				for (int d=profundidad-mod;d>=2;d--) {
+					for(int i=0;i<tam/2;i++) {						
+						poblacion[cont++]=new Individuo(0, d);
+						poblacion[cont++]=new Individuo(1, d);
+					}
+					if(mod2==1) poblacion[cont++]=new Individuo(1, d);
+				}
+			}
+			else {				
+				for (int d=2;d<=profundidad;d++) {					
+					for(int i=0;i<tam/2;i++) {						
+						poblacion[cont++]=new Individuo(0, d);
+						poblacion[cont++]=new Individuo(1, d);
+					}
+					if(mod2==1) poblacion[cont++]=new Individuo(1, d);
+				}
+			}
+			
 		}
-
+		else { // COMPLETO o CRECIENTE			
+			for (int i = 0; i < tam_poblacion; i++) {
+				poblacion[i]=new Individuo(ini_idx, profundidad);
+			}
+		}		
 	}
 
 	private void evaluacion_poblacion() {
@@ -200,8 +243,8 @@ public class AlgoritmoGenetico {
 		prob_seleccion = new double[tam_poblacion];
 		prob_seleccionAcum = new double[tam_poblacion];
 
-		double mejor_generacion = (Double.MAX_VALUE);
-		double peor_generacion = (Double.MIN_VALUE);
+		double mejor_generacion = (Double.MIN_VALUE);
+		double peor_generacion = (Double.MAX_VALUE);
 
 		double tmp;
 
@@ -209,7 +252,7 @@ public class AlgoritmoGenetico {
 		double fit;
 		int indexMG = 0;
 		for (int i = 0; i < tam_poblacion; i++) {
-			fit = 0;//funcion.fitness(poblacion[i].gen.v); // TODO
+			fit = funcion.fitness(poblacion[i]); // TODO
 			poblacion[i].fitness = fit;
 			fitness_total += fit;
 
@@ -220,7 +263,7 @@ public class AlgoritmoGenetico {
 				elitQ.add(new Node(fit, poblacion[i]));
 			}
 
-			if (mejor_generacion > fit) {
+			if (mejor_generacion < fit) {
 				mejor_generacion = fit;
 				indexMG = i;
 			}
@@ -228,10 +271,11 @@ public class AlgoritmoGenetico {
 			peor_generacion = funcion.cmpPeor(peor_generacion, fit);
 		}
 
-		if (mejor_total > mejor_generacion) {
+		if (mejor_total < mejor_generacion) {
 			mejor_total = mejor_generacion;
 			// mejor_individuo=poblacion[indexMG];
-			mejor_individuo = new Individuo(poblacion[indexMG]);
+			// TODO
+			mejor_individuo = poblacion[indexMG];//new Individuo(poblacion[indexMG]);
 		}
 		// mejor_total = funcion.cmp(mejor_total, mejor_generacion);
 		

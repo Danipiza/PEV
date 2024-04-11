@@ -14,8 +14,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
 import Logic.AlgoritmoGenetico;
@@ -42,14 +45,16 @@ public class ControlPanel extends JPanel {
 	//private BooleanSwitch elitismo_button;
 
 	private JTextField tam_poblacion;
-	private JTextField generaciones;
+	private JTextField generaciones;	
 	private JTextField prob_cruce;
 	private JTextField prob_mut;
 	private JTextField elitismo;
 	private JTextField filas_text;
 	private JTextField columnas_text;
+	
+	private JSpinner profundidad;
 
-	private JComboBox<String> funcion_CBox;
+	private JComboBox<String> ini_CBox;
 	private JComboBox<String> seleccion_CBox;
 	private JComboBox<String> cruce_CBox;
 	private JComboBox<String> mutacion_CBox;
@@ -78,6 +83,10 @@ public class ControlPanel extends JPanel {
 		filas_text = new JTextField("8", 11);
 		columnas_text= new JTextField("8", 11);
 		
+		
+		SpinnerModel spinnerModel = new SpinnerNumberModel(4, 2, 5, 1); // Default value: 4, Min: 2, Max: 5, Step: 1
+        profundidad = new JSpinner(spinnerModel);
+		
 		gbc = new GridBagConstraints();
 		
 		// TODO
@@ -95,7 +104,9 @@ public class ControlPanel extends JPanel {
 	    JPanel leftPanel = createLeftPanel();
 	    JPanel rightPanel = createRightPanel2D();
 	    int[][] M=new int[filas][columnas];
-	    JPanel matrixPanel = createMatrixPanel(M, 8, 8);
+	    this.filas=8;
+	    this.columnas=8;
+	    JPanel matrixPanel = createMatrixPanel(M);
 
 	    
 	    gbc.gridx = 0;
@@ -121,9 +132,9 @@ public class ControlPanel extends JPanel {
 		gbc.insets = new Insets(5, 5, 5, 5);
 		leftPanel.setPreferredSize(new Dimension(300, 600));
 
-		String[] funciones = { 	"Aeropuerto 1",
-								"Aeropuerto 2",
-								"Aeropuerto 3"};
+		String[] inicializacions={"Completa",
+								  "Creciente",
+								  "Ramped & Half"};
 		
 		String[] seleccion = { 	"Ruleta",
 								"T. Deterministico",
@@ -146,7 +157,7 @@ public class ControlPanel extends JPanel {
 
 		//elitismo_button = new BooleanSwitch();
 
-		funcion_CBox = new JComboBox<>(funciones);
+		ini_CBox = new JComboBox<>(inicializacions);
 		seleccion_CBox = new JComboBox<>(seleccion);
 		cruce_CBox = new JComboBox<>(cruce);
 		mutacion_CBox = new JComboBox<>(mutacion);
@@ -177,6 +188,10 @@ public class ControlPanel extends JPanel {
 		gbc.gridy++;
 		leftPanel.add(new JLabel("  Num. Generaciones:"), gbc);
 		gbc.gridy++;
+		leftPanel.add(new JLabel("  Inicializacion:"), gbc);
+		gbc.gridy++; 
+		leftPanel.add(new JLabel("  Profundidad:"), gbc);
+		gbc.gridy++;
 		leftPanel.add(new JLabel("  Metodo de Seleccion:"), gbc);
 		gbc.gridy++;
 		leftPanel.add(new JLabel("  Metodo de Cruce:"), gbc);
@@ -201,10 +216,13 @@ public class ControlPanel extends JPanel {
 
 		gbc.gridx++;
 		gbc.gridy = 0;
-		// leftPanel.add(text_area, gbc);
-		/* gbc.gridy++; */ leftPanel.add(tam_poblacion, gbc);
+		leftPanel.add(tam_poblacion, gbc);
 		gbc.gridy++;
 		leftPanel.add(generaciones, gbc);
+		gbc.gridy++;
+		leftPanel.add(ini_CBox, gbc);
+		gbc.gridy++;
+		leftPanel.add(profundidad, gbc);
 		gbc.gridy++;
 		leftPanel.add(seleccion_CBox, gbc);
 		gbc.gridy++;
@@ -259,10 +277,10 @@ public class ControlPanel extends JPanel {
 	
 	
 	
-	private JPanel createMatrixPanel(int[][] M,int rows, int cols) {
+	private JPanel createMatrixPanel(int[][] M) {
 		int gap=2;
 		int borderGap = 10;
-		JPanel gridPanel = new JPanel(new GridLayout(rows, cols, gap, gap));
+		JPanel gridPanel = new JPanel(new GridLayout(this.filas, this.columnas, gap, gap));
         gridPanel.setBorder(new EmptyBorder(borderGap, borderGap, borderGap, borderGap)); // Add empty border
         gridPanel.setPreferredSize(new Dimension(450, 600));
         Color lightGreen = Color.decode("#00CC66"); // Light green color
@@ -270,8 +288,8 @@ public class ControlPanel extends JPanel {
 
         
         
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < this.filas; i++) {
+            for (int j = 0; j < this.columnas; j++) {
                 JPanel square = new JPanel();
                 //square.setPreferredSize(new Dimension(50, 50)); // Adjust size as needed
 
@@ -287,9 +305,12 @@ public class ControlPanel extends JPanel {
         return gridPanel;
 	}
 
-	public void actualiza_Grafico(double[][] vals, Funcion f,Individuo mejor_individuo) {
+	public void actualiza_Grafico(double[][] vals, Funcion f,Individuo mejor_individuo, int filas, int columnas) {
 		plot2D.removeAllPlots();
-
+		
+		this.filas=filas;
+		this.columnas=columnas;
+		
 		double[] x = new double[vals[0].length];
 		for (int i = 0; i < vals[0].length; i++) {
 			x[i] = i;
@@ -307,7 +328,7 @@ public class ControlPanel extends JPanel {
 		// Customize the plot (optional)
 		plot2D.getAxis(0).setLabelText("Generacion");
 		plot2D.getAxis(1).setLabelText("Fitness");
-		plot2D.setFixedBounds(1, 0, vals[2][0]); // Fix Y-axis bounds
+		plot2D.setFixedBounds(1, 0,filas*columnas); // Fix Y-axis bounds
 
 		//plot2D.addLegend("Mejor Absoluto");
 		plot2D.addLegend("SOUTH");
@@ -315,32 +336,25 @@ public class ControlPanel extends JPanel {
 		// TODO
 		// Actualiza la matriz
 		
-		int[][] M=new int[filas][columnas];
+		int[][] M=f.matrix(mejor_individuo);
 		
-		for(int i=0;i<filas;i++) {
-			for(int j=0;j<columnas;j++) {
-				M[i][j]=1;
-			}
-		}
-		
-		JPanel matrixPanel = createMatrixPanel(M, filas, columnas);
+		JPanel matrixPanel = createMatrixPanel(M);
 		
 		gbc.gridx = 2;
 	    gbc.weightx = 0.4; // Make the right panel larger
 	    add(matrixPanel, gbc);
 		
 		
-		/*
-		String cromosoma="";
+		
+		/*String cromosoma="";
 		int i=0;
 		for(int a: mejor_individuo.gen.v) {
 			cromosoma+=a+1 + " ";
 			i++;
 			if(i%10==0) cromosoma+="\n";
-		}
-		text_area.setText(	"" + mejor_individuo.fitness+"\n"
-				+cromosoma);
-		*/
+		}*/
+		text_area.setText("" + mejor_individuo.fitness);
+		
 		
 			
 	}
@@ -358,14 +372,18 @@ public class ControlPanel extends JPanel {
 	}
 
 	private void setValores() {
-		valores = new Valores(Integer.parseInt(tam_poblacion.getText()),
+		valores = new Valores(
+				Integer.parseInt(tam_poblacion.getText()),
 				Integer.parseInt(generaciones.getText()),
+				ini_CBox.getSelectedIndex(),
+				(int) profundidad.getValue(),
 				seleccion_CBox.getSelectedIndex(),
 				cruce_CBox.getSelectedIndex(),
 				Double.parseDouble(prob_cruce.getText()),
 				mutacion_CBox.getSelectedIndex(),
 				Double.parseDouble(prob_mut.getText()),
-				funcion_CBox.getSelectedIndex(),
+				Integer.parseInt(filas_text.getText()),
+				Integer.parseInt(columnas_text.getText()),
 				Integer.parseInt(elitismo.getText()));
 	}
 

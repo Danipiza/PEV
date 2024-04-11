@@ -45,7 +45,13 @@ public class Individuo {
 			else funcionales.add(new Pair<>(nodo.getHijo(i), i));	
 		}	
 		
-		operaciones.add(nodo.getOp());
+		if(nodo.getOperacion().equals("Avanza")) operaciones.add("A");
+		if(nodo.getOperacion().equals("Izquierda")) operaciones.add("I");
+		else if(nodo.getOperacion().equals("Salta")) operaciones.add("S"+nodo.getX()+nodo.getY());
+		
+		// NO HAY QUE AÑADIR TODAS LOS NODOS, SOLO LOS QUE CONSUMEN TICKS
+		// AVANZA IZQUIERDA Y SALTA
+		//operaciones.add(nodo.getOp());  
 		
 	}
 	
