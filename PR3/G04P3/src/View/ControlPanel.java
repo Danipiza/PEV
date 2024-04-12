@@ -24,6 +24,7 @@ import javax.swing.border.EmptyBorder;
 import Logic.AlgoritmoGenetico;
 import Logic.Funcion;
 import Model.Individuo;
+import Model.IndividuoArbol;
 import Model.Valores;
 //import Utils.BooleanSwitch;
 import Utils.Pair;

@@ -4,15 +4,20 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import Model.Individuo;
+import Model.IndividuoArbol;
+import Model.IndividuoGramatica;
+import Model.Individuo;
 import Utils.Pair;
 
 public class Seleccion {
 	private int tam_poblacion;
 	private int tam_elite;
+	private int ind_modo;
 	
-	public Seleccion(int _tam_poblacion, int tam_elite) {
+	public Seleccion(int _tam_poblacion, int tam_elite, int ind_modo) {
 		this.tam_poblacion = _tam_poblacion;
 		this.tam_elite = tam_elite;
+		this.ind_modo=ind_modo;
 	}
 
 	
@@ -40,14 +45,17 @@ public class Seleccion {
 		for (int i = 0; i < tam_seleccionados; i++) {
 			rand = Math.random();		
 			
-			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(rand, prob_acumulada)]);
+			if(ind_modo==0) seleccionados[i] = new IndividuoArbol((IndividuoArbol) poblacion[busquedaBinaria(rand, prob_acumulada)]);
+			else seleccionados[i]=new IndividuoGramatica((IndividuoGramatica) poblacion[busquedaBinaria(rand, prob_acumulada)]);
 		}
 
 		return seleccionados;
 	}
 
 	public Individuo[] torneoDeterministico(Individuo[] poblacion, int k, int tam_seleccionados) {
-		Individuo[] seleccionados = new Individuo[tam_seleccionados];
+		Individuo[] seleccionados;
+		
+		seleccionados= new IndividuoArbol[tam_seleccionados];
 
 		double randomFitness;
 		int indexMax;
@@ -66,7 +74,10 @@ public class Seleccion {
 			 
 			//seleccionados[i] = new IndividuoReal((opt ? poblacion[indexMax] : poblacion[indexMin]));
 			// TODO
-			seleccionados[i] = poblacion[indexMax]; //new Individuo(poblacion[indexMin]);
+			IndividuoArbol indAux = (IndividuoArbol) poblacion[indexMax]; //new Individuo(poblacion[indexMin]);
+			indAux.recorreArbol(indAux.gen.raiz);
+			seleccionados[i] = indAux;
+			
 		}
 
 		return seleccionados;
@@ -97,7 +108,8 @@ public class Seleccion {
 			}	
 			 
 			//seleccionados[i] = new IndividuoReal((opt && Math.random() <= p || !opt && Math.random() > p ? poblacion[indexMax] : poblacion[indexMin]));
-			seleccionados[i] = new Individuo(poblacion[indexMin]);	
+			if(ind_modo==0) seleccionados[i] = new IndividuoArbol((IndividuoArbol) poblacion[indexMin]);
+			else seleccionados[i] = new IndividuoGramatica((IndividuoGramatica) poblacion[indexMin]);
 		}
 
 		return seleccionados;
@@ -108,7 +120,8 @@ public class Seleccion {
 		
 		double incr = 1.0 / tam_seleccionados, rand = Math.random() * incr;
 		for (int i = 0; i < tam_seleccionados; i++) {
-			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(rand, prob_acumulada)]);
+			if(ind_modo==0) seleccionados[i] = new IndividuoArbol((IndividuoArbol) poblacion[busquedaBinaria(rand, prob_acumulada)]);
+			else seleccionados[i] = new IndividuoGramatica((IndividuoGramatica) poblacion[busquedaBinaria(rand, prob_acumulada)]);
 			
 			rand += incr;
 		}
@@ -123,7 +136,8 @@ public class Seleccion {
 		for (int i = 0; i < tam_seleccionados; i++) {
 			double x = (rand + i) / tam_seleccionados;
 			
-			seleccionados[i] = new Individuo(poblacion[busquedaBinaria(x, prob_acumulada)]);
+			if(ind_modo==0) seleccionados[i] = new IndividuoArbol((IndividuoArbol) poblacion[busquedaBinaria(x, prob_acumulada)]);
+			else seleccionados[i] = new IndividuoGramatica((IndividuoGramatica) poblacion[busquedaBinaria(x, prob_acumulada)]);
 		}
 
 		return seleccionados;
@@ -146,7 +160,8 @@ public class Seleccion {
 	
 		for (int i = 0; i < (tam_seleccionados) * trunc; i++) {			
 			for (int j = 0; j < num && x<tam_seleccionados; j++) {
-				seleccionados[x++] = new Individuo(pairs[n-i].getKey());
+				if(ind_modo==0) seleccionados[x++] = new IndividuoArbol((IndividuoArbol)pairs[n-i].getKey());
+				else seleccionados[x++] = new IndividuoGramatica((IndividuoGramatica) pairs[n-i].getKey());
 			}
 		}
 		
@@ -162,7 +177,8 @@ public class Seleccion {
 			aux = prob_seleccion[i] * (tam_seleccionados);
 			num = (int) aux;
 			for (int j = 0; j < num; j++) {
-				seleccionados[x++] = new Individuo(poblacion[i]);
+				if(ind_modo==0) seleccionados[x++] = new IndividuoArbol((IndividuoArbol) poblacion[i]);
+				else seleccionados[x++] = new IndividuoGramatica((IndividuoGramatica) poblacion[i]);
 			}
 
 		}
@@ -231,7 +247,8 @@ public class Seleccion {
 		for (int i = 0; i < tam_seleccionados; i++) {
 			rand = Math.random();		
 			
-			seleccionados[i] = new Individuo(pairs[busquedaBinaria(rand, prob_acumulada)].getKey());
+			if(ind_modo==0) seleccionados[i] = new IndividuoArbol((IndividuoArbol) pairs[busquedaBinaria(rand, prob_acumulada)].getKey());
+			else seleccionados[i] = new IndividuoGramatica((IndividuoGramatica) pairs[busquedaBinaria(rand, prob_acumulada)].getKey());
 		}
 		
 		

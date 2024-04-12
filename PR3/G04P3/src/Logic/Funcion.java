@@ -1,6 +1,9 @@
 package Logic;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
 import Model.Individuo;
+import Model.IndividuoArbol;
 
 public class Funcion {
 
@@ -18,6 +21,7 @@ public class Funcion {
 	// TODO
 	public double fitness(Individuo ind) {
 		double fitness=0.0;
+		if(ind.operaciones.size()==0) return 0.0;
 		
 		int[][] M=new int[filas][columnas];
 		
@@ -36,6 +40,7 @@ public class Funcion {
 		cont=0;
 		
 		// Tick suma cuando se gira a la izquierda, salta o avanza
+		
 		int ticks=0;
 		while(ticks<100) {
 			// Gira a la izquierda

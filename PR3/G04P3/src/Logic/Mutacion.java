@@ -4,6 +4,7 @@ package Logic;
 import java.util.Random;
 
 import Model.Individuo;
+import Model.IndividuoArbol;
 import Model.Simbolos.Exp;
 import Model.Simbolos.Funciones.Progn;
 import Model.Simbolos.Funciones.Suma;
@@ -30,21 +31,23 @@ public class Mutacion {
 	
 	public Individuo[] terminal(Individuo[] poblacion) {
 		int tam_poblacion=poblacion.length;
-		Individuo[] ret = new Individuo[tam_poblacion];
+		IndividuoArbol[] ret = new IndividuoArbol[tam_poblacion];
 				
-		Individuo act=null;
+		IndividuoArbol act=null;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
-			act=poblacion[i];		
+			act=(IndividuoArbol) poblacion[i];		
 			if(Math.random()<p) {
 				
 				int rand=random.nextInt(3);
 				Exp newTerminal;
 				if(rand==0) newTerminal = new Avanza();
-				if(rand==1) newTerminal = new Constante(filas, columnas);
+				else if(rand==1) newTerminal = new Constante(filas, columnas);
 				else newTerminal = new Izquierda();
 
 				int tmp=random.nextInt(act.terminales.size());		
 				act.terminales.get(tmp).getKey().setHijo(act.terminales.get(tmp).getValue(), newTerminal);
+				
+				act.recorreArbol(act.gen.raiz);
 			}
 			ret[i]=act;
 		}
@@ -55,12 +58,12 @@ public class Mutacion {
 	
 	public Individuo[] funcional(Individuo[] poblacion) {
 		int tam_poblacion=poblacion.length;
-		Individuo[] ret = new Individuo[tam_poblacion];
+		IndividuoArbol[] ret = new IndividuoArbol[tam_poblacion];
 		
 		
-		Individuo act = null;
+		IndividuoArbol act = null;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
-			act = poblacion[i];		
+			act = (IndividuoArbol) poblacion[i];		
 			if(Math.random()<p) {
 				
 				int tmp=random.nextInt(act.funcionales.size());
@@ -88,12 +91,12 @@ public class Mutacion {
 	
 	public Individuo[] permutacion(Individuo[] poblacion) {
 		int tam_poblacion=poblacion.length;
-		Individuo[] ret = new Individuo[tam_poblacion];
+		IndividuoArbol[] ret = new IndividuoArbol[tam_poblacion];
 		
 		
-		Individuo act = null;
+		IndividuoArbol act = null;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
-			act = poblacion[i];		
+			act = (IndividuoArbol) poblacion[i];		
 			if(Math.random()<p) {
 				int tmp=random.nextInt(act.funcionales.size());
 				Exp funcional = act.funcionales.get(tmp).getKey().getHijo(act.funcionales.get(tmp).getValue());
@@ -112,12 +115,12 @@ public class Mutacion {
 
 	public Individuo[] hoist(Individuo[] poblacion) {
 		int tam_poblacion=poblacion.length;
-		Individuo[] ret = new Individuo[tam_poblacion];
+		IndividuoArbol[] ret = new IndividuoArbol[tam_poblacion];
 		
 		
-		Individuo act;
+		IndividuoArbol act;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
-			act = poblacion[i];		
+			act = (IndividuoArbol) poblacion[i];		
 			if(Math.random()<p) {
 				int tmp=random.nextInt(act.funcionales.size());
 				act.gen.raiz = act.funcionales.get(tmp).getKey().getHijo(act.funcionales.get(tmp).getValue());
@@ -130,12 +133,12 @@ public class Mutacion {
 
 	public Individuo[] contraccion(Individuo[] poblacion) {
 		int tam_poblacion=poblacion.length;
-		Individuo[] ret = new Individuo[tam_poblacion];
+		IndividuoArbol[] ret = new IndividuoArbol[tam_poblacion];
 		
 		
-		Individuo act = null;
+		IndividuoArbol act = null;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
-			act = poblacion[i];		
+			act = (IndividuoArbol) poblacion[i];		
 			if(Math.random()<p) {
 
 				int rand=random.nextInt(3);
@@ -158,10 +161,10 @@ public class Mutacion {
 
 	public Individuo[] template(Individuo[] poblacion) {
 		int tam_poblacion=poblacion.length;
-		Individuo[] ret = new Individuo[tam_poblacion];
+		IndividuoArbol[] ret = new IndividuoArbol[tam_poblacion];
 		
 		
-		Individuo act;
+		IndividuoArbol act;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
 			
 		}
