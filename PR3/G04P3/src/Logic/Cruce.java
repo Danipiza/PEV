@@ -1,10 +1,4 @@
 package Logic;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import Model.Individuo;
 import Model.Simbolos.Exp;
 
@@ -34,32 +28,43 @@ public class Cruce {
 		Individuo ind1, ind2;
 
 		while (i < n) {
-			// TODO
-			ind1 = selec[i];//new Individuo(selec[i]);
-			ind2 = selec[i+1];//new Individuo(selec[i+1]);
-			if(Math.random()<p) { // Funcional
+			//ind1 = new Individuo(selec[i]);
+			//ind2 = new Individuo(selec[i+1]);
+			ind1 = selec[i];
+			ind2 = selec[i+1];
+			if(Math.random()<p) {
+				if(Math.random()<0.9) { // Funcional
+					double drand1 = Math.random()*ind1.funcionales.size();
+					double drand2 = Math.random()*ind2.funcionales.size();
 
-				int rand1=(int)Math.random()*ind1.funcionales.size();
-				int rand2=(int)Math.random()*ind2.funcionales.size();
+					int rand1=(int)drand1;
+					int rand2=(int)drand2;
 
-				Exp hijo1 = ind1.funcionales.get(rand1).getKey().getHijo(ind1.funcionales.get(rand1).getValue());
-				Exp hijo2 = ind2.funcionales.get(rand2).getKey().getHijo(ind2.funcionales.get(rand2).getValue());
-				
-				ind1.funcionales.get(rand1).getKey().setHijo(ind1.funcionales.get(rand1).getValue(), hijo2);
-				ind2.funcionales.get(rand1).getKey().setHijo(ind2.funcionales.get(rand2).getValue(), hijo1);
+					Exp hijo1 = ind1.funcionales.get(rand1).getKey().getHijo(ind1.funcionales.get(rand1).getValue());
+					Exp hijo2 = ind2.funcionales.get(rand2).getKey().getHijo(ind2.funcionales.get(rand2).getValue());
+					
+					ind1.funcionales.get(rand1).getKey().setHijo(ind1.funcionales.get(rand1).getValue(), hijo2);
+					ind2.funcionales.get(rand2).getKey().setHijo(ind2.funcionales.get(rand2).getValue(), hijo1);
+
+					ind1.gen.raiz = ind1.funcionales.get(0).getKey().getHijo(0);
+					ind2.gen.raiz = ind2.funcionales.get(0).getKey().getHijo(0);
+				}
+				else { // Terminal
+					double drand1 = Math.random()*ind1.funcionales.size();
+					double drand2 = Math.random()*ind2.funcionales.size();
+
+					int rand1=(int)drand1;
+					int rand2=(int)drand2;
+
+					Exp hijo1 = ind1.terminales.get(rand1).getKey().getHijo(ind1.terminales.get(rand1).getValue());
+					Exp hijo2 = ind2.terminales.get(rand2).getKey().getHijo(ind2.terminales.get(rand2).getValue());
+					
+					ind1.terminales.get(rand1).getKey().setHijo(ind1.terminales.get(rand1).getValue(), hijo2);
+					ind2.terminales.get(rand2).getKey().setHijo(ind2.terminales.get(rand2).getValue(), hijo1);
+				}
+				ret[i++] = ind1;
+				ret[i++] = ind2;
 			}
-			else { // Terminal
-				int rand1=(int)Math.random()*ind1.terminales.size();
-				int rand2=(int)Math.random()*ind2.terminales.size();
-
-				Exp hijo1 = ind1.terminales.get(rand1).getKey().getHijo(ind1.terminales.get(rand1).getValue());
-				Exp hijo2 = ind2.terminales.get(rand2).getKey().getHijo(ind2.terminales.get(rand2).getValue());
-				
-				ind1.terminales.get(rand1).getKey().setHijo(ind1.terminales.get(rand1).getValue(), hijo2);
-				ind2.terminales.get(rand2).getKey().setHijo(ind2.terminales.get(rand2).getValue(), hijo1);
-			}
-			ret[i++] = ind1;
-			ret[i++] = ind2;
 		}
 		
 		return ret;
