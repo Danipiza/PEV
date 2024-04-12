@@ -10,7 +10,7 @@ import Model.Simbolos.Exp;
 public class IndividuoGramatica extends Individuo {
 	
 	private int tam_cromosoma;
-	private int cromosoma[]; // Cromosoma con los Codones
+	public int cromosoma[]; // Cromosoma con los Codones
 	
 	public String gramatica;
 	//public List<String> operaciones;
@@ -38,110 +38,127 @@ public class IndividuoGramatica extends Individuo {
 		this.tam_cromosoma=tam_cromosoma;
 		this.cont=0;
 		this.filas=filas;
-		this.columnas=columnas;
-		this.gramatica="";
+		this.columnas=columnas;		
 		this.fitness=0;
 		
-		this.random=new Random();
+		this.random=new Random();	
 		
-		this.operaciones=new ArrayList<String>();
 		
 		init();
 	}
 	
 	public IndividuoGramatica(IndividuoGramatica individuo) {	
 		this.tam_cromosoma=individuo.tam_cromosoma;
-		this.cromosoma=new int[tam_cromosoma];
+		this.filas=individuo.filas;
+		this.columnas=individuo.columnas;
+		
 		this.fitness=individuo.fitness;
-		this.cont=0;
+		this.cont=0;		
 		
+		this.gramatica=individuo.gramatica;		
 		
+		this.operaciones=new ArrayList<String>();
+		for(String l: individuo.operaciones) {
+			this.operaciones.add(l);
+		}
+		
+		this.cromosoma=new int[tam_cromosoma];
 		for(int i=0;i<this.tam_cromosoma; i++) {
 			this.cromosoma[i]=individuo.cromosoma[i];
 		}
 	}
 	
-	private void init() {
+	public void init() {
 		Random random = new Random();        
         
-		for (int i=0;i<tam_cromosoma;i++) {
-			cromosoma[i]=random.nextInt(256); // [0-255]
-		}
+		
+		
+		boolean aux=actualiza();
+		while(!aux){
+			System.out.println("Elimina");
+			for (int i=0;i<tam_cromosoma;i++) {
+				cromosoma[i]=random.nextInt(256); // [0-255]
+			}
+			aux=actualiza();
+		}		
+	}
+	
+	public boolean actualiza() {
+		this.operaciones=new ArrayList<String>();
+		this.gramatica="";
 		
 		String act="";
 		int tamHijos=2;
 		int x=cromosoma[0]%3;
-		if(x==0) act="progn2";
+		if(x==0) act="PROGN";
 		else if(x==1) {
-			act="salta";
+			act="SALTA";
 			tamHijos=1;
 		}
-		else act="suma";
+		else act="SUMA";
 		cont=1;
-		gramatica(act,tamHijos);
+		 
+		boolean ret=gramatica(act,tamHijos,1);
+		return ret;
 	}
 	
-	private void gramatica(String act, int tam) {
+	private boolean gramatica(String act, int tam, int altura) {
 		gramatica+=act;
 		
-		
+		if(altura==100) return false;
 		
 		if(tam!=0) gramatica+="(";
 		for(int i=0;i<tam;i++) {			
 			String hijo;
 			int tamHijos=2;
 			
-			int x=cromosoma[cont]%6;
-			if(x==0) {
-				hijo="progn2";
+			
+			
+			int c=cromosoma[cont]%6;
+			if(c==0) {
+				hijo="PROGN";
 				tamHijos=2;
 			}
-			else if(x==1) {
-				hijo="salta";
+			else if(c==1) {
+				hijo="SALTA";
 				tamHijos=1;
 			}
-			else if(x==2) {
-				hijo="suma";
+			else if(c==2) {
+				hijo="SUMA";
 				tamHijos=2;
 			}
-			else if(x==3) {
-				hijo="avanza";
+			else if(c==3) {
+				hijo="AVANZA";
+				operaciones.add("A");
 				tamHijos=0;
-				//this.cont=(cont+1)%tam_cromosoma;
-				//return;
 			}
-			else if(x==4) {
-				hijo="constante("+random.nextInt(filas)+","
-									   +random.nextInt(columnas)+")";
+			else if(c==4) {
+				int x=random.nextInt(filas);
+				int y=random.nextInt(columnas);
+				hijo="CONSTANTE("+x+","+y+")";
+				operaciones.add("S"+x+y);
 				tamHijos=0;
-				//this.cont=(cont+1)%tam_cromosoma;
-				//return;
 			}
 			else {
-				hijo="izquierda";
+				hijo="IZQUIERDA";
+				operaciones.add("I");
 				tamHijos=0;
-				//this.cont=(cont+1)%tam_cromosoma;
-				//return;
 			}
 			this.cont=(cont+1)%tam_cromosoma;
 			
-			gramatica(hijo,tamHijos);
+			if(!gramatica(hijo,tamHijos,altura+1)) return false;
 			if(tam==2&&i==0) gramatica+=", ";
 		}		
 		if(tam!=0)  gramatica+=")";
+		
+		return true;
 	}
 	
 	
-	public void printIndividuo() {		
-		for(int x: this.cromosoma) {
-			System.out.print(x + " ");
-		}
-		System.out.println();		
-	}
 	
 	// TODO
 	public String toString() {
-		return "";
+		return gramatica;
 	}
 
 	

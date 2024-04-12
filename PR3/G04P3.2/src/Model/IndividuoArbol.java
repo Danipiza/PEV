@@ -73,10 +73,6 @@ public class IndividuoArbol extends Individuo {
 		
 	}
 	
-	public void printIndividuo() {
-		System.out.println(gen);
-	}
-	
 	public String toString() {
 		return ""+gen;
 	}
