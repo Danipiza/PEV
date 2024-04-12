@@ -6,12 +6,12 @@ import Model.Simbolos.Exp;
 
 public class Constante extends Exp {
 	
-	public Constante() {
+	public Constante(int filas, int columnas) {
 		this.putTam(0); 				// Numero de hijos
 		this.putOperacion("Constante"); // Nombre de la operacion
 		Random random = new Random();        
-		this.putX(random.nextInt(8));
-		this.putY(random.nextInt(8));
+		this.putX(random.nextInt(filas));
+		this.putY(random.nextInt(columnas));
 	}
 	
 		

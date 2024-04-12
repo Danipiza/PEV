@@ -41,32 +41,43 @@ public class ControlPanel extends JPanel {
 	AlgoritmoGenetico AG;
 
 	private JButton run_button;
+	private JButton run_button2;
 
 	//private BooleanSwitch elitismo_button;
 
 	private JTextField tam_poblacion;
 	private JTextField generaciones;	
 	private JTextField prob_cruce;
-	private JTextField prob_mut;
-	private JTextField elitismo;
+	private JTextField prob_mut;		
 	private JTextField filas_text;
 	private JTextField columnas_text;
+	private JTextField elitismo;
+
+	private JComboBox<String> seleccion_CBox;
+	
+	
+	private JComboBox<String> ini_CBox;	
+	private JComboBox<String> cruceA_CBox;
+	private JComboBox<String> mutacionA_CBox;
 	
 	private JSpinner profundidad;
-
-	private JComboBox<String> ini_CBox;
-	private JComboBox<String> seleccion_CBox;
-	private JComboBox<String> cruce_CBox;
-	private JComboBox<String> mutacion_CBox;
-
-
+	
+	
+	private JTextField tam_cromosoma;
+	
+	private JComboBox<String> cruceG_CBox;
+	private JComboBox<String> mutacionG_CBox;
+	
+	
+	
+	
+	
 	private JTextArea text_area;
 	private JTextArea text_area2;
 
 	private Plot2DPanel plot2D;
 
 	private Valores valores;
-	
 	
 	
 	GridBagConstraints gbc;
@@ -82,6 +93,7 @@ public class ControlPanel extends JPanel {
 		elitismo = new JTextField("0", 11);
 		filas_text = new JTextField("8", 11);
 		columnas_text= new JTextField("8", 11);
+		tam_cromosoma= new JTextField("10", 11);
 		
 		
 		SpinnerModel spinnerModel = new SpinnerNumberModel(4, 2, 5, 1); // Default value: 4, Min: 2, Max: 5, Step: 1
@@ -144,9 +156,9 @@ public class ControlPanel extends JPanel {
 								"Restos",
 								"Ranking"};
 		
-		String[] cruce = { 		"Intercambio"};
+		String[] cruceA = { 	"Intercambio"};
 		
-		String[] mutacion = { 	"Terminal",
+		String[] mutacionA = { 	"Terminal",
 								"Funcional",
 								//"Arbol",
 								"Permutacion",
@@ -155,13 +167,20 @@ public class ControlPanel extends JPanel {
 								"Contraccion"
 								//"Espansion"
 							};
+		
+		String[] cruceG = { 	"MonoPunto" };
+		
+		String[] mutacionG = { 	"Basica" };
 
 		//elitismo_button = new BooleanSwitch();
 
 		ini_CBox = new JComboBox<>(inicializacions);
 		seleccion_CBox = new JComboBox<>(seleccion);
-		cruce_CBox = new JComboBox<>(cruce);
-		mutacion_CBox = new JComboBox<>(mutacion);
+		cruceA_CBox = new JComboBox<>(cruceA);
+		mutacionA_CBox = new JComboBox<>(mutacionA);
+		
+		cruceG_CBox = new JComboBox<>(cruceG);
+		mutacionG_CBox = new JComboBox<>(mutacionG);
 		
 		text_area = new JTextArea(2, 2);
 		text_area.append("Esperando una ejecucion...");
@@ -176,11 +195,24 @@ public class ControlPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int tmp=Integer.parseInt(elitismo.getText());
 				if(tmp<0||tmp>100) actualiza_fallo("Elitismo porcentaje");
-				else run();
+				else runArbol();
 			}
 		});
 		
-				gbc.anchor = GridBagConstraints.WEST;
+		// TODO
+		run_button2 = new JButton();
+		run_button2.setToolTipText("Run button");
+		run_button2.setIcon(loadImage("resources/icons/run.png"));
+		run_button2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int tmp=Integer.parseInt(elitismo.getText());
+				if(tmp<0||tmp>100) actualiza_fallo("Elitismo porcentaje");
+				else runGramatica();
+			}
+		});
+		
+		gbc.anchor = GridBagConstraints.WEST;
 
 		gbc.gridx = 0;
 		gbc.gridy = 0; // Espacio antes de las JLabels para que se vea mejor la GUI
@@ -189,17 +221,9 @@ public class ControlPanel extends JPanel {
 		gbc.gridy++;
 		leftPanel.add(new JLabel("  Num. Generaciones:"), gbc);
 		gbc.gridy++;
-		leftPanel.add(new JLabel("  Inicializacion:"), gbc);
-		gbc.gridy++; 
-		leftPanel.add(new JLabel("  Profundidad:"), gbc);
-		gbc.gridy++;
 		leftPanel.add(new JLabel("  Metodo de Seleccion:"), gbc);
 		gbc.gridy++;
-		leftPanel.add(new JLabel("  Metodo de Cruce:"), gbc);
-		gbc.gridy++;
 		leftPanel.add(new JLabel("  Prob. Cruce:"), gbc);
-		gbc.gridy++;
-		leftPanel.add(new JLabel("  Metodo de Mutacion:"), gbc);
 		gbc.gridy++;
 		leftPanel.add(new JLabel("  Prob. Mutacion:"), gbc);
 		gbc.gridy++;
@@ -208,11 +232,56 @@ public class ControlPanel extends JPanel {
 		leftPanel.add(new JLabel("  Num. Columnas:"), gbc);
 		gbc.gridy++;
 		leftPanel.add(new JLabel("  Elitismo:"), gbc);
+		gbc.gridy++;
+		
+		leftPanel.add(new JLabel(""), gbc);
+		gbc.gridy++;
+		leftPanel.add(new JLabel(""), gbc);
+		gbc.gridy++;	
+		
+		leftPanel.add(new JLabel("  Parte 1. Arbol:"), gbc);
+		gbc.gridy++;
+		leftPanel.add(new JLabel("  Inicializacion:"), gbc);
+		gbc.gridy++; 
+		leftPanel.add(new JLabel("  Profundidad:"), gbc);
+		gbc.gridy++;				
+		leftPanel.add(new JLabel("  Metodo de Cruce:"), gbc);
+		gbc.gridy++;		
+		leftPanel.add(new JLabel("  Metodo de Mutacion:"), gbc);
+		gbc.gridy++;
+		
+		gbc.anchor = GridBagConstraints.SOUTH; // Align components to the left
+		//gbc.gridy++;
+		leftPanel.add(run_button, gbc);
+		
+		gbc.anchor = GridBagConstraints.WEST;
+		
+		leftPanel.add(new JLabel(""), gbc);
+		gbc.gridy++;
+		leftPanel.add(new JLabel(""), gbc);
+		gbc.gridy++;	
+		
+		leftPanel.add(new JLabel("  Parte 2. Gramatica:"), gbc);
+		gbc.gridy++;
+		leftPanel.add(new JLabel("  Tam. Cromosoma:"), gbc);
+		gbc.gridy++;				
+		leftPanel.add(new JLabel("  Metodo de Cruce:"), gbc);
+		gbc.gridy++;		
+		leftPanel.add(new JLabel("  Metodo de Mutacion:"), gbc);
+		gbc.gridy++;
+		
+		gbc.anchor = GridBagConstraints.SOUTH; // Align components to the left
+		//gbc.gridy++;
+		leftPanel.add(run_button2, gbc);
+		
+		//leftPanel.add(new JLabel(""), gbc);
+		//gbc.gridy++;
+		
 		gbc.anchor = GridBagConstraints.EAST;
 		gbc.gridy++;
 		leftPanel.add(new JLabel("Valor optimo:"), gbc);
 		gbc.gridy++;
-		leftPanel.add(new JLabel("Arbol:"), gbc);
+		leftPanel.add(new JLabel("Mejor Individuo:"), gbc);
 		gbc.anchor = GridBagConstraints.WEST;
 
 		gbc.gridx++;
@@ -221,17 +290,9 @@ public class ControlPanel extends JPanel {
 		gbc.gridy++;
 		leftPanel.add(generaciones, gbc);
 		gbc.gridy++;
-		leftPanel.add(ini_CBox, gbc);
-		gbc.gridy++;
-		leftPanel.add(profundidad, gbc);
-		gbc.gridy++;
 		leftPanel.add(seleccion_CBox, gbc);
 		gbc.gridy++;
-		leftPanel.add(cruce_CBox, gbc);
-		gbc.gridy++;
 		leftPanel.add(prob_cruce, gbc);
-		gbc.gridy++;
-		leftPanel.add(mutacion_CBox, gbc);
 		gbc.gridy++;
 		leftPanel.add(prob_mut, gbc);
 		gbc.gridy++;
@@ -241,14 +302,41 @@ public class ControlPanel extends JPanel {
 		gbc.gridy++;
 		leftPanel.add(elitismo, gbc); //elitismo_button
 		gbc.gridy++;
+		
+		gbc.gridy++;
+		gbc.gridy++;
+		gbc.gridy++;
+		
+		leftPanel.add(ini_CBox, gbc);
+		gbc.gridy++;
+		leftPanel.add(profundidad, gbc);
+		gbc.gridy++;			
+		leftPanel.add(cruceA_CBox, gbc);
+		gbc.gridy++;		
+		leftPanel.add(mutacionA_CBox, gbc);
+		gbc.gridy++;
+		
+		gbc.gridy++;		
+		gbc.gridy++;
+		gbc.gridy++;
+		
+		leftPanel.add(tam_cromosoma, gbc);
+		gbc.gridy++;			
+		leftPanel.add(cruceG_CBox, gbc);
+		gbc.gridy++;		
+		leftPanel.add(mutacionG_CBox, gbc);
+		gbc.gridy++;
+		
+		gbc.gridy++;
+		
 		leftPanel.add(text_area, gbc);
 		gbc.gridy+=2;
 		gbc.gridx--;
 		leftPanel.add(text_area2, gbc);
 
-		gbc.anchor = GridBagConstraints.SOUTH; // Align components to the left
+		/*gbc.anchor = GridBagConstraints.SOUTH; // Align components to the left
 		gbc.gridy++;
-		leftPanel.add(run_button, gbc);
+		leftPanel.add(run_button, gbc);*/
 
 		return leftPanel;
 	}
@@ -366,27 +454,37 @@ public class ControlPanel extends JPanel {
 		text_area.setText(s);
 	}
 
-	private void run() {
-		setValores();
-		//AG.ejecuta_calculo_medias(valores);
-		AG.ejecuta(valores);
+	private void runArbol() {
+		setValores(0);
+		AG.ejecutaArbol(valores);
+	}
+	
+	private void runGramatica() {
+		setValores(1);
+		AG.ejecutaGramatica(valores);
 	}
 
-	private void setValores() {
+	private void setValores(int modo) {
+		int prof_O_longCrom=(int) profundidad.getValue();
+		if(modo==1) prof_O_longCrom=Integer.parseInt(tam_cromosoma.getText());
+			
 		valores = new Valores(
 				Integer.parseInt(tam_poblacion.getText()),
 				Integer.parseInt(generaciones.getText()),
-				ini_CBox.getSelectedIndex(),
-				(int) profundidad.getValue(),
+				ini_CBox.getSelectedIndex(), // PARA GRAMATICA NO IMPORTA
+				prof_O_longCrom,
 				seleccion_CBox.getSelectedIndex(),
-				cruce_CBox.getSelectedIndex(),
+				cruceA_CBox.getSelectedIndex(),
 				Double.parseDouble(prob_cruce.getText()),
-				mutacion_CBox.getSelectedIndex(),
+				mutacionA_CBox.getSelectedIndex(),
 				Double.parseDouble(prob_mut.getText()),
 				Integer.parseInt(filas_text.getText()),
 				Integer.parseInt(columnas_text.getText()),
-				Integer.parseInt(elitismo.getText()));
+				Integer.parseInt(elitismo.getText()),
+				modo);
 	}
+	
+	
 
 	public Valores getValores() {
 		return valores;

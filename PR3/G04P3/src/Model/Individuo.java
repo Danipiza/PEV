@@ -16,8 +16,8 @@ public class Individuo {
 	public List<Pair<Exp,Integer>> funcionales;
 	public List<Pair<Exp,Integer>> terminales;
 	
-	public Individuo(int modo, int profundidad) {
-		this.gen=new Arbol(modo, profundidad);
+	public Individuo(int modo, int profundidad, int filas, int columnas) {
+		this.gen=new Arbol(modo, profundidad,filas, columnas);
 		this.fitness=0;
 		operaciones=new ArrayList<String>();
 

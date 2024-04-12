@@ -10,9 +10,14 @@ public class Arbol {
 	
 	public Exp raiz;
 	private int profMax;
+	
+	private int filas;
+	private int columnas;
 
-	public Arbol(int modo, int profundidad) {
+	public Arbol(int modo, int profundidad, int filas, int columnas) {
 		profMax=profundidad;
+		this.filas=filas;
+		this.columnas=columnas;
 		init_raiz();		
 		
 		inicializa_arbol(raiz, modo);
@@ -66,7 +71,7 @@ public class Arbol {
 				else if(func==1) hijo=new Salta();
 				else if(func==2) hijo=new Suma();
 				else if(func==3) hijo=new Avanza();
-				else if(func==4) hijo=new Constante();
+				else if(func==4) hijo=new Constante(filas, columnas);
 				else hijo=new Izquierda();
 				
 				nodo.setHijo(i, completo(hijo,profundidad+1));				
@@ -80,7 +85,7 @@ public class Arbol {
 				Random random = new Random();
 				int func=random.nextInt(3);
 				if(func==0) hijo=new Avanza();
-				else if(func==1) hijo=new Constante();
+				else if(func==1) hijo=new Constante(filas, columnas);
 				else hijo=new Izquierda();
 				
 				nodo.setHijo(i, hijo);				
@@ -114,7 +119,7 @@ public class Arbol {
 				Random random = new Random();
 				int func=random.nextInt(3);
 				if(func==0) hijo=new Avanza();
-				else if(func==1) hijo=new Constante();
+				else if(func==1) hijo=new Constante(filas, columnas);
 				else hijo=new Izquierda();
 				
 				nodo.setHijo(i, hijo);				

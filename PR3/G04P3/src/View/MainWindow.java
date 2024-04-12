@@ -12,7 +12,7 @@ public class MainWindow extends JFrame{
 	public MainWindow() {		
 		super("Algoritmos Geneticos");
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    this.setSize(800, 600);
+	    this.setSize(800, 900);
 	    this.add(new ControlPanel());
 	    this.setVisible(true);
 	    

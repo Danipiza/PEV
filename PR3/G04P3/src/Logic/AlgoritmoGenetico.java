@@ -8,6 +8,7 @@ import java.util.function.Function;
 import Utils.Pair;
 
 import Model.Individuo;
+import Model.IndividuoGramatica;
 import Model.Valores;
 import Utils.FuncionException;
 import Utils.Node;
@@ -65,11 +66,14 @@ public class AlgoritmoGenetico {
 	private ControlPanel ctrl;
 	
 	// Nuevos
+	private int modo;
+	
+	
 	private int profundidad;
 	private int filas;
 	private int columnas;
 	
-	
+	private int long_cromosoma;
 	
 
 	public AlgoritmoGenetico(ControlPanel ctrl) {
@@ -85,7 +89,12 @@ public class AlgoritmoGenetico {
 		this.prob_cruce = valores.prob_cruce;
 		this.mut_idx = valores.mut_idx;
 		this.prob_mut = valores.prob_mut;
-		this.profundidad=valores.profundidad;
+		
+		this.profundidad=valores.prof_O_longCrom;
+		long_cromosoma=valores.prof_O_longCrom;
+		
+		this.modo=valores.modo;
+		
 		this.filas=valores.filas;
 		this.columnas=valores.columnas;
 		this.elitismo = valores.elitismo;
@@ -94,14 +103,15 @@ public class AlgoritmoGenetico {
 
 		seleccion = new Seleccion(tam_poblacion, tam_elite);
 		cruce = new Cruce(prob_cruce, tam_elite);
-		mutacion = new Mutacion(prob_mut, tam_elite, funcion);		
+		mutacion = new Mutacion(prob_mut, tam_elite, funcion,filas, columnas);		
 		funcion = new Funcion(filas, columnas);
 
 
 		mejor_total = Double.MIN_VALUE;
 	}
 
-	public void ejecuta(Valores valores) {
+	// TODO JUNTAR LOS EJECUTA EN 1 FUNCION
+	public void ejecutaArbol(Valores valores) {
 		Individuo[] selec = null;
 
 		String fallo = "";
@@ -164,6 +174,54 @@ public class AlgoritmoGenetico {
 		}
 	}
 	
+	public void ejecutaGramatica(Valores valores) {
+		Individuo[] selec = null;
+
+		String fallo = "";
+		setValores(valores);
+
+		// ELITISMO
+		Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
+		elitQ = new PriorityQueue<>(comparator);
+
+		progreso_generaciones = new double[4][generaciones + 1];
+		generacionActual = 0;
+		
+			
+		IndividuoGramatica ind=new IndividuoGramatica(long_cromosoma,filas,columnas);
+		System.out.println(ind.gramatica);
+		
+		//init_poblacionG();
+
+		//evaluacion_poblacion();
+
+		/*int cont=1;
+		while (generaciones-- != 0) {
+			
+			//selec = seleccion_poblacion();
+			try {
+				//poblacion = cruce_poblacion(selec);
+				//poblacion = mutacion_poblacion();
+
+				// ELITISMO
+				while (elitQ.size() != 0) {
+					poblacion[tam_poblacion - elitQ.size()] = elitQ.poll().getId();
+				}
+			} catch (Exception e) {
+				fallo = e.getMessage();
+				break;
+			}
+			//evaluacion_poblacion();
+			cont++;
+		}
+
+		if (fallo.equals("")) { // TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
+			ctrl.actualiza_Grafico(progreso_generaciones, funcion, mejor_individuo, filas,columnas);
+		} else {
+			ctrl.actualiza_fallo(fallo);
+		}*/
+	}
+	
 	/*private Individuo[] reinicia(int porcentaje) {
 		Individuo[] ret= new Individuo[tam_poblacion];
 		int tam=tam_poblacion/porcentaje;
@@ -206,36 +264,42 @@ public class AlgoritmoGenetico {
 				mod2=(tam+1)%2;
 				for (int d=profundidad;d>profundidad-mod;d--) {
 					for(int i=0;i<(tam/2)+1;i++) {						
-						poblacion[cont++]=new Individuo(0, d);
-						poblacion[cont++]=new Individuo(1, d);
+						poblacion[cont++]=new Individuo(0, d,filas, columnas);
+						poblacion[cont++]=new Individuo(1, d,filas, columnas);
 					}
-					if(mod2==1) poblacion[cont++]=new Individuo(1, d);
+					if(mod2==1) poblacion[cont++]=new Individuo(1, d,filas, columnas);
 				}
 				mod2=tam%2;
 				for (int d=profundidad-mod;d>=2;d--) {
 					for(int i=0;i<tam/2;i++) {						
-						poblacion[cont++]=new Individuo(0, d);
-						poblacion[cont++]=new Individuo(1, d);
+						poblacion[cont++]=new Individuo(0, d,filas, columnas);
+						poblacion[cont++]=new Individuo(1, d,filas, columnas);
 					}
-					if(mod2==1) poblacion[cont++]=new Individuo(1, d);
+					if(mod2==1) poblacion[cont++]=new Individuo(1, d,filas, columnas);
 				}
 			}
 			else {				
 				for (int d=2;d<=profundidad;d++) {					
 					for(int i=0;i<tam/2;i++) {						
-						poblacion[cont++]=new Individuo(0, d);
-						poblacion[cont++]=new Individuo(1, d);
+						poblacion[cont++]=new Individuo(0, d,filas, columnas);
+						poblacion[cont++]=new Individuo(1, d,filas, columnas);
 					}
-					if(mod2==1) poblacion[cont++]=new Individuo(1, d);
+					if(mod2==1) poblacion[cont++]=new Individuo(1, d,filas, columnas);
 				}
 			}
 			
 		}
 		else { // COMPLETO o CRECIENTE			
 			for (int i = 0; i < tam_poblacion; i++) {
-				poblacion[i]=new Individuo(ini_idx, profundidad);
+				poblacion[i]=new Individuo(ini_idx, profundidad,filas, columnas);
 			}
 		}		
+	}
+	
+	
+	private void init_poblacionG() {
+		poblacion = new Individuo[tam_poblacion];
+		
 	}
 
 	private void evaluacion_poblacion() {

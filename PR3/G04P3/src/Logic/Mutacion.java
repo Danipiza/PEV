@@ -16,10 +16,15 @@ public class Mutacion {
 	private Funcion funcion;
 	private Random random;
 	
-	public Mutacion(double p, int tam_elite, Funcion funcion) {
+	private int filas;
+	private int columnas;
+	
+	public Mutacion(double p, int tam_elite, Funcion funcion, int filas, int columnas) {
 		this.p=p;
 		this.funcion=funcion;
-		random=new Random();
+		this.random=new Random();
+		this.filas=filas;
+		this.columnas=columnas;
 	}
 	
 	
@@ -35,7 +40,7 @@ public class Mutacion {
 				int rand=random.nextInt(3);
 				Exp newTerminal;
 				if(rand==0) newTerminal = new Avanza();
-				if(rand==1) newTerminal = new Constante();
+				if(rand==1) newTerminal = new Constante(filas, columnas);
 				else newTerminal = new Izquierda();
 
 				int tmp=random.nextInt(act.terminales.size());		
@@ -136,7 +141,7 @@ public class Mutacion {
 				int rand=random.nextInt(3);
 				Exp newExp;
 				if(rand==0) newExp = new Avanza();
-				if(rand==1) newExp = new Constante();
+				if(rand==1) newExp = new Constante(filas, columnas);
 				else newExp = new Izquierda();
 				
 				int tmp=random.nextInt(act.funcionales.size());
