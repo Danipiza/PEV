@@ -39,4 +39,9 @@ public class Suma extends Exp{
 		return ops[i];
 	}
 
+	@Override
+	public Exp duplica() {
+		return new Suma();
+	}
+
 }

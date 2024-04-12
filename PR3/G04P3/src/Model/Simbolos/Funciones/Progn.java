@@ -39,5 +39,10 @@ public class Progn extends Exp {
 		return ops[i];
 	}
 
+	@Override
+	public Exp duplica() {
+		return new Progn();
+	}
+
 
 }

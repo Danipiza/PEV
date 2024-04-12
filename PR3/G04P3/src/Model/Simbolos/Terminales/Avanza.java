@@ -24,4 +24,9 @@ public class Avanza extends Exp{
 		return null;
 	}
 
+	@Override
+	public Exp duplica() {
+		return new Avanza();
+	}
+
 }

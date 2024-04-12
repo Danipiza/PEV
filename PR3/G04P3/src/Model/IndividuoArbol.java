@@ -5,6 +5,8 @@ import java.util.List;
 
 import Model.Simbolos.Exp;
 import Model.Simbolos.Funciones.Salta;
+import Model.Simbolos.Terminales.Avanza;
+import Model.Simbolos.Terminales.Constante;
 import Utils.Pair;
 
 public class IndividuoArbol extends Individuo {
@@ -15,10 +17,14 @@ public class IndividuoArbol extends Individuo {
 	//public List<String> operaciones;
 	public List<Pair<Exp,Integer>> funcionales;
 	public List<Pair<Exp,Integer>> terminales;
+	public int filas;
+	public int columnas;
 	
 	public IndividuoArbol(int modo, int profundidad, int filas, int columnas) {
 		this.gen=new Arbol(modo, profundidad,filas, columnas);
 		this.fitness=0;
+		this.filas = filas;
+		this.columnas = columnas;
 		operaciones=new ArrayList<String>();
 
 		funcionales = new ArrayList<Pair<Exp,Integer>>();
@@ -31,13 +37,30 @@ public class IndividuoArbol extends Individuo {
 	}
 	
 	public IndividuoArbol(IndividuoArbol individuo) {	
-		// TODO cambiar para copiar los nodos uno a uno		
-		this.gen=individuo.gen;//new Arbol(individuo.gen);
+		this.gen = new Arbol();
+		gen.raiz = duplicaArbol(individuo.gen.raiz);
 		this.fitness=0;
+
+		funcionales = new ArrayList<Pair<Exp,Integer>>();
+		Exp invisible = new Salta();
+		invisible.setHijo(0, gen.raiz);
+		funcionales.add(new Pair<>(invisible, 0));
+		terminales = new ArrayList<Pair<Exp,Integer>>();
+
 		operaciones=new ArrayList<String>();
 		recorreArbol(gen.raiz);
 	}
 	
+	private Exp duplicaArbol(Exp original) {
+		Exp nuevo;
+		if (original.getOperacion().equals("Constante")) nuevo = new Avanza();
+		else nuevo = original.duplica();
+		for (int i = 0; i < original.getTam(); i++) {
+			nuevo.setHijo(i, duplicaArbol(original.getHijo(i)));
+		}
+		return nuevo;
+	}
+
 	public void recorreArbol(Exp nodo) {		
 		for(int i=0;i<nodo.getTam();i++) {				
 			recorreArbol(nodo.getHijo(i));
@@ -49,7 +72,7 @@ public class IndividuoArbol extends Individuo {
 		else if(nodo.getOperacion().equals("Izquierda")) operaciones.add("I");
 		else if(nodo.getOperacion().equals("Salta")) operaciones.add("S"+nodo.getX()+nodo.getY());
 		
-		// NO HAY QUE AÑADIR TODAS LOS NODOS, SOLO LOS QUE CONSUMEN TICKS
+		// NO HAY QUE Aï¿½ADIR TODAS LOS NODOS, SOLO LOS QUE CONSUMEN TICKS
 		// AVANZA IZQUIERDA Y SALTA
 		//operaciones.add(nodo.getOp());  
 		

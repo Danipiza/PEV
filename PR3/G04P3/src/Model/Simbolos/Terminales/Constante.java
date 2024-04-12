@@ -26,5 +26,10 @@ public class Constante extends Exp {
 	public Exp getHijo(int i) {	
 		return null;
 	}
+
+	@Override
+	public Exp duplica() {
+		return new Constante(0,0);
+	}
 	
 }

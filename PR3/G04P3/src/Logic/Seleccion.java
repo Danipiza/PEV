@@ -72,11 +72,9 @@ public class Seleccion {
 				} 
 			}	
 			 
-			//seleccionados[i] = new IndividuoReal((opt ? poblacion[indexMax] : poblacion[indexMin]));
+			
 			// TODO
-			IndividuoArbol indAux = (IndividuoArbol) poblacion[indexMax]; //new Individuo(poblacion[indexMin]);
-			indAux.recorreArbol(indAux.gen.raiz);
-			seleccionados[i] = indAux;
+			seleccionados[i] =  new IndividuoArbol((IndividuoArbol) poblacion[indexMax]);;
 			
 		}
 

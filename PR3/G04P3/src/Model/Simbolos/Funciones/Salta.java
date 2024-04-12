@@ -26,7 +26,7 @@ public class Salta extends Exp {
     }
 	
 	@Override
-	public void setHijo(int i, Exp hijo) { // Añade Hijo
+	public void setHijo(int i, Exp hijo) { // Aï¿½ade Hijo
 		this.ops[i]=hijo;	
 		this.putX(hijo.getX());
 		this.putY(hijo.getY());
@@ -35,6 +35,11 @@ public class Salta extends Exp {
 	@Override
 	public Exp getHijo(int i) {		
 		return ops[i];
+	}
+
+	@Override
+	public Exp duplica() {
+		return new Salta();
 	}
 
 }

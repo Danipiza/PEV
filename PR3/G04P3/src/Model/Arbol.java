@@ -23,6 +23,9 @@ public class Arbol {
 		inicializa_arbol(raiz, modo);
 	}
 
+	public Arbol() {
+	}
+
 	public void inicializa_arbol(Exp exp, int modo) {		
 		if (modo==0) completo(exp,0);
 		else creciente(exp,0);		
