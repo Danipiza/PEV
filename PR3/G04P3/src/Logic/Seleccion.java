@@ -53,10 +53,11 @@ public class Seleccion {
 	}
 
 	public Individuo[] torneoDeterministico(Individuo[] poblacion, int k, int tam_seleccionados) {
-		Individuo[] seleccionados;
+		Individuo[] seleccionados=new Individuo[tam_seleccionados];
 		
-		seleccionados= new IndividuoArbol[tam_seleccionados];
-
+		/*if(ind_modo==0) seleccionados= new IndividuoArbol[tam_seleccionados];
+		else seleccionados= new IndividuoArbol[tam_seleccionados];*/
+		
 		double randomFitness;
 		int indexMax;
 		double max;
@@ -73,9 +74,8 @@ public class Seleccion {
 			}	
 			 
 			
-			// TODO
-			seleccionados[i] =  new IndividuoArbol((IndividuoArbol) poblacion[indexMax]);;
-			
+			if(ind_modo==0) seleccionados[i] = new IndividuoArbol((IndividuoArbol) poblacion[indexMax]);
+			else seleccionados[i] = new IndividuoGramatica((IndividuoGramatica) poblacion[indexMax]);			
 		}
 
 		return seleccionados;
@@ -105,9 +105,12 @@ public class Seleccion {
 				}
 			}	
 			 
+			int index=indexMax;
+			if(Math.random()<=p) index=indexMin;
+			
 			//seleccionados[i] = new IndividuoReal((opt && Math.random() <= p || !opt && Math.random() > p ? poblacion[indexMax] : poblacion[indexMin]));
-			if(ind_modo==0) seleccionados[i] = new IndividuoArbol((IndividuoArbol) poblacion[indexMin]);
-			else seleccionados[i] = new IndividuoGramatica((IndividuoGramatica) poblacion[indexMin]);
+			if(ind_modo==0) seleccionados[i] = new IndividuoArbol((IndividuoArbol) poblacion[index]);
+			else seleccionados[i] = new IndividuoGramatica((IndividuoGramatica) poblacion[index]);
 		}
 
 		return seleccionados;

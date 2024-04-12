@@ -9,13 +9,15 @@ public class Funcion {
 
 	private int filas;
 	private int columnas;
+	private int ticks;
 	//							        N      O     S     E
 	private int[][] direccionAvanza={{-1,0},{0,-1},{1,0},{0,1}};
 	private int[][] direccionSalta ={{-1,1},{1,-1},{1,1},{1,1}};
 	
-	public Funcion(int filas, int columnas) {
+	public Funcion(int filas, int columnas, int ticks) {
 		this.filas=filas;
 		this.columnas=columnas;
+		this.ticks=ticks;
 	}
 	
 	// TODO
@@ -42,7 +44,7 @@ public class Funcion {
 		// Tick suma cuando se gira a la izquierda, salta o avanza
 		
 		int ticks=0;
-		while(ticks<100) {
+		while(ticks<this.ticks) {
 			// Gira a la izquierda
 			if(ops[cont][0]=='I') {
 				dir+=(dir+1)%4;

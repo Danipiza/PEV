@@ -64,6 +64,8 @@ public class AlgoritmoGenetico {
 	private int tam_elite;
 	PriorityQueue<Node> elitQ;
 
+	private int ticks;
+	
 	private ControlPanel ctrl;
 	
 	// Nuevos
@@ -99,13 +101,16 @@ public class AlgoritmoGenetico {
 		this.filas=valores.filas;
 		this.columnas=valores.columnas;
 		this.elitismo = valores.elitismo;
+		this.ticks= valores.ticks;
 
 		tam_elite = (int) (tam_poblacion * (elitismo / 100.0));
 
+		funcion = new Funcion(filas, columnas, ticks);
+		
 		seleccion = new Seleccion(tam_poblacion, tam_elite, modo);
 		cruce = new Cruce(prob_cruce, tam_elite);
 		mutacion = new Mutacion(prob_mut, tam_elite, funcion,filas, columnas);		
-		funcion = new Funcion(filas, columnas);
+		
 
 
 		mejor_total = Double.MIN_VALUE;
@@ -192,24 +197,28 @@ public class AlgoritmoGenetico {
 		
 		
 		init_poblacionG();
-		for(Individuo ind: poblacion) {
+		/*for(Individuo ind: poblacion) {
 			System.out.println(ind);
-		}
+		}*/
 
-		//evaluacion_poblacion();
+		evaluacion_poblacion();
+		
+		/*for(Individuo ind: poblacion) {			
+			System.out.println(ind.fitness);
+		}*/
 		
 		/*for(Individuo ind: poblacion) {
 			System.out.println(ind);
 			System.out.println(ind.fitness);
 		}*/
 
-		/*int cont=1;
+		int cont=1;
 		while (generaciones-- != 0) {
 			
 			selec = seleccion_poblacion();
 			try {
 				poblacion = cruce_poblacionG(selec, long_cromosoma);
-				//poblacion = mutacion_poblacionG();
+				poblacion = mutacion_poblacionG();
 
 				// ELITISMO
 				while (elitQ.size() != 0) {
@@ -227,7 +236,7 @@ public class AlgoritmoGenetico {
 			ctrl.actualiza_Grafico(progreso_generaciones, funcion, mejor_individuo, filas,columnas);
 		} else {
 			ctrl.actualiza_fallo(fallo);
-		}*/
+		}
 	}
 	
 	public Individuo[] cruce_poblacionG(Individuo[] selec, int d) {
@@ -255,14 +264,11 @@ public class AlgoritmoGenetico {
 					tmp = ind1.cromosoma[j];
 					ind1.cromosoma[j] = ind2.cromosoma[j];
 					ind2.cromosoma[j] = tmp;
-				}
-				if(!ind1.actualiza()) 
-					ind1=new IndividuoGramatica(long_cromosoma, filas, columnas);
-				if(!ind2.actualiza()) 
-					ind2=new IndividuoGramatica(long_cromosoma, filas, columnas);
+				}				
+				
 			}
-			ret[i++] = ind1;
-			ret[i++] = ind2;
+			ret[i++]= new IndividuoGramatica(ind1);
+			ret[i++] = new IndividuoGramatica(ind2);
 		}
 		return ret;
 	}
@@ -280,9 +286,8 @@ public class AlgoritmoGenetico {
 			if(Math.random()<prob_mut) {
 				int rand=random.nextInt(long_cromosoma);
 				act.cromosoma[rand]=random.nextInt(256);
-				if(!act.actualiza()) act=new IndividuoGramatica(long_cromosoma, filas, columnas);
 			}
-			ret[i]=act;
+			ret[i]=new IndividuoGramatica(act);
 			
 		}
 		
@@ -482,17 +487,14 @@ public class AlgoritmoGenetico {
 				break;
 			case 3:
 				ret = seleccion.estocasticoUniversal1(poblacion, prob_seleccionAcum, tam_poblacion - tam_elite);
-				break;
+				break;			
 			case 4:
-				ret = seleccion.estocasticoUniversal2(poblacion, prob_seleccionAcum, tam_poblacion - tam_elite);
-				break;
-			case 5:
 				ret = seleccion.truncamiento(poblacion, prob_seleccion, 0.5, tam_poblacion - tam_elite);
 				break;
-			case 6:
+			case 5:
 				ret = seleccion.restos(poblacion, prob_seleccion, prob_seleccionAcum, tam_poblacion - tam_elite);
 				break;
-			case 7:
+			case 6:
 				ret = seleccion.ranking(poblacion, prob_seleccion, tam_poblacion - tam_elite, 2);
 				break;
 			default:
