@@ -17,14 +17,10 @@ public class IndividuoArbol extends Individuo {
 	//public List<String> operaciones;
 	public List<Pair<Exp,Integer>> funcionales;
 	public List<Pair<Exp,Integer>> terminales;
-	public int filas;
-	public int columnas;
 	
 	public IndividuoArbol(int modo, int profundidad, int filas, int columnas) {
 		this.gen=new Arbol(modo, profundidad,filas, columnas);
 		this.fitness=0;
-		this.filas = filas;
-		this.columnas = columnas;
 		operaciones=new ArrayList<String>();
 
 		funcionales = new ArrayList<Pair<Exp,Integer>>();
@@ -53,8 +49,7 @@ public class IndividuoArbol extends Individuo {
 	
 	private Exp duplicaArbol(Exp original) {
 		Exp nuevo;
-		if (original.getOperacion().equals("Constante")) nuevo = new Avanza();
-		else nuevo = original.duplica();
+		nuevo = original.duplica();
 		for (int i = 0; i < original.getTam(); i++) {
 			nuevo.setHijo(i, duplicaArbol(original.getHijo(i)));
 		}
