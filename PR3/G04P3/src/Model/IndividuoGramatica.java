@@ -36,11 +36,10 @@ public class IndividuoGramatica extends Individuo {
 	public IndividuoGramatica(int tam_cromosoma, int filas, int columnas) {		
 		this.cromosoma=new int[tam_cromosoma];
 		this.tam_cromosoma=tam_cromosoma;
-		this.cont=0;
 		this.filas=filas;
-		this.columnas=columnas;		
-		this.fitness=0;
-		
+		this.columnas=columnas;	
+					
+		this.fitness=0;		
 		this.random=new Random();	
 		
 		
@@ -69,19 +68,89 @@ public class IndividuoGramatica extends Individuo {
 	}
 	
 	public void init() {
-		Random random = new Random();        
-        
+		Random random = new Random(); 
+		
+		this.cont=0;
+		this.operaciones=new ArrayList<String>();
+		this.gramatica="";
+		
+		for (int i=0;i<tam_cromosoma;i++) {
+			cromosoma[i]=random.nextInt(256); // [0-255]
+		}
+		
+		try {
+			start();
+		}
+		catch(Exception e) {
+			init();
+		}
 		
 		
-		boolean aux=actualiza();
+		/*boolean aux=actualiza();
 		while(!aux){
 			System.out.println("Elimina");
 			for (int i=0;i<tam_cromosoma;i++) {
 				cromosoma[i]=random.nextInt(256); // [0-255]
 			}
 			aux=actualiza();
-		}		
+		}		*/
 	}
+	
+	private void start() {
+		String act="";
+		int tamHijos=2;
+		int x=cromosoma[0]%3;
+		if(x==0) act="PROGN";
+		else if(x==1) {
+			act="SALTA";
+			tamHijos=1;
+		}
+		else act="SUMA";
+		cont=1;
+		
+		op(act, tamHijos);
+	}
+	
+	private void op(String act, int tam) {
+		this.gramatica+=act;
+		if(tam==0) return;
+		
+		this.gramatica+="(";
+		for(int i=0;i<tam;i++) {
+			String hijo="";
+			int tamHijos=2;
+			int c=cromosoma[cont++]%6;
+			if(c==0) hijo="PROGN";
+			else if(c==1) {
+				hijo="SALTA";
+				tamHijos=1;
+				operaciones.add("S");
+			}
+			else if(c==2) hijo="SUMA";
+			else if(c==3) {
+				hijo="AVANZA";
+				tamHijos=0;
+			}
+			else if(c==4) {
+				int x=random.nextInt(filas);
+				int y=random.nextInt(columnas);
+				hijo="CONSTANTE("+x+","+y+")";
+				tamHijos=0;
+			}
+			else {
+				hijo="IZQUIERDA";
+				tamHijos=0;
+			}
+			
+			
+			op(hijo,tamHijos);
+			if(tam==2&&i==0) this.gramatica+=", ";
+		}
+		this.gramatica+=")";
+		
+	}
+	
+	
 	
 	public boolean actualiza() {
 		this.operaciones=new ArrayList<String>();
@@ -121,6 +190,7 @@ public class IndividuoGramatica extends Individuo {
 			}
 			else if(c==1) {
 				hijo="SALTA";
+				operaciones.add("S(X,Y)");
 				tamHijos=1;
 			}
 			else if(c==2) {
@@ -135,8 +205,7 @@ public class IndividuoGramatica extends Individuo {
 			else if(c==4) {
 				int x=random.nextInt(filas);
 				int y=random.nextInt(columnas);
-				hijo="CONSTANTE("+x+","+y+")";
-				operaciones.add("S"+x+y);
+				hijo="CONSTANTE("+x+","+y+")";				
 				tamHijos=0;
 			}
 			else {

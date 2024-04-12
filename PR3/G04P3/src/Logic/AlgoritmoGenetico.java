@@ -3,6 +3,7 @@ package Logic;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import Utils.Pair;
@@ -191,15 +192,18 @@ public class AlgoritmoGenetico {
 		
 		
 		init_poblacionG();
+		for(Individuo ind: poblacion) {
+			System.out.println(ind);
+		}
 
-		evaluacion_poblacion();
+		//evaluacion_poblacion();
 		
 		/*for(Individuo ind: poblacion) {
 			System.out.println(ind);
 			System.out.println(ind.fitness);
 		}*/
 
-		int cont=1;
+		/*int cont=1;
 		while (generaciones-- != 0) {
 			
 			selec = seleccion_poblacion();
@@ -223,7 +227,7 @@ public class AlgoritmoGenetico {
 			ctrl.actualiza_Grafico(progreso_generaciones, funcion, mejor_individuo, filas,columnas);
 		} else {
 			ctrl.actualiza_fallo(fallo);
-		}
+		}*/
 	}
 	
 	public Individuo[] cruce_poblacionG(Individuo[] selec, int d) {
@@ -529,12 +533,7 @@ public class AlgoritmoGenetico {
 		return ret;
 	}
 
-	private void printPoblacion() {
-		int cont = 0;
-		for (Individuo ind : poblacion) {
-			ind.printIndividuo();
-		}
-	}
+	
 	
 	
 	
