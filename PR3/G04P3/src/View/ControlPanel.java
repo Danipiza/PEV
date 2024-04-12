@@ -148,12 +148,13 @@ public class ControlPanel extends JPanel {
 		
 		String[] mutacion = { 	"Terminal",
 								"Funcional",
-								"Arbol",
+								//"Arbol",
 								"Permutacion",
-								"Subarbol",
+								//"Subarbol",
 								"Hoist",
-								"Contraccion",
-								"Espansion"};
+								"Contraccion"
+								//"Espansion"
+							};
 
 		//elitismo_button = new BooleanSwitch();
 
