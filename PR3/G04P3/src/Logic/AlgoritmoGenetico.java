@@ -389,12 +389,9 @@ public class AlgoritmoGenetico {
 				ret = mutacion.permutacion(poblacion);
 				break;
 			case 3:
-				ret = mutacion.permutacion(poblacion);
-				break;
-			case 4:
 				ret = mutacion.hoist(poblacion);
 				break;
-			case 6:
+			case 4:
 				ret = mutacion.contraccion(poblacion);
 			default:
 				break;
