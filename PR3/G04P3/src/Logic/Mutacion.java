@@ -47,7 +47,6 @@ public class Mutacion {
 				int tmp=random.nextInt(act.terminales.size());		
 				act.terminales.get(tmp).getKey().setHijo(act.terminales.get(tmp).getValue(), newTerminal);
 				
-				act.recorreArbol(act.gen.raiz);
 			}
 			ret[i]=act;
 		}

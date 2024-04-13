@@ -56,6 +56,16 @@ public class IndividuoArbol extends Individuo {
 		return nuevo;
 	}
 
+	public void reiniciaListas(Exp nodo) {
+		funcionales = new ArrayList<Pair<Exp,Integer>>();
+		Exp invisible = new Salta();
+		invisible.setHijo(0, gen.raiz);
+		funcionales.add(new Pair<>(invisible, 0));
+		terminales = new ArrayList<Pair<Exp,Integer>>();
+
+		recorreArbol(nodo);
+	}
+
 	public void recorreArbol(Exp nodo) {		
 		for(int i=0;i<nodo.getTam();i++) {				
 			recorreArbol(nodo.getHijo(i));

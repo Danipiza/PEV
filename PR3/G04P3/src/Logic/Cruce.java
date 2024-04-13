@@ -63,8 +63,8 @@ public class Cruce {
 					ind1.terminales.get(rand1).getKey().setHijo(ind1.terminales.get(rand1).getValue(), hijo2);
 					ind2.terminales.get(rand2).getKey().setHijo(ind2.terminales.get(rand2).getValue(), hijo1);
 				}
-				ind1.recorreArbol(ind1.gen.raiz);
-				ind2.recorreArbol(ind2.gen.raiz);
+				ind1.reiniciaListas(ind1.gen.raiz);
+				ind2.reiniciaListas(ind2.gen.raiz);
 				
 				ret[i++] = ind1;
 				ret[i++] = ind2;

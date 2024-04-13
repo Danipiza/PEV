@@ -475,7 +475,7 @@ public class AlgoritmoGenetico {
 				ret = seleccion.ruleta(poblacion, prob_seleccionAcum, tam_poblacion - tam_elite);
 				break;
 			case 1:
-				ret = seleccion.torneoDeterministico(poblacion, 20, tam_poblacion - tam_elite);
+				ret = seleccion.torneoDeterministico(poblacion, 3, tam_poblacion - tam_elite); //TODO 20
 				break;
 			case 2:
 				ret = seleccion.torneoProbabilistico(poblacion, 3, 0.9, tam_poblacion - tam_elite);

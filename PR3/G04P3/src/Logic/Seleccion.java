@@ -72,9 +72,8 @@ public class Seleccion {
 				} 
 			}	
 			 
-			
 			// TODO
-			seleccionados[i] =  new IndividuoArbol((IndividuoArbol) poblacion[indexMax]);;
+			seleccionados[i] = new IndividuoArbol((IndividuoArbol) poblacion[indexMax]);
 			
 		}
 
@@ -106,8 +105,8 @@ public class Seleccion {
 			}	
 			 
 			//seleccionados[i] = new IndividuoReal((opt && Math.random() <= p || !opt && Math.random() > p ? poblacion[indexMax] : poblacion[indexMin]));
-			if(ind_modo==0) seleccionados[i] = new IndividuoArbol((IndividuoArbol) poblacion[indexMin]);
-			else seleccionados[i] = new IndividuoGramatica((IndividuoGramatica) poblacion[indexMin]);
+			if(ind_modo==0) seleccionados[i] = new IndividuoArbol((IndividuoArbol) poblacion[indexMax]);
+			else seleccionados[i] = new IndividuoGramatica((IndividuoGramatica) poblacion[indexMax]);
 		}
 
 		return seleccionados;
