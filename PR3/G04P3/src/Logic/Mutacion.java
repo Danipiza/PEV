@@ -104,6 +104,7 @@ public class Mutacion {
 				
 				act.gen.raiz = act.funcionales.get(0).getKey().getHijo(0);
 			}
+			ret[i]=act;
 		}
 		
 		return ret;
@@ -195,6 +196,8 @@ public class Mutacion {
 
 				act.gen.raiz = act.funcionales.get(0).getKey().getHijo(0);
 			}
+
+			ret[i]=act;
 		}
 		
 		return ret;
