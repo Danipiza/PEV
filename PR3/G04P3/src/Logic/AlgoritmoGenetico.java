@@ -480,7 +480,7 @@ public class AlgoritmoGenetico {
 				ret = seleccion.ruleta(poblacion, prob_seleccionAcum, tam_poblacion - tam_elite);
 				break;
 			case 1:
-				ret = seleccion.torneoDeterministico(poblacion, 3, tam_poblacion - tam_elite); //TODO 20
+				ret = seleccion.torneoDeterministico(poblacion, 20, tam_poblacion - tam_elite);
 				break;
 			case 2:
 				ret = seleccion.torneoProbabilistico(poblacion, 3, 0.9, tam_poblacion - tam_elite);
@@ -522,13 +522,20 @@ public class AlgoritmoGenetico {
 				ret = mutacion.funcional(poblacion);
 				break;
 			case 2:
-				ret = mutacion.permutacion(poblacion);
+				ret = mutacion.arbol(poblacion);
 				break;
 			case 3:
-				ret = mutacion.hoist(poblacion);
+				ret = mutacion.permutacion(poblacion);
 				break;
 			case 4:
+				ret = mutacion.hoist(poblacion);
+				break;
+			case 5:
 				ret = mutacion.contraccion(poblacion);
+				break;
+			case 6:
+				ret = mutacion.expansion(poblacion);
+				break;
 			default:
 				break;
 		}

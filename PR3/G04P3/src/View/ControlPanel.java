@@ -174,12 +174,11 @@ public class ControlPanel extends JPanel {
 		
 		String[] mutacionA = { 	"Terminal",
 								"Funcional",
-								//"Arbol",
+								"Arbol",
 								"Permutacion",
-								//"Subarbol",
 								"Hoist",
-								"Contraccion"
-								//"Espansion"
+								"Contraccion",
+								"Expansion"
 							};
 		
 		String[] cruceG = { 	"MonoPunto" };

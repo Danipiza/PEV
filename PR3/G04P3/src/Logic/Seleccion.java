@@ -105,8 +105,8 @@ public class Seleccion {
 				}
 			}	
 			 
-			int index=indexMax;
-			if(Math.random()<=p) index=indexMin;
+			int index=indexMin;
+			if(Math.random()<=p) index=indexMax;
 			
 			//seleccionados[i] = new IndividuoReal((opt && Math.random() <= p || !opt && Math.random() > p ? poblacion[indexMax] : poblacion[indexMin]));
 			if(ind_modo==0) seleccionados[i] = new IndividuoArbol((IndividuoArbol) poblacion[index]);

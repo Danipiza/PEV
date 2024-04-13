@@ -3,6 +3,7 @@ package Logic;
 
 import java.util.Random;
 
+import Model.Arbol;
 import Model.Individuo;
 import Model.IndividuoArbol;
 import Model.Simbolos.Exp;
@@ -86,6 +87,27 @@ public class Mutacion {
 		
 		return ret;
 	}
+
+
+	public Individuo[] arbol(Individuo[] poblacion) {
+		int tam_poblacion=poblacion.length;
+		IndividuoArbol[] ret = new IndividuoArbol[tam_poblacion];
+		
+		
+		IndividuoArbol act;
+		for (int i=0;i<tam_poblacion-tam_elite;i++) {
+			act = (IndividuoArbol) poblacion[i];	
+			if(Math.random()<p) {
+				int tmp=random.nextInt(act.funcionales.size());
+				Arbol newArbol = new Arbol(random.nextInt(1), random.nextInt(2) + 2, filas, columnas); //TODO cambiar arbol aleatorio a 3
+				act.funcionales.get(tmp).getKey().setHijo(act.funcionales.get(tmp).getValue(), newArbol.raiz);
+				
+				act.gen.raiz = act.funcionales.get(0).getKey().getHijo(0);
+			}
+		}
+		
+		return ret;
+	}
 	
 	
 	public Individuo[] permutacion(Individuo[] poblacion) {
@@ -158,14 +180,21 @@ public class Mutacion {
 	}
 
 
-	public Individuo[] template(Individuo[] poblacion) {
+	public Individuo[] expansion(Individuo[] poblacion) {
 		int tam_poblacion=poblacion.length;
 		IndividuoArbol[] ret = new IndividuoArbol[tam_poblacion];
 		
 		
 		IndividuoArbol act;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
-			
+			act = (IndividuoArbol) poblacion[i];	
+			if(Math.random()<p) {
+				int tmp=random.nextInt(act.terminales.size());
+				Arbol newArbol = new Arbol(random.nextInt(1), random.nextInt(1) + 2, filas, columnas); //TODO cambiar arbol aleatorio a 3
+				act.terminales.get(tmp).getKey().setHijo(act.terminales.get(tmp).getValue(), newArbol.raiz); 
+
+				act.gen.raiz = act.funcionales.get(0).getKey().getHijo(0);
+			}
 		}
 		
 		return ret;
