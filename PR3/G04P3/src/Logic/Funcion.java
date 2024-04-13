@@ -12,7 +12,8 @@ public class Funcion {
 	private int ticks;
 	//							        N      O     S     E
 	private int[][] direccionAvanza={{-1,0},{0,-1},{1,0},{0,1}};
-	private int[][] direccionSalta ={{-1,1},{1,-1},{1,1},{1,1}};
+	private int[][] direccionSalta ={{-1,1},{-1,-1},{1,-1},{1,1}};
+	// int[][] direccionSalta ={{-1,1},{-1,-1},{1,-1},{1,1}};
 	
 	public Funcion(int filas, int columnas, int ticks) {
 		this.filas=filas;
@@ -47,7 +48,7 @@ public class Funcion {
 		while(ticks<this.ticks) {
 			// Gira a la izquierda
 			if(ops[cont][0]=='I') {
-				dir+=(dir+1)%4;
+				dir=(dir+1)%4;
 				//System.out.println("Izquierda");
 			}
 			else if(ops[cont][0]=='A') {

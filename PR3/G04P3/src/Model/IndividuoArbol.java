@@ -92,4 +92,3 @@ public class IndividuoArbol extends Individuo {
 
 
 
-
