@@ -3,6 +3,8 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Model.Simbolos.Exp;
 
@@ -20,6 +22,15 @@ public class IndividuoGramatica extends Individuo {
 	private int columnas;
 	
 	private Random random;
+	
+	protected class Coord{
+		int x;
+		int y;
+		public Coord(int x, int y) {
+			this.x=x;
+			this.y=y;
+		}
+	}
 	
 	
 
@@ -109,13 +120,29 @@ public class IndividuoGramatica extends Individuo {
 		cont=1;
 		
 		op(act, tamHijos);
+		//if(act.equals("SALTA")) operaciones.add("S"+aux.x+aux.y);
 	}
 	
-	private void op(String act, int tam) {
+	private Coord op(String act, int tam) {
 		this.gramatica+=act;
-		if(tam==0) return;
+		if(tam==0) {			
+			if(act.equals("AVANZA")) return new Coord(0,0);
+			else if(act.equals("IZQUIERDA")) return new Coord(0,0);
+			else {
+				Pattern pattern = Pattern.compile("\\d+");		      
+		        Matcher matcher = pattern.matcher(act);
+		        matcher.find();
+		        String number1 = matcher.group();
+		        matcher.find();
+		        String number2 = matcher.group();
+		        
+				return new Coord(Integer.parseInt(number1),Integer.parseInt(number2));
+			}
+		}
 		
 		this.gramatica+="(";
+		
+		Coord[] coordsH= new Coord[tam];		
 		for(int i=0;i<tam;i++) {
 			String hijo="";
 			int tamHijos=2;
@@ -123,36 +150,47 @@ public class IndividuoGramatica extends Individuo {
 			if(c==0) hijo="PROGN";
 			else if(c==1) {
 				hijo="SALTA";
-				tamHijos=1;
-				operaciones.add("S");
+				tamHijos=1;				
 			}
 			else if(c==2) hijo="SUMA";
 			else if(c==3) {
 				hijo="AVANZA";
 				tamHijos=0;
+				operaciones.add("A");
 			}
 			else if(c==4) {
-				int x=random.nextInt(filas);
-				int y=random.nextInt(columnas);
-				hijo="CONSTANTE("+x+","+y+")";
+				int tmpX=random.nextInt(filas);
+				int tmpY=random.nextInt(columnas);
+				hijo="CONSTANTE("+tmpX+","+tmpY+")";
 				tamHijos=0;
 			}
 			else {
 				hijo="IZQUIERDA";
 				tamHijos=0;
+				operaciones.add("I");
 			}
 			
 			
-			op(hijo,tamHijos);
+			coordsH[i]=op(hijo,tamHijos);
 			if(tam==2&&i==0) this.gramatica+=", ";
 		}
+		
 		this.gramatica+=")";
 		
+		
+		
+		if(act.equals("PROGN")) return coordsH[1];
+		else if(act.equals("SALTA")) {
+			operaciones.add("S"+coordsH[0].x+coordsH[0].y);
+			return coordsH[0];
+		}
+		else return new Coord((coordsH[0].x+coordsH[1].x)%filas, 
+							  (coordsH[0].y+coordsH[1].y)%columnas);		
 	}
 	
 	
 	
-	public boolean actualiza() {
+	/*public boolean actualiza() {
 		this.operaciones=new ArrayList<String>();
 		this.gramatica="";
 		
@@ -221,13 +259,17 @@ public class IndividuoGramatica extends Individuo {
 		if(tam!=0)  gramatica+=")";
 		
 		return true;
-	}
+	}*/
 	
 	
 	
 	// TODO
 	public String toString() {
-		return gramatica;
+		String aux="";
+		for(String x: operaciones) {
+			aux+=x+", ";
+		}
+		return gramatica +"\nOperaciones: " + aux;
 	}
 
 	

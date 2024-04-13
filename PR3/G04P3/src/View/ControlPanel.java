@@ -43,6 +43,7 @@ public class ControlPanel extends JPanel {
 
 	private JButton run_button;
 	private JButton run_button2;
+	private JButton corta_button;
 
 	//private BooleanSwitch elitismo_button;
 
@@ -53,6 +54,9 @@ public class ControlPanel extends JPanel {
 	private JTextField filas_text;
 	private JTextField columnas_text;
 	private JTextField elitismo;
+	private JTextField ticks;
+	
+	private JTextField tiempo_animacion;
 
 	private JComboBox<String> seleccion_CBox;
 	
@@ -85,6 +89,12 @@ public class ControlPanel extends JPanel {
 	
 	private int filas;
 	private int columnas;
+	
+	
+	
+	private JPanel matrixPanel;	
+	private JPanel squares[][]; 	
+	private Individuo mejor_individuo;
 
 	public ControlPanel() {
 		tam_poblacion = new JTextField("100", 11);
@@ -95,6 +105,8 @@ public class ControlPanel extends JPanel {
 		filas_text = new JTextField("8", 11);
 		columnas_text= new JTextField("8", 11);
 		tam_cromosoma= new JTextField("10", 11);
+		ticks= new JTextField("100", 11);
+		tiempo_animacion=new JTextField("0.25", 5);
 		
 		
 		SpinnerModel spinnerModel = new SpinnerNumberModel(4, 2, 5, 1); // Default value: 4, Min: 2, Max: 5, Step: 1
@@ -119,7 +131,8 @@ public class ControlPanel extends JPanel {
 	    int[][] M=new int[filas][columnas];
 	    this.filas=8;
 	    this.columnas=8;
-	    JPanel matrixPanel = createMatrixPanel(M);
+	    
+	    createMatrixPanel(M);
 
 	    
 	    gbc.gridx = 0;
@@ -185,7 +198,7 @@ public class ControlPanel extends JPanel {
 		
 		text_area = new JTextArea(2, 2);
 		text_area.append("Esperando una ejecucion...");
-		text_area2 = new JTextArea(2, 2);
+		text_area2 = new JTextArea(2, 4);
 		text_area2.append("Esperando una ejecucion...");
 
 		run_button = new JButton();
@@ -213,6 +226,35 @@ public class ControlPanel extends JPanel {
 			}
 		});
 		
+		corta_button = new JButton();
+		corta_button.setToolTipText("Run button");
+		corta_button.setIcon(loadImage("resources/icons/Corta.png"));
+		corta_button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {				
+				/*System.out.println("Corta");
+				Color lightGreen = Color.decode("#00CC66"); // Light green color
+		        Color darkGreen = Color.decode("#028A46"); // Dark green color
+		        squares[0][0].setBackground(lightGreen);*/
+		        if(mejor_individuo!=null) {
+		        	Color darkGreen = Color.decode("#028A46");
+		        	// REINICIA
+		            for (int i = 0; i < filas; i++) {
+		                for (int j = 0; j < columnas; j++) {
+		                	squares[i][j].setBackground(darkGreen);                
+		                }
+		            }
+		            matrixPanel.repaint();
+		        	
+		        	animacionMatrixPanel(mejor_individuo,
+		        			Double.parseDouble(tiempo_animacion.getText()),
+			        		Integer.parseInt(ticks.getText()));
+		        }
+			}
+		});
+		
+		gbc.fill = GridBagConstraints.BOTH;
+		
 		gbc.anchor = GridBagConstraints.WEST;
 
 		gbc.gridx = 0;
@@ -234,6 +276,8 @@ public class ControlPanel extends JPanel {
 		gbc.gridy++;
 		leftPanel.add(new JLabel("  Elitismo:"), gbc);
 		gbc.gridy++;
+		leftPanel.add(new JLabel("  Ticks:"), gbc);
+		gbc.gridy++;
 		
 		leftPanel.add(new JLabel(""), gbc);
 		gbc.gridy++;
@@ -253,8 +297,9 @@ public class ControlPanel extends JPanel {
 		
 		gbc.anchor = GridBagConstraints.SOUTH; // Align components to the left
 		//gbc.gridy++;
+		gbc.gridwidth=2;
 		leftPanel.add(run_button, gbc);
-		
+		gbc.gridwidth=1;
 		gbc.anchor = GridBagConstraints.WEST;
 		
 		leftPanel.add(new JLabel(""), gbc);
@@ -273,8 +318,9 @@ public class ControlPanel extends JPanel {
 		
 		gbc.anchor = GridBagConstraints.SOUTH; // Align components to the left
 		//gbc.gridy++;
+		gbc.gridwidth=2;
 		leftPanel.add(run_button2, gbc);
-		
+		gbc.gridwidth=1;
 		//leftPanel.add(new JLabel(""), gbc);
 		//gbc.gridy++;
 		
@@ -302,6 +348,8 @@ public class ControlPanel extends JPanel {
 		leftPanel.add(columnas_text, gbc);
 		gbc.gridy++;
 		leftPanel.add(elitismo, gbc); //elitismo_button
+		gbc.gridy++;
+		leftPanel.add(ticks, gbc); //elitismo_button
 		gbc.gridy++;
 		
 		gbc.gridy++;
@@ -333,7 +381,16 @@ public class ControlPanel extends JPanel {
 		leftPanel.add(text_area, gbc);
 		gbc.gridy+=2;
 		gbc.gridx--;
+		gbc.gridwidth=2;
+		gbc.fill = GridBagConstraints.BOTH;
 		leftPanel.add(text_area2, gbc);
+		gbc.gridy++;
+		gbc.gridwidth=1;
+		
+		leftPanel.add(corta_button, gbc);
+		gbc.gridx++;
+		leftPanel.add(tiempo_animacion, gbc);
+		
 
 		/*gbc.anchor = GridBagConstraints.SOUTH; // Align components to the left
 		gbc.gridy++;
@@ -367,36 +424,124 @@ public class ControlPanel extends JPanel {
 	
 	
 	
-	private JPanel createMatrixPanel(int[][] M) {
+	private void createMatrixPanel(int[][] M) {
 		int gap=2;
 		int borderGap = 10;
-		JPanel gridPanel = new JPanel(new GridLayout(this.filas, this.columnas, gap, gap));
-        gridPanel.setBorder(new EmptyBorder(borderGap, borderGap, borderGap, borderGap)); // Add empty border
-        gridPanel.setPreferredSize(new Dimension(450, 600));
+		matrixPanel = new JPanel(new GridLayout(this.filas, this.columnas, gap, gap));
+		matrixPanel.setBorder(new EmptyBorder(borderGap, borderGap, borderGap, borderGap)); // Add empty border
+		matrixPanel.setPreferredSize(new Dimension(450, 600));
         Color lightGreen = Color.decode("#00CC66"); // Light green color
         Color darkGreen = Color.decode("#028A46"); // Dark green color
-
         
+        
+        squares=new JPanel[filas][columnas];
         
         for (int i = 0; i < this.filas; i++) {
             for (int j = 0; j < this.columnas; j++) {
-                JPanel square = new JPanel();
-                //square.setPreferredSize(new Dimension(50, 50)); // Adjust size as needed
-
-                // Alternate colors for the squares
-                if (M[i][j]==1) {
-                    square.setBackground(lightGreen);
-                } else {
-                    square.setBackground(darkGreen);
-                }
-                gridPanel.add(square);
+            	squares[i][j] = new JPanel();
+                
+                if (M[i][j]==1) squares[i][j].setBackground(lightGreen);
+                else squares[i][j].setBackground(darkGreen);
+                matrixPanel.add(squares[i][j]);
             }
         }
-        return gridPanel;
 	}
+	
+	private void updateMatrixPanel(int[][] M) {
+        Color lightGreen = Color.decode("#00CC66"); // Light green color
+        Color darkGreen = Color.decode("#028A46"); // Dark green color
+                       
+        for (int i = 0; i < this.filas; i++) {
+            for (int j = 0; j < this.columnas; j++) {
+                if (M[i][j]==1) squares[i][j].setBackground(lightGreen);
+                else squares[i][j].setBackground(darkGreen);                
+            }
+        }
+	}
+	
+	private void animacionMatrixPanel(Individuo ind, double tiempo, int ticks) {
+        Color lightGreen = Color.decode("#00CC66"); // Light green color
+        Color darkGreen = Color.decode("#028A46"); // Dark green color
+        
+        // REINICIA
+        for (int i = 0; i < this.filas; i++) {
+            for (int j = 0; j < this.columnas; j++) {
+            	squares[i][j].setBackground(darkGreen);                
+            }
+        }
+        matrixPanel.repaint();
+        double fitness=0.0;
+		if(ind.operaciones.size()==0) return;
+		
+		int[][] M=new int[filas][columnas];
+		int[][] direccionAvanza={{-1,0},{0,-1},{1,0},{0,1}};
+		int[][] direccionSalta ={{-1,1},{1,-1},{1,1},{1,1}};
+		
+		// Posicion inicial
+		int x=4;
+		int y=4;
+		
+		int dir=0;
+		
+		int cont=0;	
+		int n=ind.operaciones.size();
+		char[][] ops=new char[n][3];
+		for(String tmp: ind.operaciones) {
+			ops[cont++]=tmp.toCharArray();
+		}
+		cont=0;
+		
+		// Tick suma cuando se gira a la izquierda, salta o avanza
+		
+		int t=0;
+		while(t<ticks) {
+			try { Thread.sleep((long) (tiempo*1000));
+			} catch (InterruptedException e) { e.printStackTrace(); } 
+			
+			// Gira a la izquierda
+			if(ops[cont][0]=='I') {
+				dir+=(dir+1)%4;
+				//System.out.println("Izquierda");
+			}
+			else if(ops[cont][0]=='A') {
+				//System.out.println("Avanza");
+				x=(x+direccionAvanza[dir][0])%filas;
+				y=(y+direccionAvanza[dir][1])%columnas;
+				if(x<0) x=filas+x;
+				if(y<0) y=columnas+y;
+				if(M[x][y]==0) {
+					fitness++;
+					M[x][y]=1;
+					squares[x][y].setBackground(lightGreen);
+				}
+			}
+			else {
+				//System.out.println("Salta");
+				x=(x+direccionSalta[dir][0]*ops[cont][1]-'0')%filas;
+				y=(y+direccionSalta[dir][1]*ops[cont][2]-'0')%columnas;
+				if(x<0) x=filas+x;
+				if(y<0) y=columnas+y;
+				if(M[x][y]==0) {
+					fitness++;
+					M[x][y]=1;
+					squares[x][y].setBackground(lightGreen);
+				}
+			}
+			matrixPanel.repaint();
+			t++;
+			cont=(cont+1)%n;
+		}		
+		
+        
+        
+	}
+	
+	
 
 	public void actualiza_Grafico(double[][] vals, Funcion f,Individuo mejor_individuo, int filas, int columnas) {
 		plot2D.removeAllPlots();
+		
+		this.mejor_individuo=mejor_individuo;
 		
 		this.filas=filas;
 		this.columnas=columnas;
@@ -428,11 +573,11 @@ public class ControlPanel extends JPanel {
 		
 		int[][] M=f.matrix(mejor_individuo);
 		
-		JPanel matrixPanel = createMatrixPanel(M);
-		
-		gbc.gridx = 2;
+		//JPanel matrixPanel = updateMatrixPanel(M);
+		updateMatrixPanel(M);
+		/*gbc.gridx = 2;
 	    gbc.weightx = 0.4; // Make the right panel larger
-	    add(matrixPanel, gbc);
+	    add(matrixPanel, gbc);*/
 		
 		
 		
@@ -463,6 +608,7 @@ public class ControlPanel extends JPanel {
 	private void runGramatica() {
 		setValores(1);
 		AG.ejecutaGramatica(valores);
+		
 	}
 
 	private void setValores(int modo) {
@@ -482,6 +628,7 @@ public class ControlPanel extends JPanel {
 				Integer.parseInt(filas_text.getText()),
 				Integer.parseInt(columnas_text.getText()),
 				Integer.parseInt(elitismo.getText()),
+				Integer.parseInt(ticks.getText()),
 				modo);
 	}
 	
