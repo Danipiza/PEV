@@ -69,12 +69,12 @@ public class AlgoritmoGenetico {
 	private ControlPanel ctrl;
 	
 	// Nuevos
-	private int modo;
-	
+	private int modo;	
 	
 	private int profundidad;
 	private int filas;
-	private int columnas;
+	private int columnas;	
+	
 	
 	private int long_cromosoma;
 	
@@ -174,7 +174,7 @@ public class AlgoritmoGenetico {
 		}
 
 		if (fallo.equals("")) { // TERMINA LA EJECUCION, MANDA LOS VALORES CALCULADOS AL GRAFICO
-			ctrl.actualiza_Grafico(progreso_generaciones, funcion, mejor_individuo,filas,columnas);
+			ctrl.actualiza_Grafico(progreso_generaciones, funcion, mejor_individuo, filas,columnas);
 		} else {
 			ctrl.actualiza_fallo(fallo);
 		}
@@ -551,5 +551,8 @@ public class AlgoritmoGenetico {
 		
 	}
 
-
+	
+	public int getFilas() { return this.filas; }
+	public int getColumnas() { return this.columnas; }
+	
 }
