@@ -27,6 +27,8 @@ public class Mutacion {
 		this.random=new Random();
 		this.filas=filas;
 		this.columnas=columnas;
+		
+		this.tam_elite=tam_elite;
 	}
 	
 	

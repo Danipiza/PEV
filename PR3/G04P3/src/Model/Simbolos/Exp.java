@@ -7,6 +7,7 @@ public abstract class Exp {
 	private int tam;
 	private String operacion;
 	
+	
 	public Exp() {}
 	
 	
@@ -34,7 +35,8 @@ public abstract class Exp {
 			return String.valueOf(this.operacion.charAt(0));
 		}
 	}
-
+	
+	
 
     public abstract Exp duplica();
 

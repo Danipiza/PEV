@@ -30,12 +30,14 @@ public class IndividuoArbol extends Individuo {
 		terminales = new ArrayList<Pair<Exp,Integer>>();
 
 		recorreArbol(gen.raiz);
+		this.nodos=gen.getNodos(); // Bloating
 	}
 	
 	public IndividuoArbol(IndividuoArbol individuo) {	
 		this.gen = new Arbol();
 		gen.raiz = duplicaArbol(individuo.gen.raiz);
 		this.fitness=0;
+		this.nodos=individuo.nodos;
 
 		funcionales = new ArrayList<Pair<Exp,Integer>>();
 		Exp invisible = new Salta();
@@ -45,6 +47,7 @@ public class IndividuoArbol extends Individuo {
 
 		operaciones=new ArrayList<String>();
 		recorreArbol(gen.raiz);
+		this.nodos=gen.getNodos(); // Bloating
 	}
 	
 	private Exp duplicaArbol(Exp original) {
@@ -57,6 +60,8 @@ public class IndividuoArbol extends Individuo {
 	}
 
 	public void reiniciaListas(Exp nodo) {
+		this.nodos=0;
+		
 		funcionales = new ArrayList<Pair<Exp,Integer>>();
 		Exp invisible = new Salta();
 		invisible.setHijo(0, gen.raiz);
@@ -66,7 +71,9 @@ public class IndividuoArbol extends Individuo {
 		recorreArbol(nodo);
 	}
 
-	public void recorreArbol(Exp nodo) {		
+	public void recorreArbol(Exp nodo) {	
+		this.nodos++;
+		
 		for(int i=0;i<nodo.getTam();i++) {				
 			recorreArbol(nodo.getHijo(i));
 			if(nodo.getHijo(i).getTam() == 0) terminales.add(new Pair<>(nodo, i));

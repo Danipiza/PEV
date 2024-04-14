@@ -62,12 +62,14 @@ public class ControlPanel extends JPanel {
 	private JTextField ticks;	
 
 	private JComboBox<String> seleccion_CBox;	
+	private JComboBox<String> bloating_CBox;
 	
 	// PARTE 1. PROGRAMACION GENETICA
 	
 	private JComboBox<String> ini_CBox;	
 	private JComboBox<String> cruceA_CBox;
 	private JComboBox<String> mutacionA_CBox;
+	
 	
 	private JSpinner profundidad;
 	
@@ -101,6 +103,7 @@ public class ControlPanel extends JPanel {
     // IMPRIME RESULTADOS
 	private JTextArea text_area;
 	private JTextArea text_area2;
+	private JTextArea text_area3;
 
 	private Plot2DPanel plot2D;
 
@@ -120,7 +123,7 @@ public class ControlPanel extends JPanel {
 		this.elitismo = new JTextField("0", 11);
 		this.filas_text = new JTextField("8", 11);
 		this.columnas_text= new JTextField("8", 11);
-		this.tam_cromosoma= new JTextField("10", 11);
+		this.tam_cromosoma= new JTextField("100", 11);
 		this.ticks= new JTextField("100", 11);
 		this.tiempo_animacion=new JTextField("0.25", 5);
 		
@@ -193,12 +196,17 @@ public class ControlPanel extends JPanel {
 		String[] cruceG = { 	"MonoPunto" };	
 		
 		String[] mutacionG = { 	"Basica" };
+		
+		String[] bloating = { 	"Sin",
+								"Tarpeian",
+								"Poli and McPhee"};
 
 
 		ini_CBox = new JComboBox<>(inicializacions);
 		seleccion_CBox = new JComboBox<>(seleccion);
 		cruceA_CBox = new JComboBox<>(cruceA);
 		mutacionA_CBox = new JComboBox<>(mutacionA);
+		bloating_CBox = new JComboBox<>(bloating);
 		
 		cruceG_CBox = new JComboBox<>(cruceG);
 		mutacionG_CBox = new JComboBox<>(mutacionG);		
@@ -223,7 +231,11 @@ public class ControlPanel extends JPanel {
 		run_button2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				finAnimacion=true;
+				try { 
+            		finAnimacion=true;
+    				Thread.sleep((long) (100));
+    				finAnimacion=false;
+    			} catch (InterruptedException e1) { e1.printStackTrace(); } 
 				int tmp=Integer.parseInt(elitismo.getText());
 				if(tmp<0||tmp>100) actualiza_fallo("Elitismo porcentaje");
 				else runGramatica();
@@ -267,6 +279,8 @@ public class ControlPanel extends JPanel {
 		leftPanel.add(new JLabel("  Elitismo:"), gbc);
 		gbc.gridy++;
 		leftPanel.add(new JLabel("  Ticks:"), gbc);
+		gbc.gridy++;
+		leftPanel.add(new JLabel("  Bloating:"), gbc);
 		gbc.gridy++;
 		
 		// PARTE 1. PROGRAMACION GENETICA
@@ -350,6 +364,8 @@ public class ControlPanel extends JPanel {
 		gbc.gridy++;
 		leftPanel.add(ticks, gbc); 
 		gbc.gridy++;
+		leftPanel.add(bloating_CBox, gbc); 
+		gbc.gridy++;
 		
 		gbc.gridy++;
 		gbc.gridy++;
@@ -423,11 +439,15 @@ public class ControlPanel extends JPanel {
 		text_area.append("  Esperando una ejecucion...");
 		text_area2 = new JTextArea(2, 2);
 		text_area2.append("  Esperando una ejecucion...");
+		text_area3 = new JTextArea(2, 2);
+		text_area3.append("  Esperando una ejecucion...");
 
 		rightPanel.add(text_area, gbc);
 		gbc.gridy++;
 		gbc.weighty = 0.5; // Mas espacio para imprimir el individuo
 		rightPanel.add(text_area2, gbc);
+		gbc.gridy++;
+		rightPanel.add(text_area3, gbc);
 		
 		return rightPanel;
 	}
@@ -496,11 +516,18 @@ public class ControlPanel extends JPanel {
 	
 	// SImula el recorrido del individuo
 	private void animacionMatrixPanel(Individuo ind, double tiempo, int ticks)  {                            
-		finAnimacion=false;
+		
 		Thread thread = new Thread(new Runnable() {
+			
             @Override
             public void run() {
-        		if(ind.operaciones.size()==0) return;
+            	try { 
+            		finAnimacion=true;
+    				Thread.sleep((long) (tiempo*1000));
+    				finAnimacion=false;
+    			} catch (InterruptedException e) { e.printStackTrace(); } 
+        		
+            	if(ind.operaciones.size()==0) return;
         		
         		int[][] M=new int[filas][columnas];
         		int[][] direccionAvanza={{-1,0},{0,-1},{1,0},{0,1}};
@@ -523,13 +550,27 @@ public class ControlPanel extends JPanel {
         		}
         		cont=0;
         		
+        		String operaciones[] = new String[n];
+        		
+        		for(int i=0;i<n;i++) {
+        			if(ops[i][0]=='A') operaciones[i]="AVANZA";
+        			else if(ops[i][0]=='I') operaciones[i]="IZQUIERDA";
+        			else operaciones[i]="SALTA "+ops[i][1]+ ", "+ops[i][2];
+        		}
+        		
+        		
         		// Cortacesped en la casilla inicial
         		squares[x][y].add(new JLabel(loadImage(path+dirCorta[dir])));
 				squares[x][y].revalidate();
 				squares[x][y].repaint();
 				
+				
+				
         		int t=0;
         		while(t<ticks) {
+        			
+        			
+        			text_area3.setText("\n     Operacion: "+operaciones[cont]);
         			try { 
         				Thread.sleep((long) (tiempo*1000));
         				if(finAnimacion) break;
@@ -618,8 +659,23 @@ public class ControlPanel extends JPanel {
 		
 		updateMatrixPanel(M);
 		
-		text_area.setText("" + mejor_individuo.fitness);
-		text_area2.setText(mejor_individuo.toString());
+		int n=mejor_individuo.operaciones.size();
+		String acciones="";
+		
+		for(int i=0;i<n-1;i++) {
+			acciones+=mejor_individuo.operaciones.get(i)+" - ";
+		}
+		acciones+=mejor_individuo.operaciones.get(n-1);
+		   
+		
+		text_area.setText( "\n     Fitness Optimo:" + mejor_individuo.fitness);
+		text_area2.setLineWrap(true);
+		text_area2.setWrapStyleWord(true);
+		text_area2.setText("     Representacion:\n" + mejor_individuo.toString()+
+						   "\n\n     Acciones: "+ acciones);
+		
+		
+						
 	}
 
 	public void actualiza_fallo(String s) {
@@ -657,7 +713,8 @@ public class ControlPanel extends JPanel {
 				Integer.parseInt(columnas_text.getText()),
 				Integer.parseInt(elitismo.getText()),
 				Integer.parseInt(ticks.getText()),
-				modo);
+				modo,
+				bloating_CBox.getSelectedIndex());
 	}
 	
 	

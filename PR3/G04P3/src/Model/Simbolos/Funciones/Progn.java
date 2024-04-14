@@ -7,7 +7,7 @@ public class Progn extends Exp {
 	public Exp ops[]=new Exp[2];
 	
 	public Progn() {
-		this.putTam(2); 				// Numero de hijos
+		this.putTam(2); 				// Numero de hijos 
 		this.putOperacion("Progn"); 	// Nombre de la operacion
 		this.ops[0]=null; 				// Hijo 1
 		this.ops[1]=null;				// Hijo 2

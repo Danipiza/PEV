@@ -13,11 +13,14 @@ public class Arbol {
 	
 	private int filas;
 	private int columnas;
+	
+	private int nodos; // Control de Bloating
 
 	public Arbol(int modo, int profundidad, int filas, int columnas) {
 		profMax=profundidad;
 		this.filas=filas;
 		this.columnas=columnas;
+		this.nodos=0;
 		init_raiz();		
 		
 		inicializa_arbol(raiz, modo);
@@ -31,7 +34,8 @@ public class Arbol {
 		else creciente(exp,0);		
 	}
 	
-	public Arbol(Arbol arbol) {		
+	public Arbol(Arbol arbol) {	
+		this.nodos=0;
 		recorreArbol(arbol.raiz);
 	}
 	
@@ -41,6 +45,7 @@ public class Arbol {
 	}
 	
 	private void init_raiz() {
+		this.nodos++;
 		Random random = new Random();  
 		switch (random.nextInt(3)) {
 			case 0: {
@@ -68,6 +73,8 @@ public class Arbol {
 			for(int i=0;i<hijos;i++) {
 				Exp hijo=null;
 				
+				this.nodos++;
+				
 				Random random = new Random();
 				int func=random.nextInt(3);
 				if(func==0) hijo=new Progn();
@@ -84,6 +91,8 @@ public class Arbol {
 			int hijos=nodo.getTam();
 			for(int i=0;i<hijos;i++) {
 				Exp hijo=null;
+				
+				this.nodos++;
 				
 				Random random = new Random();
 				int func=random.nextInt(3);
@@ -105,6 +114,8 @@ public class Arbol {
 			for(int i=0;i<hijos;i++) {
 				Exp hijo=null;
 				
+				this.nodos++;
+				
 				Random random = new Random();
 				int func=random.nextInt(3);
 				if(func==0) hijo=new Progn();
@@ -119,6 +130,8 @@ public class Arbol {
 			for(int i=0;i<hijos;i++) {
 				Exp hijo=null;
 				
+				this.nodos++;
+				
 				Random random = new Random();
 				int func=random.nextInt(3);
 				if(func==0) hijo=new Avanza();
@@ -131,7 +144,7 @@ public class Arbol {
 		return nodo;
 	}
 	
-	
+	public int getNodos() { return this.nodos; }
 	
 	public String toString() {
 		return ""+raiz;

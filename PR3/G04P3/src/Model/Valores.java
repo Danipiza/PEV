@@ -16,11 +16,12 @@ public class Valores {
 	public int elitismo;
 	public int ticks;
 	public int modo;
+	public int bloating_idx;
 	
 	public Valores(int tam_poblacion, int generaciones, 
 			int ini_idx, int prof_O_longCrom, int seleccion_idx,
 			int cruce_idx, double prob_cruce, int mut_idx, double prob_mut, 
-			int filas, int columnas, int elitismo, int ticks, int modo) {
+			int filas, int columnas, int elitismo, int ticks, int modo, int bloating_idx) {
 		
 		this.tam_poblacion=tam_poblacion;
 		this.generaciones=generaciones;
@@ -36,5 +37,6 @@ public class Valores {
 		this.elitismo=elitismo;
 		this.ticks=ticks;
 		this.modo=modo;
+		this.bloating_idx=bloating_idx;
 	}
 }

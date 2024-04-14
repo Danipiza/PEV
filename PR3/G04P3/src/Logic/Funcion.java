@@ -1,9 +1,7 @@
 package Logic;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 
 import Model.Individuo;
-import Model.IndividuoArbol;
 
 public class Funcion {
 

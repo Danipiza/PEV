@@ -78,6 +78,8 @@ public class AlgoritmoGenetico {
 	
 	private int long_cromosoma;
 	
+	private int bloating_idx;
+	
 
 	public AlgoritmoGenetico(ControlPanel ctrl) {
 		this.ctrl = ctrl;
@@ -111,7 +113,8 @@ public class AlgoritmoGenetico {
 		cruce = new Cruce(prob_cruce, tam_elite);
 		mutacion = new Mutacion(prob_mut, tam_elite, funcion,filas, columnas);		
 		
-
+		
+		bloating_idx=valores.bloating_idx;
 
 		mejor_total = Double.MIN_VALUE;
 	}
@@ -125,29 +128,11 @@ public class AlgoritmoGenetico {
 
 		// ELITISMO
 		Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
-		//elitQ = new PriorityQueue<>(Collections.reverseOrder(comparator));
 		elitQ = new PriorityQueue<>(comparator);
 
-		// valores_inds=new double[tam_poblacion*(generaciones+1)][3];
 		progreso_generaciones = new double[4][generaciones + 1];
 		generacionActual = 0;
-		
-		/*Individuo[] poblacion=new Individuo[1];
-		Individuo ind = new Individuo(1,2);
-		poblacion[0]=ind;
-		System.out.println(ind);*/
-		/*System.out.println("Casilla: " + ind.gen.raiz.getX() + ", " + ind.gen.raiz.getY());
-		System.out.println("Operaciones:");
-		for(String x: ind.operaciones) {
-			System.out.print(x+", ");
-		}
-		System.out.println("Funciones= "+ ind.tamFunciones+", Terminales= "+ind.tamTerminales);
-		System.out.println();
-		System.out.println(funcion.fitness(ind));*/
-		//poblacion=mutacion.funcional(poblacion);
-		//System.out.println(poblacion[0]);
-		
-		
+			
 		
 		init_poblacion();
 
@@ -169,6 +154,8 @@ public class AlgoritmoGenetico {
 				fallo = e.getMessage();
 				break;
 			}
+			
+			
 			evaluacion_poblacion();
 			cont++;
 		}
@@ -193,29 +180,15 @@ public class AlgoritmoGenetico {
 		progreso_generaciones = new double[4][generaciones + 1];
 		generacionActual = 0;
 		
-			
-		
-		
 		init_poblacionG();
-		/*for(Individuo ind: poblacion) {
-			System.out.println(ind);
-		}*/
 
 		evaluacion_poblacion();
-		
-		/*for(Individuo ind: poblacion) {			
-			System.out.println(ind.fitness);
-		}*/
-		
-		/*for(Individuo ind: poblacion) {
-			System.out.println(ind);
-			System.out.println(ind.fitness);
-		}*/
 
 		int cont=1;
 		while (generaciones-- != 0) {
 			
 			selec = seleccion_poblacion();
+			
 			try {
 				poblacion = cruce_poblacionG(selec, long_cromosoma);
 				poblacion = mutacion_poblacionG();
@@ -250,13 +223,15 @@ public class AlgoritmoGenetico {
 		}
 
 		int corte_maximo = d - 1;
+		
+		Random random=new Random();
 
 		int i = 0, j = 0;
 		IndividuoGramatica ind1, ind2;
 		int corte, tmp;
 		while (i < n) {
-			ind1 = new IndividuoGramatica((IndividuoGramatica) selec[i]);
-			ind2 = new IndividuoGramatica((IndividuoGramatica) selec[i+1]);
+			ind1 = (IndividuoGramatica) selec[i];
+			ind2 = (IndividuoGramatica) selec[i+1];
 			if (Math.random() < prob_cruce) {
 				corte = (int) (Math.random() * (corte_maximo)) + 1;
 
@@ -267,8 +242,8 @@ public class AlgoritmoGenetico {
 				}				
 				
 			}
-			ret[i++]= new IndividuoGramatica(ind1);
-			ret[i++] = new IndividuoGramatica(ind2);
+			ret[i++]= new IndividuoGramatica(ind1.cromosoma, filas, columnas);
+			ret[i++] = new IndividuoGramatica(ind2.cromosoma, filas, columnas);
 		}
 		return ret;
 	}
@@ -281,47 +256,20 @@ public class AlgoritmoGenetico {
 		
 		IndividuoGramatica act;
 		for (int i=0;i<tam_poblacion-tam_elite;i++) {
-			act=new IndividuoGramatica((IndividuoGramatica) poblacion[i]);
+			act=(IndividuoGramatica)poblacion[i];
 			
 			if(Math.random()<prob_mut) {
 				int rand=random.nextInt(long_cromosoma);
 				act.cromosoma[rand]=random.nextInt(256);
 			}
-			ret[i]=new IndividuoGramatica(act);
+			ret[i]=new IndividuoGramatica(act.cromosoma, filas, columnas);
 			
 		}
 		
 		return ret;
 	}
 	
-	
-	/*private Individuo[] reinicia(int porcentaje) {
-		Individuo[] ret= new Individuo[tam_poblacion];
-		int tam=tam_poblacion/porcentaje;
-		for (int i = tam; i < tam_poblacion; i++) {
-			ret[i] = new Individuo(num_vuelos);
-		}
-		Comparator<Node> comparator = Comparator.comparingDouble(Node::getValue);
-		PriorityQueue<Node> Q = new PriorityQueue<>(Collections.reverseOrder(comparator));
 		
-		
-		for(Individuo ind: poblacion) {
-			if(Q.size()<tam) Q.add(new Node(ind.fitness, ind));
-			else if (funcion.cmp(Q.peek().getValue(), ind.fitness) == ind.fitness) {
-				Q.poll();
-				Q.add(new Node(ind.fitness, ind));
-			}
-		}
-		
-		for(int i=0;i<tam;i++) {
-			ret[i]=Q.peek().getId();
-		}
-		
-		
-		
-		return ret;
-	}*/
-	
 	private void init_poblacion() {
 		poblacion = new IndividuoArbol[tam_poblacion];
 		int cont=0;
@@ -387,14 +335,18 @@ public class AlgoritmoGenetico {
 
 		double tmp;
 
+		double mediaTam=0.0;
+		
 		double fitnessTotalAdaptado = 0;
 		double fit;
 		int indexMG = 0;
 		for (int i = 0; i < tam_poblacion; i++) {
-			fit = funcion.fitness(poblacion[i]); // TODO
+			fit = funcion.fitness(poblacion[i]);
+			//fit=poblacion[i].operaciones.size(); // prueba gramatica
 			poblacion[i].fitness = fit;
 			fitness_total += fit;
-
+			mediaTam+=poblacion[i].nodos;
+			
 			if (elitQ.size() < tam_elite)
 				elitQ.add(new Node(fit, poblacion[i]));
 			else if (tam_elite != 0 && funcion.cmp(elitQ.peek().getValue(), fit) == fit) {
@@ -416,20 +368,33 @@ public class AlgoritmoGenetico {
 			// TODO
 			mejor_individuo = poblacion[indexMG];//new Individuo(poblacion[indexMG]);
 		}
-		// mejor_total = funcion.cmp(mejor_total, mejor_generacion);
+		mediaTam/=tam_poblacion;
+		double media=fitness_total/tam_poblacion;
+		
 		
 		
 		progreso_generaciones[0][generacionActual] = mejor_total; // Mejor Absoluto
 		progreso_generaciones[1][generacionActual] = mejor_generacion; // Mejor Local
 		progreso_generaciones[2][generacionActual] = fitness_total / tam_poblacion; // Media
-
+		
+		
 		double acum = 0;
 		if (peor_generacion < 0)
 			peor_generacion *= -1;
 		
-		// No usamos porque cambia a peor los resultados
+		// Desplazamiento
+		fitness_total = tam_poblacion * 1.05 * peor_generacion - fitness_total;
+		for (int i = 0; i < tam_poblacion; i++) {
+			prob_seleccion[i] = 1.05 * peor_generacion - poblacion[i].fitness;
+			prob_seleccion[i] /= fitness_total;
+			acum += prob_seleccion[i];
+			prob_seleccionAcum[i] = acum;
+		}
+		
+		/*
+		// No usamos porque cambia a peor los resultados (ESTA MAL IMPLEMENTADO)
 		double P=2;
-		double media=fitness_total/tam_poblacion;
+		
 		double a=((P-1)*media)/(peor_generacion-media);
 		double b=(1-a)*media;
 		
@@ -452,18 +417,44 @@ public class AlgoritmoGenetico {
 				indexMG = i;
 			}
 			peor_generacion = funcion.cmpPeor(peor_generacion, fit);
+		}*/
+		
+		if(bloating_idx==1) {
+			double pElim=1/tam_poblacion;
+			for (int i = 0; i < tam_poblacion; i++) {		
+				if(poblacion[i].nodos>mediaTam && Math.random()<pElim) { // Elimina					
+					poblacion[i]=new IndividuoArbol(modo, profundidad, filas, columnas);
+				}
+			}
 		}
+		else if(bloating_idx==2) {
+			double k=0.0;
+			double covarianza=0.0;
+			double varianza=0.0;
+			// Covarianza(l,f) l = tamaño, f = fitness
+			// Varianza(l)
+			for(int i=0;i<tam_poblacion;i++) {
+				tmp=poblacion[i].nodos-mediaTam;
+				covarianza+=(tmp)*(poblacion[i].fitness-media);
+				varianza+=Math.pow(tmp, 2);
+			}
+			covarianza/=tam_poblacion;
+			varianza/=tam_poblacion;
+			
+			k=covarianza/varianza; // BLOATING
+			
+			// Nuevos valores
+			fitness_total=0;
+			for (int i = 0; i < tam_poblacion; i++) {		
+				poblacion[i].fitness-=(k*poblacion[i].nodos);
+				fitness_total+=poblacion[i].fitness;
+			}
+			
+			progreso_generaciones[0][generacionActual] = mejor_total; // Mejor Absoluto
+			progreso_generaciones[1][generacionActual] = mejor_generacion; // Mejor Local
+			progreso_generaciones[2][generacionActual] = fitness_total / tam_poblacion; // Media
 		
-		
-		// Desplazamiento
-		fitness_total = tam_poblacion * 1.05 * peor_generacion - fitness_total;
-		for (int i = 0; i < tam_poblacion; i++) {
-			prob_seleccion[i] = 1.05 * peor_generacion - poblacion[i].fitness;
-			prob_seleccion[i] /= fitness_total;
-			acum += prob_seleccion[i];
-			prob_seleccionAcum[i] = acum;
 		}
-		
 		
 		// Escalado lineal
 		
