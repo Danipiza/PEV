@@ -80,6 +80,9 @@ public class AlgoritmoGenetico {
 	
 	private int bloating_idx;
 	
+	private boolean[] opcs;
+	private int numOPopc;
+	
 
 	public AlgoritmoGenetico(ControlPanel ctrl) {
 		this.ctrl = ctrl;
@@ -104,6 +107,13 @@ public class AlgoritmoGenetico {
 		this.columnas=valores.columnas;
 		this.elitismo = valores.elitismo;
 		this.ticks= valores.ticks;
+		this.opcs=valores.opcs;
+		
+		this.numOPopc=0;
+		int opcN=opcs.length;
+		for(int i=0;i<opcN-1;i++) {
+			if(opcs[i]) numOPopc++;
+		}
 
 		tam_elite = (int) (tam_poblacion * (elitismo / 100.0));
 
@@ -111,7 +121,7 @@ public class AlgoritmoGenetico {
 		
 		seleccion = new Seleccion(tam_poblacion, tam_elite, modo);
 		cruce = new Cruce(prob_cruce, tam_elite);
-		mutacion = new Mutacion(prob_mut, tam_elite, funcion,filas, columnas);		
+		mutacion = new Mutacion(prob_mut, tam_elite, funcion,filas, columnas,opcs,numOPopc);		
 		
 		
 		bloating_idx=valores.bloating_idx;
@@ -285,34 +295,34 @@ public class AlgoritmoGenetico {
 				mod2=(tam+1)%2;
 				for (int d=profundidad;d>profundidad-mod;d--) {
 					for(int i=0;i<(tam/2)+1;i++) {						
-						poblacion[cont++]=new IndividuoArbol(0, d,filas, columnas);
-						poblacion[cont++]=new IndividuoArbol(1, d,filas, columnas);
+						poblacion[cont++]=new IndividuoArbol(0, d,filas, columnas, opcs, numOPopc);
+						poblacion[cont++]=new IndividuoArbol(1, d,filas, columnas, opcs, numOPopc);
 					}
-					if(mod2==1) poblacion[cont++]=new IndividuoArbol(1, d,filas, columnas);
+					if(mod2==1) poblacion[cont++]=new IndividuoArbol(1, d,filas, columnas, opcs, numOPopc);
 				}
 				mod2=tam%2;
 				for (int d=profundidad-mod;d>=2;d--) {
 					for(int i=0;i<tam/2;i++) {						
-						poblacion[cont++]=new IndividuoArbol(0, d,filas, columnas);
-						poblacion[cont++]=new IndividuoArbol(1, d,filas, columnas);
+						poblacion[cont++]=new IndividuoArbol(0, d,filas, columnas, opcs, numOPopc);
+						poblacion[cont++]=new IndividuoArbol(1, d,filas, columnas, opcs, numOPopc);
 					}
-					if(mod2==1) poblacion[cont++]=new IndividuoArbol(1, d,filas, columnas);
+					if(mod2==1) poblacion[cont++]=new IndividuoArbol(1, d,filas, columnas, opcs, numOPopc);
 				}
 			}
 			else {				
 				for (int d=2;d<=profundidad;d++) {					
 					for(int i=0;i<tam/2;i++) {						
-						poblacion[cont++]=new IndividuoArbol(0, d,filas, columnas);
-						poblacion[cont++]=new IndividuoArbol(1, d,filas, columnas);
+						poblacion[cont++]=new IndividuoArbol(0, d,filas, columnas, opcs, numOPopc);
+						poblacion[cont++]=new IndividuoArbol(1, d,filas, columnas, opcs, numOPopc);
 					}
-					if(mod2==1) poblacion[cont++]=new IndividuoArbol(1, d,filas, columnas);
+					if(mod2==1) poblacion[cont++]=new IndividuoArbol(1, d,filas, columnas, opcs, numOPopc);
 				}
 			}
 			
 		}
 		else { // COMPLETO o CRECIENTE			
 			for (int i = 0; i < tam_poblacion; i++) {
-				poblacion[i]=new IndividuoArbol(ini_idx, profundidad,filas, columnas);
+				poblacion[i]=new IndividuoArbol(ini_idx, profundidad,filas, columnas, opcs, numOPopc);
 			}
 		}		
 	}
@@ -423,7 +433,7 @@ public class AlgoritmoGenetico {
 			double pElim=1/tam_poblacion;
 			for (int i = 0; i < tam_poblacion; i++) {		
 				if(poblacion[i].nodos>mediaTam && Math.random()<pElim) { // Elimina					
-					poblacion[i]=new IndividuoArbol(modo, profundidad, filas, columnas);
+					poblacion[i]=new IndividuoArbol(modo, profundidad, filas, columnas, opcs, numOPopc);
 				}
 			}
 		}
@@ -431,7 +441,7 @@ public class AlgoritmoGenetico {
 			double k=0.0;
 			double covarianza=0.0;
 			double varianza=0.0;
-			// Covarianza(l,f) l = tamaño, f = fitness
+			// Covarianza(l,f) l = tamaï¿½o, f = fitness
 			// Varianza(l)
 			for(int i=0;i<tam_poblacion;i++) {
 				tmp=poblacion[i].nodos-mediaTam;

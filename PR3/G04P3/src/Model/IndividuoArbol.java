@@ -18,8 +18,8 @@ public class IndividuoArbol extends Individuo {
 	public List<Pair<Exp,Integer>> funcionales;
 	public List<Pair<Exp,Integer>> terminales;
 	
-	public IndividuoArbol(int modo, int profundidad, int filas, int columnas) {
-		this.gen=new Arbol(modo, profundidad,filas, columnas);
+	public IndividuoArbol(int modo, int profundidad, int filas, int columnas, boolean[] opcs, int numOPopc) {
+		this.gen=new Arbol(modo, profundidad,filas, columnas, opcs, numOPopc);
 		this.fitness=0;
 		operaciones=new ArrayList<String>();
 
@@ -28,6 +28,8 @@ public class IndividuoArbol extends Individuo {
 		invisible.setHijo(0, gen.raiz);
 		funcionales.add(new Pair<>(invisible, 0));
 		terminales = new ArrayList<Pair<Exp,Integer>>();
+		/*this.opcs=opcs;
+		this.numOPopc=numOPopc;*/
 
 		recorreArbol(gen.raiz);
 		this.nodos=gen.getNodos(); // Bloating
@@ -44,6 +46,9 @@ public class IndividuoArbol extends Individuo {
 		invisible.setHijo(0, gen.raiz);
 		funcionales.add(new Pair<>(invisible, 0));
 		terminales = new ArrayList<Pair<Exp,Integer>>();
+		
+		/*this.opcs=individuo.opcs;
+		this.numOPopc=individuo.numOPopc;*/
 
 		operaciones=new ArrayList<String>();
 		recorreArbol(gen.raiz);
@@ -67,6 +72,7 @@ public class IndividuoArbol extends Individuo {
 		invisible.setHijo(0, gen.raiz);
 		funcionales.add(new Pair<>(invisible, 0));
 		terminales = new ArrayList<Pair<Exp,Integer>>();
+		
 
 		recorreArbol(nodo);
 	}

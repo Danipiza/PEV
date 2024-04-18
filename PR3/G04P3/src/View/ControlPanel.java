@@ -12,8 +12,10 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -108,6 +110,10 @@ public class ControlPanel extends JPanel {
 	private Plot2DPanel plot2D;
 
 		
+	// OPCIONAL
+	private JCheckBox[] checkBoxes;
+    private JButton opcional_button;
+    private boolean[] selectedCheckboxes;
 	
 
 	public ControlPanel() {
@@ -209,7 +215,26 @@ public class ControlPanel extends JPanel {
 		bloating_CBox = new JComboBox<>(bloating);
 		
 		cruceG_CBox = new JComboBox<>(cruceG);
-		mutacionG_CBox = new JComboBox<>(mutacionG);		
+		mutacionG_CBox = new JComboBox<>(mutacionG);
+		
+		
+		checkBoxes = new JCheckBox[7]; 
+		checkBoxes[0] = new JCheckBox("Obstaculos");
+		checkBoxes[1] = new JCheckBox("OP. Derecha");
+        checkBoxes[2] = new JCheckBox("OP. Retrocede");
+        checkBoxes[3] = new JCheckBox("OP. IF_Dirty(A,B)");
+        checkBoxes[4] = new JCheckBox("OP. Repeat(A)");
+        checkBoxes[5] = new JCheckBox("OP. Salto_casilla(A)");
+        checkBoxes[6] = new JCheckBox("OP. Mueve_Primer");
+        
+        selectedCheckboxes = new boolean[checkBoxes.length];
+
+        opcional_button = new JButton("Opcional	");
+        opcional_button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                openDialog();
+            }
+        });
 
 		run_button = new JButton();
 		run_button.setToolTipText("Run button");
@@ -281,6 +306,8 @@ public class ControlPanel extends JPanel {
 		leftPanel.add(new JLabel("  Ticks:"), gbc);
 		gbc.gridy++;
 		leftPanel.add(new JLabel("  Bloating:"), gbc);
+		gbc.gridy++;
+		leftPanel.add(new JLabel("  Opcional:"), gbc);
 		gbc.gridy++;
 		
 		// PARTE 1. PROGRAMACION GENETICA
@@ -365,6 +392,8 @@ public class ControlPanel extends JPanel {
 		leftPanel.add(ticks, gbc); 
 		gbc.gridy++;
 		leftPanel.add(bloating_CBox, gbc); 
+		gbc.gridy++;
+		leftPanel.add(opcional_button, gbc); 
 		gbc.gridy++;
 		
 		gbc.gridy++;
@@ -460,7 +489,7 @@ public class ControlPanel extends JPanel {
 		
 		matrixPanel = new JPanel(new GridLayout(filas, columnas, gap, gap)); 
 
-		// borde que actúa como espacio entre las celdas
+		// borde que actï¿½a como espacio entre las celdas
 		matrixPanel.setBorder(new EmptyBorder(borderGap, borderGap, borderGap, borderGap));
 		matrixPanel.setPreferredSize(new Dimension(450, 600));
 			
@@ -657,7 +686,11 @@ public class ControlPanel extends JPanel {
 		
 		int[][] M=f.matrix(mejor_individuo);
 		
-		updateMatrixPanel(M);
+		updateMatrixPanel(new int[filas][columnas]);
+		
+		animacionMatrixPanel(mejor_individuo,
+    			0.0,
+        		Integer.parseInt(ticks.getText()));	
 		
 		int n=mejor_individuo.operaciones.size();
 		String acciones="";
@@ -714,7 +747,8 @@ public class ControlPanel extends JPanel {
 				Integer.parseInt(elitismo.getText()),
 				Integer.parseInt(ticks.getText()),
 				modo,
-				bloating_CBox.getSelectedIndex());
+				bloating_CBox.getSelectedIndex(),
+				selectedCheckboxes);
 	}
 	
 	
@@ -728,10 +762,28 @@ public class ControlPanel extends JPanel {
 	}
 
 	
-	public void resultadosClass() {
-		//ResultadosDialog resultadosDialog = new ResultadosDialog((Frame) this.getTopLevelAncestor(), num_pistas);					
-		
-		//resultadosDialog.open(mejor_individuo);					
-	}
+	private void openDialog() {
+		boolean[] aux = selectedCheckboxes;
+		selectedCheckboxes = new boolean[checkBoxes.length];
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(checkBoxes.length, 1));
+        for (int i = 0; i < checkBoxes.length; i++) {
+            panel.add(checkBoxes[i]);
+        }
+        
+
+        int result = JOptionPane.showConfirmDialog(null, panel, "Select Options", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            for (int i = 0; i < checkBoxes.length; i++) {
+                selectedCheckboxes[i] = checkBoxes[i].isSelected();
+            }
+        }
+        else {
+        	selectedCheckboxes=aux;
+        	for(int i=0;i<checkBoxes.length;i++) {        	
+                checkBoxes[i].setSelected(selectedCheckboxes[i]);                
+        	}
+        }
+    }
 	
 }

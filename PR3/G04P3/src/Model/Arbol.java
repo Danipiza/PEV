@@ -15,12 +15,22 @@ public class Arbol {
 	private int columnas;
 	
 	private int nodos; // Control de Bloating
+	
+	private boolean[] opcs;
+	private int numOPopc;
+	private int OPopc;
 
-	public Arbol(int modo, int profundidad, int filas, int columnas) {
+	public Arbol(int modo, int profundidad, int filas, int columnas, boolean[] opcs, int numOPopc) {
 		profMax=profundidad;
 		this.filas=filas;
 		this.columnas=columnas;
 		this.nodos=0;
+		
+		this.opcs=opcs;
+		this.numOPopc=numOPopc;
+		
+		this.OPopc=(numOPopc>=1?1:0);
+		
 		init_raiz();		
 		
 		inicializa_arbol(raiz, modo);
@@ -46,20 +56,25 @@ public class Arbol {
 	
 	private void init_raiz() {
 		this.nodos++;
-		Random random = new Random();  
-		switch (random.nextInt(3)) {
-			case 0: {
+		Random random = new Random();
+		
+		switch (random.nextInt(3+OPopc)) {
+			case 0: 
 				this.raiz=new Progn();
 				break;
-			}
-			case 1: {
+			
+			case 1: 
 				this.raiz=new Salta();
 				break;
-			}
-			case 2: {
+			
+			case 2: 
 				this.raiz=new Suma();
 				break;
-			}
+			
+			case 3:
+				// TODO
+				break;
+			
 		}
 		
 	}

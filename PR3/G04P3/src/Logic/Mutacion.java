@@ -21,7 +21,10 @@ public class Mutacion {
 	private int filas;
 	private int columnas;
 	
-	public Mutacion(double p, int tam_elite, Funcion funcion, int filas, int columnas) {
+	private boolean[] opcs;
+	private int numOPopc;
+	
+	public Mutacion(double p, int tam_elite, Funcion funcion, int filas, int columnas, boolean[] opcs, int numOPopc) {
 		this.p=p;
 		this.funcion=funcion;
 		this.random=new Random();
@@ -29,6 +32,9 @@ public class Mutacion {
 		this.columnas=columnas;
 		
 		this.tam_elite=tam_elite;
+		
+		this.opcs=opcs;
+		this.numOPopc=numOPopc;
 	}
 	
 	
@@ -101,7 +107,7 @@ public class Mutacion {
 			act = (IndividuoArbol) poblacion[i];	
 			if(Math.random()<p) {
 				int tmp=random.nextInt(act.funcionales.size());
-				Arbol newArbol = new Arbol(random.nextInt(1), random.nextInt(2) + 2, filas, columnas); //TODO cambiar arbol aleatorio a 3
+				Arbol newArbol = new Arbol(random.nextInt(1), random.nextInt(2) + 2, filas, columnas, opcs, numOPopc); //TODO cambiar arbol aleatorio a 3
 				act.funcionales.get(tmp).getKey().setHijo(act.funcionales.get(tmp).getValue(), newArbol.raiz);
 				
 				act.gen.raiz = act.funcionales.get(0).getKey().getHijo(0);
@@ -193,7 +199,7 @@ public class Mutacion {
 			act = (IndividuoArbol) poblacion[i];	
 			if(Math.random()<p) {
 				int tmp=random.nextInt(act.terminales.size());
-				Arbol newArbol = new Arbol(random.nextInt(1), random.nextInt(1) + 2, filas, columnas); //TODO cambiar arbol aleatorio a 3
+				Arbol newArbol = new Arbol(random.nextInt(1), random.nextInt(1) + 2, filas, columnas, opcs, numOPopc); //TODO cambiar arbol aleatorio a 3
 				act.terminales.get(tmp).getKey().setHijo(act.terminales.get(tmp).getValue(), newArbol.raiz); 
 
 				act.gen.raiz = act.funcionales.get(0).getKey().getHijo(0);

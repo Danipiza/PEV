@@ -11,5 +11,7 @@ public abstract class Individuo {
 	
 	public List<String> operaciones;
 	public int nodos;
+	public boolean[] opcs;
+	public int numOPopc;
 
 }
