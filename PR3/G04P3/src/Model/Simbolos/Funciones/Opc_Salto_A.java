@@ -2,17 +2,17 @@ package Model.Simbolos.Funciones;
 
 import Model.Simbolos.Exp;
 
-public class Opc_Salto_Casilla extends Exp {
+public class Opc_Salto_A extends Exp {
 	
 	public Exp ops[]=new Exp[1];
 	
-	public Opc_Salto_Casilla() {
+	public Opc_Salto_A() {
 		this.putTam(1); 				// Numero de hijos
 		this.putOperacion("Salta_Casilla"); 	// Nombre de la operacion
 		this.ops[0]=null;				// Unico Hijo
 	}
 	
-	public Opc_Salto_Casilla(Exp ops[]) {
+	public Opc_Salto_A(Exp ops[]) {
 		this.putTam(1); 				// Numero de hijos
 		this.putOperacion("Salta_Casilla"); 	// Nombre de la operacion
 		this.ops[0]=ops[0];				// Unico Hijo
@@ -39,7 +39,7 @@ public class Opc_Salto_Casilla extends Exp {
 
 	@Override
 	public Exp duplica() {
-		return new Opc_Salto_Casilla();
+		return new Opc_Salto_A();
 	}
 
 

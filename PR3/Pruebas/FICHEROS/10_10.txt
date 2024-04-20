@@ -1,0 +1,264 @@
+---------------------------------------------------------------------------------------
+-- COMPLETO ---------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+Ruleta ----------------------------------------------------------------------
+- Terminal	Fitness medio: 56.45
+		Num Nodos medio: 22.0 Tiempo de ejecucion: 0.0498469s
+- Funcional	Fitness medio: 56.25
+		Num Nodos medio: 22.3 Tiempo de ejecucion: 0.0206851s
+- Arbol	Fitness medio: 54.5
+		Num Nodos medio: 30.55 Tiempo de ejecucion: 0.015937699s
+- Permutacion	Fitness medio: 53.95
+		Num Nodos medio: 27.35 Tiempo de ejecucion: 0.0141356s
+- Hoist	Fitness medio: 55.0
+		Num Nodos medio: 20.65 Tiempo de ejecucion: 0.0163076s
+
+T. Deterministico ----------------------------------------------------------------------
+- Terminal	Fitness medio: 58.1
+		Num Nodos medio: 27.8 Tiempo de ejecucion: 0.0156081s
+- Funcional	Fitness medio: 50.9
+		Num Nodos medio: 42.3 Tiempo de ejecucion: 0.0136685s
+- Arbol	Fitness medio: 57.95
+		Num Nodos medio: 24.75 Tiempo de ejecucion: 0.0127611s
+- Permutacion	Fitness medio: 54.55
+		Num Nodos medio: 24.85 Tiempo de ejecucion: 0.010842401s
+- Hoist	Fitness medio: 53.8
+		Num Nodos medio: 26.2 Tiempo de ejecucion: 0.009947501s
+
+T. Probabilistico ----------------------------------------------------------------------
+- Terminal	Fitness medio: 53.15
+		Num Nodos medio: 31.85 Tiempo de ejecucion: 0.0136425s
+- Funcional	Fitness medio: 52.0
+		Num Nodos medio: 27.8 Tiempo de ejecucion: 0.012575501s
+- Arbol	Fitness medio: 55.6
+		Num Nodos medio: 28.2 Tiempo de ejecucion: 0.0141267s
+- Permutacion	Fitness medio: 54.85
+		Num Nodos medio: 27.0 Tiempo de ejecucion: 0.0133133s
+- Hoist	Fitness medio: 51.75
+		Num Nodos medio: 22.2 Tiempo de ejecucion: 0.0084604s
+
+Estocastico Univ ----------------------------------------------------------------------
+- Terminal	Fitness medio: 56.05
+		Num Nodos medio: 30.95 Tiempo de ejecucion: 0.013469s
+- Funcional	Fitness medio: 56.95
+		Num Nodos medio: 36.3 Tiempo de ejecucion: 0.0151124s
+- Arbol	Fitness medio: 55.6
+		Num Nodos medio: 30.9 Tiempo de ejecucion: 0.0148037s
+- Permutacion	Fitness medio: 59.15
+		Num Nodos medio: 25.25 Tiempo de ejecucion: 0.012578099s
+- Hoist	Fitness medio: 57.0
+		Num Nodos medio: 19.25 Tiempo de ejecucion: 0.0089081s
+
+Truncamiento ----------------------------------------------------------------------
+- Terminal	Fitness medio: 59.25
+		Num Nodos medio: 31.2 Tiempo de ejecucion: 0.01495s
+- Funcional	Fitness medio: 58.35
+		Num Nodos medio: 26.4 Tiempo de ejecucion: 0.0120464s
+- Arbol	Fitness medio: 57.75
+		Num Nodos medio: 27.15 Tiempo de ejecucion: 0.014170299s
+- Permutacion	Fitness medio: 57.2
+		Num Nodos medio: 35.0 Tiempo de ejecucion: 0.0133259s
+- Hoist	Fitness medio: 59.95
+		Num Nodos medio: 21.85 Tiempo de ejecucion: 0.0107038s
+
+Restos ----------------------------------------------------------------------
+- Terminal	Fitness medio: 54.45
+		Num Nodos medio: 28.15 Tiempo de ejecucion: 0.0137709s
+- Funcional	Fitness medio: 56.6
+		Num Nodos medio: 31.55 Tiempo de ejecucion: 0.015019301s
+- Arbol	Fitness medio: 55.4
+		Num Nodos medio: 22.55 Tiempo de ejecucion: 0.017497799s
+- Permutacion	Fitness medio: 56.4
+		Num Nodos medio: 25.95 Tiempo de ejecucion: 0.009746199s
+- Hoist	Fitness medio: 54.85
+		Num Nodos medio: 24.8 Tiempo de ejecucion: 0.007549101s
+
+Ranking ----------------------------------------------------------------------
+- Terminal	Fitness medio: 51.9
+		Num Nodos medio: 28.3 Tiempo de ejecucion: 0.012734501s
+- Funcional	Fitness medio: 54.1
+		Num Nodos medio: 28.75 Tiempo de ejecucion: 0.011276299s
+- Arbol	Fitness medio: 54.3
+		Num Nodos medio: 27.8 Tiempo de ejecucion: 0.011952799s
+- Permutacion	Fitness medio: 55.05
+		Num Nodos medio: 27.55 Tiempo de ejecucion: 0.0117176s
+- Hoist	Fitness medio: 52.6
+		Num Nodos medio: 29.05 Tiempo de ejecucion: 0.009333601s
+
+---------------------------------------------------------------------------------------
+-- CRECIENTE --------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+
+Ruleta ----------------------------------------------------------------------
+- Terminal	Fitness medio: 53.45
+		Num Nodos medio: 23.95 Tiempo de ejecucion: 0.0436483s
+- Funcional	Fitness medio: 54.1
+		Num Nodos medio: 23.5 Tiempo de ejecucion: 0.0188701s
+- Arbol	Fitness medio: 54.05
+		Num Nodos medio: 21.1 Tiempo de ejecucion: 0.0150668s
+- Permutacion	Fitness medio: 56.9
+		Num Nodos medio: 25.55 Tiempo de ejecucion: 0.0128135s
+- Hoist	Fitness medio: 54.9
+		Num Nodos medio: 20.45 Tiempo de ejecucion: 0.009231s
+
+T. Deterministico ----------------------------------------------------------------------
+- Terminal	Fitness medio: 54.1
+		Num Nodos medio: 19.5 Tiempo de ejecucion: 0.0119696s
+- Funcional	Fitness medio: 55.9
+		Num Nodos medio: 22.6 Tiempo de ejecucion: 0.0112615s
+- Arbol	Fitness medio: 58.2
+		Num Nodos medio: 34.05 Tiempo de ejecucion: 0.0126545s
+- Permutacion	Fitness medio: 55.05
+		Num Nodos medio: 34.8 Tiempo de ejecucion: 0.01162s
+- Hoist	Fitness medio: 47.65
+		Num Nodos medio: 24.7 Tiempo de ejecucion: 0.007771499s
+
+T. Probabilistico ----------------------------------------------------------------------
+- Terminal	Fitness medio: 52.4
+		Num Nodos medio: 22.75 Tiempo de ejecucion: 0.011782799s
+- Funcional	Fitness medio: 54.2
+		Num Nodos medio: 28.3 Tiempo de ejecucion: 0.010877599s
+- Arbol	Fitness medio: 53.5
+		Num Nodos medio: 23.1 Tiempo de ejecucion: 0.0125437s
+- Permutacion	Fitness medio: 54.2
+		Num Nodos medio: 24.45 Tiempo de ejecucion: 0.0109158s
+- Hoist	Fitness medio: 51.1
+		Num Nodos medio: 22.05 Tiempo de ejecucion: 0.007498499s
+
+Estocastico Univ ----------------------------------------------------------------------
+- Terminal	Fitness medio: 54.6
+		Num Nodos medio: 30.7 Tiempo de ejecucion: 0.0123301s
+- Funcional	Fitness medio: 54.05
+		Num Nodos medio: 33.8 Tiempo de ejecucion: 0.0111348s
+- Arbol	Fitness medio: 57.8
+		Num Nodos medio: 21.8 Tiempo de ejecucion: 0.0129782s
+- Permutacion	Fitness medio: 58.35
+		Num Nodos medio: 26.15 Tiempo de ejecucion: 0.011662499s
+- Hoist	Fitness medio: 54.3
+		Num Nodos medio: 17.2 Tiempo de ejecucion: 0.0081032s
+
+Truncamiento ----------------------------------------------------------------------
+- Terminal	Fitness medio: 54.6
+		Num Nodos medio: 44.15 Tiempo de ejecucion: 0.016913799s
+- Funcional	Fitness medio: 55.25
+		Num Nodos medio: 34.3 Tiempo de ejecucion: 0.0129934s
+- Arbol	Fitness medio: 57.3
+		Num Nodos medio: 30.75 Tiempo de ejecucion: 0.0154348s
+- Permutacion	Fitness medio: 53.95
+		Num Nodos medio: 46.45 Tiempo de ejecucion: 0.0147419s
+- Hoist	Fitness medio: 56.7
+		Num Nodos medio: 16.4 Tiempo de ejecucion: 0.010536801s
+
+Restos ----------------------------------------------------------------------
+- Terminal	Fitness medio: 57.9
+		Num Nodos medio: 24.95 Tiempo de ejecucion: 0.012421s
+- Funcional	Fitness medio: 54.8
+		Num Nodos medio: 31.95 Tiempo de ejecucion: 0.013603099s
+- Arbol	Fitness medio: 56.1
+		Num Nodos medio: 19.7 Tiempo de ejecucion: 0.0155261s
+- Permutacion	Fitness medio: 56.5
+		Num Nodos medio: 25.05 Tiempo de ejecucion: 0.0167658s
+- Hoist	Fitness medio: 49.75
+		Num Nodos medio: 20.5 Tiempo de ejecucion: 0.013844099s
+
+Ranking ----------------------------------------------------------------------
+- Terminal	Fitness medio: 53.0
+		Num Nodos medio: 19.4 Tiempo de ejecucion: 0.016386101s
+- Funcional	Fitness medio: 53.45
+		Num Nodos medio: 24.1 Tiempo de ejecucion: 0.0183395s
+- Arbol	Fitness medio: 53.0
+		Num Nodos medio: 30.05 Tiempo de ejecucion: 0.013399899s
+- Permutacion	Fitness medio: 55.3
+		Num Nodos medio: 22.5 Tiempo de ejecucion: 0.0126225s
+- Hoist	Fitness medio: 52.3
+		Num Nodos medio: 16.7 Tiempo de ejecucion: 0.0092662s
+
+---------------------------------------------------------------------------------------
+-- RAMPED & HALF ----------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+Ruleta ----------------------------------------------------------------------
+- Terminal	Fitness medio: 56.65
+		Num Nodos medio: 23.05 Tiempo de ejecucion: 0.0470261s
+- Funcional	Fitness medio: 54.6
+		Num Nodos medio: 26.15 Tiempo de ejecucion: 0.0196961s
+- Arbol	Fitness medio: 55.7
+		Num Nodos medio: 23.1 Tiempo de ejecucion: 0.013107s
+- Permutacion	Fitness medio: 51.0
+		Num Nodos medio: 23.45 Tiempo de ejecucion: 0.0134148s
+- Hoist	Fitness medio: 50.6
+		Num Nodos medio: 22.25 Tiempo de ejecucion: 0.0092962s
+
+T. Deterministico ----------------------------------------------------------------------
+- Terminal	Fitness medio: 57.75
+		Num Nodos medio: 34.45 Tiempo de ejecucion: 0.0145066s
+- Funcional	Fitness medio: 57.5
+		Num Nodos medio: 24.95 Tiempo de ejecucion: 0.0132102s
+- Arbol	Fitness medio: 54.95
+		Num Nodos medio: 25.55 Tiempo de ejecucion: 0.012250399s
+- Permutacion	Fitness medio: 54.95
+		Num Nodos medio: 21.7 Tiempo de ejecucion: 0.011158s
+- Hoist	Fitness medio: 52.3
+		Num Nodos medio: 31.25 Tiempo de ejecucion: 0.0096225s
+
+T. Probabilistico ----------------------------------------------------------------------
+- Terminal	Fitness medio: 57.15
+		Num Nodos medio: 20.85 Tiempo de ejecucion: 0.010923699s
+- Funcional	Fitness medio: 56.0
+		Num Nodos medio: 18.5 Tiempo de ejecucion: 0.0131627s
+- Arbol	Fitness medio: 52.95
+		Num Nodos medio: 37.55 Tiempo de ejecucion: 0.019116299s
+- Permutacion	Fitness medio: 52.9
+		Num Nodos medio: 24.4 Tiempo de ejecucion: 0.0156109s
+- Hoist	Fitness medio: 47.05
+		Num Nodos medio: 15.8 Tiempo de ejecucion: 0.0092822s
+
+Estocastico Univ ----------------------------------------------------------------------
+- Terminal	Fitness medio: 55.55
+		Num Nodos medio: 25.75 Tiempo de ejecucion: 0.0125442s
+- Funcional	Fitness medio: 57.2
+		Num Nodos medio: 23.15 Tiempo de ejecucion: 0.0119949s
+- Arbol	Fitness medio: 54.4
+		Num Nodos medio: 26.4 Tiempo de ejecucion: 0.0134778s
+- Permutacion	Fitness medio: 56.65
+		Num Nodos medio: 25.5 Tiempo de ejecucion: 0.0118654s
+- Hoist	Fitness medio: 54.7
+		Num Nodos medio: 20.3 Tiempo de ejecucion: 0.0080591s
+
+Truncamiento ----------------------------------------------------------------------
+- Terminal	Fitness medio: 58.35
+		Num Nodos medio: 31.3 Tiempo de ejecucion: 0.0142767s
+- Funcional	Fitness medio: 54.4
+		Num Nodos medio: 33.5 Tiempo de ejecucion: 0.011144001s
+- Arbol	Fitness medio: 58.0
+		Num Nodos medio: 26.5 Tiempo de ejecucion: 0.0132987s
+- Permutacion	Fitness medio: 54.85
+		Num Nodos medio: 30.9 Tiempo de ejecucion: 0.012644s
+- Hoist	Fitness medio: 51.0
+		Num Nodos medio: 22.2 Tiempo de ejecucion: 0.008786099s
+
+Restos ----------------------------------------------------------------------
+- Terminal	Fitness medio: 57.75
+		Num Nodos medio: 25.65 Tiempo de ejecucion: 0.012424401s
+- Funcional	Fitness medio: 59.2
+		Num Nodos medio: 31.35 Tiempo de ejecucion: 0.0146744s
+- Arbol	Fitness medio: 56.8
+		Num Nodos medio: 28.75 Tiempo de ejecucion: 0.015559101s
+- Permutacion	Fitness medio: 58.35
+		Num Nodos medio: 20.75 Tiempo de ejecucion: 0.0108549s
+- Hoist	Fitness medio: 54.4
+		Num Nodos medio: 22.8 Tiempo de ejecucion: 0.0084805s
+
+Ranking ----------------------------------------------------------------------
+- Terminal	Fitness medio: 56.0
+		Num Nodos medio: 23.7 Tiempo de ejecucion: 0.013839799s
+- Funcional	Fitness medio: 58.4
+		Num Nodos medio: 25.75 Tiempo de ejecucion: 0.0139194s
+- Arbol	Fitness medio: 55.9
+		Num Nodos medio: 20.95 Tiempo de ejecucion: 0.010755301s
+- Permutacion	Fitness medio: 52.65
+		Num Nodos medio: 26.45 Tiempo de ejecucion: 0.0094886s
+- Hoist	Fitness medio: 48.05
+		Num Nodos medio: 18.95 Tiempo de ejecucion: 0.009604s

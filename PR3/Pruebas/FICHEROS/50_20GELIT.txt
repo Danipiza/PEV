@@ -1,0 +1,97 @@
+Ruleta ----------------------------------------------------------------------
+- Tam. Cromosoma: 10	Fitness medio: 34.4
+			Num Nodos medio: 14.45 Tiempo de ejecucion: 0.2914384s
+- Tam. Cromosoma: 25	Fitness medio: 48.0
+			Num Nodos medio: 19.25 Tiempo de ejecucion: 0.1775945s
+- Tam. Cromosoma: 50	Fitness medio: 55.1
+			Num Nodos medio: 27.85 Tiempo de ejecucion: 0.156782s
+- Tam. Cromosoma: 75	Fitness medio: 52.4
+			Num Nodos medio: 28.6 Tiempo de ejecucion: 0.177921799s
+- Tam. Cromosoma: 100	Fitness medio: 51.7
+			Num Nodos medio: 30.4 Tiempo de ejecucion: 0.1883744s
+- Tam. Cromosoma: 255	Fitness medio: 53.25
+			Num Nodos medio: 33.85 Tiempo de ejecucion: 0.2252865s
+
+T. Deterministico ----------------------------------------------------------------------
+- Tam. Cromosoma: 10	Fitness medio: 36.8
+			Num Nodos medio: 13.0 Tiempo de ejecucion: 0.111313299s
+- Tam. Cromosoma: 25	Fitness medio: 53.1
+			Num Nodos medio: 18.95 Tiempo de ejecucion: 0.1361762s
+- Tam. Cromosoma: 50	Fitness medio: 51.3
+			Num Nodos medio: 28.8 Tiempo de ejecucion: 0.1600602s
+- Tam. Cromosoma: 75	Fitness medio: 52.45
+			Num Nodos medio: 32.5 Tiempo de ejecucion: 0.1755445s
+- Tam. Cromosoma: 100	Fitness medio: 53.85
+			Num Nodos medio: 31.0 Tiempo de ejecucion: 0.2072891s
+- Tam. Cromosoma: 255	Fitness medio: 52.3
+			Num Nodos medio: 29.9 Tiempo de ejecucion: 0.2340362s
+
+T. Probabilistico ----------------------------------------------------------------------
+- Tam. Cromosoma: 10	Fitness medio: 35.2
+			Num Nodos medio: 12.15 Tiempo de ejecucion: 0.1062121s
+- Tam. Cromosoma: 25	Fitness medio: 48.6
+			Num Nodos medio: 24.5 Tiempo de ejecucion: 0.1310146s
+- Tam. Cromosoma: 50	Fitness medio: 51.5
+			Num Nodos medio: 33.75 Tiempo de ejecucion: 0.1638781s
+- Tam. Cromosoma: 75	Fitness medio: 53.05
+			Num Nodos medio: 32.0 Tiempo de ejecucion: 0.172137001s
+- Tam. Cromosoma: 100	Fitness medio: 52.3
+			Num Nodos medio: 33.9 Tiempo de ejecucion: 0.1849881s
+- Tam. Cromosoma: 255	Fitness medio: 54.25
+			Num Nodos medio: 35.7 Tiempo de ejecucion: 0.2214332s
+
+Estocastico Univ ----------------------------------------------------------------------
+- Tam. Cromosoma: 10	Fitness medio: 37.6
+			Num Nodos medio: 11.1 Tiempo de ejecucion: 0.1061003s
+- Tam. Cromosoma: 25	Fitness medio: 45.2
+			Num Nodos medio: 19.2 Tiempo de ejecucion: 0.135926701s
+- Tam. Cromosoma: 50	Fitness medio: 50.0
+			Num Nodos medio: 28.35 Tiempo de ejecucion: 0.169969601s
+- Tam. Cromosoma: 75	Fitness medio: 51.4
+			Num Nodos medio: 35.3 Tiempo de ejecucion: 0.1991698s
+- Tam. Cromosoma: 100	Fitness medio: 51.75
+			Num Nodos medio: 28.45 Tiempo de ejecucion: 0.188438699s
+- Tam. Cromosoma: 255	Fitness medio: 53.95
+			Num Nodos medio: 30.4 Tiempo de ejecucion: 0.2581892s
+
+Truncamiento ----------------------------------------------------------------------
+- Tam. Cromosoma: 10	Fitness medio: 36.4
+			Num Nodos medio: 12.45 Tiempo de ejecucion: 0.1130698s
+- Tam. Cromosoma: 25	Fitness medio: 49.75
+			Num Nodos medio: 20.3 Tiempo de ejecucion: 0.1403986s
+- Tam. Cromosoma: 50	Fitness medio: 52.8
+			Num Nodos medio: 31.95 Tiempo de ejecucion: 0.160370101s
+- Tam. Cromosoma: 75	Fitness medio: 52.05
+			Num Nodos medio: 27.75 Tiempo de ejecucion: 0.1811923s
+- Tam. Cromosoma: 100	Fitness medio: 52.15
+			Num Nodos medio: 30.15 Tiempo de ejecucion: 0.1830663s
+- Tam. Cromosoma: 255	Fitness medio: 54.2
+			Num Nodos medio: 32.25 Tiempo de ejecucion: 0.231511901s
+
+Restos ----------------------------------------------------------------------
+- Tam. Cromosoma: 10	Fitness medio: 36.8
+			Num Nodos medio: 13.45 Tiempo de ejecucion: 0.1047133s
+- Tam. Cromosoma: 25	Fitness medio: 46.5
+			Num Nodos medio: 21.45 Tiempo de ejecucion: 0.1310162s
+- Tam. Cromosoma: 50	Fitness medio: 53.4
+			Num Nodos medio: 31.3 Tiempo de ejecucion: 0.1559282s
+- Tam. Cromosoma: 75	Fitness medio: 52.55
+			Num Nodos medio: 31.65 Tiempo de ejecucion: 0.1687963s
+- Tam. Cromosoma: 100	Fitness medio: 53.5
+			Num Nodos medio: 32.6 Tiempo de ejecucion: 0.1779496s
+- Tam. Cromosoma: 255	Fitness medio: 50.7
+			Num Nodos medio: 29.3 Tiempo de ejecucion: 0.2227448s
+
+Ranking ----------------------------------------------------------------------
+- Tam. Cromosoma: 10	Fitness medio: 36.8
+			Num Nodos medio: 15.0 Tiempo de ejecucion: 0.1117805s
+- Tam. Cromosoma: 25	Fitness medio: 51.6
+			Num Nodos medio: 24.05 Tiempo de ejecucion: 0.1388329s
+- Tam. Cromosoma: 50	Fitness medio: 52.25
+			Num Nodos medio: 32.25 Tiempo de ejecucion: 0.1630291s
+- Tam. Cromosoma: 75	Fitness medio: 52.4
+			Num Nodos medio: 31.4 Tiempo de ejecucion: 0.1742217s
+- Tam. Cromosoma: 100	Fitness medio: 51.0
+			Num Nodos medio: 32.0 Tiempo de ejecucion: 0.228413s
+- Tam. Cromosoma: 255	Fitness medio: 54.35
+			Num Nodos medio: 25.5 Tiempo de ejecucion: 0.2205177s

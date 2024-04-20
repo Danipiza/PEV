@@ -6,6 +6,7 @@ public abstract class Exp {
 	private int y;	
 	private int tam;
 	private String operacion;
+	private int repeat;
 	
 	
 	public Exp() {}
@@ -22,6 +23,9 @@ public abstract class Exp {
 	
 	public void putTam(int tam) { this.tam=tam; }
 	public int getTam() { return this.tam; }
+	
+	public void putRepeat(int repeat) { this.repeat=repeat; }
+	public int getRepeat() { return this.repeat; }
 	
 	public void putOperacion(String op) { this.operacion=op; }
 	public String getOperacion() { return this.operacion; }

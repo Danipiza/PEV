@@ -98,6 +98,7 @@ public class ControlPanel extends JPanel {
 	
 	private Color lightGreen = Color.decode("#00CC66"); // Light green color
 	private Color darkGreen = Color.decode("#028A46"); // Dark green color
+	private Color black = Color.BLACK;
     private boolean finAnimacion=false;
 	
     
@@ -115,7 +116,15 @@ public class ControlPanel extends JPanel {
     private JButton opcional_button;
     private boolean[] selectedCheckboxes;
 	
-
+    
+    private JTextField nGeneraciones;
+    private JTextField nGeneracionesElim;
+    
+    private int nGen;
+    private int nGenElim;
+    
+    private Funcion f;
+    
 	public ControlPanel() {
 		this.gbc = new GridBagConstraints();
 		this.AG = new AlgoritmoGenetico(this);
@@ -132,6 +141,9 @@ public class ControlPanel extends JPanel {
 		this.tam_cromosoma= new JTextField("100", 11);
 		this.ticks= new JTextField("100", 11);
 		this.tiempo_animacion=new JTextField("0.25", 5);
+		
+		this.nGen=0;
+		this.nGenElim=0;
 		
 		// Valor por defecto: 4, min: 2, max: 5, Pasos: 1
 		SpinnerModel spinnerModel = new SpinnerNumberModel(4, 2, 5, 1); 
@@ -221,11 +233,15 @@ public class ControlPanel extends JPanel {
 		checkBoxes = new JCheckBox[7]; 
 		checkBoxes[0] = new JCheckBox("Obstaculos");
 		checkBoxes[1] = new JCheckBox("OP. Derecha");
-        checkBoxes[2] = new JCheckBox("OP. Retrocede");
-        checkBoxes[3] = new JCheckBox("OP. IF_Dirty(A,B)");
-        checkBoxes[4] = new JCheckBox("OP. Repeat(A)");
-        checkBoxes[5] = new JCheckBox("OP. Salto_casilla(A)");
-        checkBoxes[6] = new JCheckBox("OP. Mueve_Primer");
+		checkBoxes[2] = new JCheckBox("OP. Mueve_Primer");
+		checkBoxes[3] = new JCheckBox("OP. Retrocede"); 
+		checkBoxes[4] = new JCheckBox("OP. Salto_casilla(A)");
+		checkBoxes[5] = new JCheckBox("Reset Generaciones");
+		checkBoxes[6] = new JCheckBox("Eliminacion Superiores");
+        //checkBoxes[5] = new JCheckBox("OP. IF_Dirty(A,B)");
+        //checkBoxes[6] = new JCheckBox("OP. Repeat(A)");
+        
+        
         
         selectedCheckboxes = new boolean[checkBoxes.length];
 
@@ -274,7 +290,7 @@ public class ControlPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {	
 				finAnimacion=true;
-				updateMatrixPanel(new int[filas][columnas]);  
+				updateMatrixPanel(f.tablero);  
 				
 				animacionMatrixPanel(mejor_individuo,
 	        			Double.parseDouble(tiempo_animacion.getText()),
@@ -532,6 +548,7 @@ public class ControlPanel extends JPanel {
             	squares[i][j].setOpaque(true);
             	
             	if (M[i][j]==1) squares[i][j].setBackground(lightGreen);
+                else if(M[i][j]==-1) squares[i][j].setBackground(black);
                 else squares[i][j].setBackground(darkGreen);  
 
             	// Borde bloancon entre cada celda
@@ -559,6 +576,11 @@ public class ControlPanel extends JPanel {
             	if(ind.operaciones.size()==0) return;
         		
         		int[][] M=new int[filas][columnas];
+        		for(int i=0;i<filas;i++) {
+        			for(int j=0;j<columnas;j++) {
+        				if(f.tablero[i][j]==-1)M[i][j]=-1;
+        			}
+        		}
         		int[][] direccionAvanza={{-1,0},{0,-1},{1,0},{0,1}};
         		int[][] direccionSalta ={{-1,1},{-1,-1},{1,-1},{1,1}};
         		String[] dirCorta= {"N.png","O.png","S.png","E.png"};
@@ -584,7 +606,11 @@ public class ControlPanel extends JPanel {
         		for(int i=0;i<n;i++) {
         			if(ops[i][0]=='A') operaciones[i]="AVANZA";
         			else if(ops[i][0]=='I') operaciones[i]="IZQUIERDA";
-        			else operaciones[i]="SALTA "+ops[i][1]+ ", "+ops[i][2];
+        			else if(ops[i][0]=='S') operaciones[i]="SALTA("+ops[i][1]+ ", "+ops[i][2]+")";
+        			else if(ops[i][0]=='D') operaciones[i]="DERECHA";
+        			else if(ops[i][0]=='R') operaciones[i]="RETROCEDE";
+        			else if(ops[i][0]=='M') operaciones[i]="MUEVE_PRIMER";
+        			else if(ops[i][0]=='T') operaciones[i]="SALTA_A("+ops[i][1]+ ", "+ops[i][2]+")";
         		}
         		
         		
@@ -594,7 +620,7 @@ public class ControlPanel extends JPanel {
 				squares[x][y].repaint();
 				
 				
-				
+				int tmpX, tmpY;
         		int t=0;
         		while(t<ticks) {
         			
@@ -610,29 +636,81 @@ public class ControlPanel extends JPanel {
         			squares[x][y].revalidate();                                
         			squares[x][y].repaint();
         			// Gira a la izquierda
-        			if(ops[cont][0]=='I') dir=(dir+1)%4;
+        			if(ops[cont][0]=='I') dir=(dir+1)%4;        			
         			else if(ops[cont][0]=='A') {
-        				x=(x+direccionAvanza[dir][0])%filas;
-        				y=(y+direccionAvanza[dir][1])%columnas;
+        				tmpX=(x+direccionAvanza[dir][0])%filas;
+        				tmpY=(y+direccionAvanza[dir][1])%columnas;
         				// Toroidal
-        				if(x<0) x=filas+x;
-        				if(y<0) y=columnas+y;
-        				
-        				if(M[x][y]==0) {
-        					M[x][y]=1;
-        					squares[x][y].setBackground(lightGreen);
-        				}        				
+        				if(tmpX<0) tmpX=filas+tmpX;
+        				if(tmpY<0) tmpY=columnas+tmpY;
+        				if(M[tmpX][tmpY]!=-1) {
+        					x=tmpX; y=tmpY;
+	        				if(M[x][y]==0) {
+	        					M[x][y]=1;
+	        					squares[x][y].setBackground(lightGreen);
+	        				} 
+        				}
         			}
-        			else {
-        				x=(x+direccionSalta[dir][0]*ops[cont][1]-'0')%filas;
-        				y=(y+direccionSalta[dir][1]*ops[cont][2]-'0')%columnas;
+        			else if (ops[cont][0]=='S'){
+        				tmpX=(x+direccionSalta[dir][0]*ops[cont][1]-'0')%filas;
+        				tmpY=(y+direccionSalta[dir][1]*ops[cont][2]-'0')%columnas;
         				// Toroidal
-        				if(x<0) x=filas+x;
-        				if(y<0) y=columnas+y;
+        				if(tmpX<0) tmpX=filas+tmpX;
+        				if(tmpY<0) tmpY=columnas+tmpY;
+        				if(M[tmpX][tmpY]!=-1) {
+	        				x=tmpX; y=tmpY;
+        					if(M[x][y]==0) {
+	        					M[x][y]=1;
+	        					squares[x][y].setBackground(lightGreen);
+	        				}
+        				}
+        			}
+        			else if(ops[cont][0]=='D') { 
+        				dir=(dir-1)%4;
+        				if(dir<0)dir=3;
+        			}
+        			else if(ops[cont][0]=='R') {
+        				tmpX=(x-direccionAvanza[dir][0])%filas;
+        				tmpY=(y-direccionAvanza[dir][1])%columnas;				
+        				if(tmpX<0) tmpX=filas+tmpX;
+        				if(tmpY<0) tmpY=columnas+tmpY;
+        				if(M[tmpX][tmpY]!=-1) {
+        					x=tmpX; y=tmpY;
+        					if(M[x][y]==0) {
+        						M[x][y]=1;
+        						squares[x][y].setBackground(lightGreen);
+        					}
+        				}
+        			}
+        			else if(ops[cont][0]=='M') {
+        				int[] mX= {-1,-1,-1,0,0,1,1,1};
+        				int[] mY= {-1,0,1,-1,1,-1,0,1};				
+        				for(int k =0;k<8;k++) {
+        					tmpX=(x+mX[k])%filas;
+        					tmpY=(y+mY[k])%columnas;	
+        					if(tmpX<0) tmpX=filas+tmpX;
+        					if(tmpY<0) tmpY=columnas+tmpY;
+        					if(M[tmpX][tmpY]==0) {
+        						x=tmpX;
+        						y=tmpY;
+        						M[x][y]=1;
+        						squares[x][y].setBackground(lightGreen);
+        						break;
+        					}
+        				}				
         				
-        				if(M[x][y]==0) {
-        					M[x][y]=1;
-        					squares[x][y].setBackground(lightGreen);
+        			}
+        			else if(ops[cont][0]=='T'){
+        				tmpX=(ops[cont][1]-'0')%filas;
+        				tmpY=(ops[cont][2]-'0')%columnas;
+        				if(tmpX<0) tmpX=filas+tmpX;
+        				if(tmpY<0) tmpY=columnas+tmpY;
+        				if(M[tmpX][tmpY]!=-1) {
+        					x=tmpX; y=tmpY;
+        					if(M[x][y]==0) {
+        						M[x][y]=1;
+        						squares[x][y].setBackground(lightGreen);
+        					}
         				}
         			}
         			matrixPanel.repaint();        			
@@ -656,6 +734,8 @@ public class ControlPanel extends JPanel {
 
 	public void actualiza_Grafico(double[][] vals, Funcion f,Individuo mejor_individuo, int filas, int columnas) {
 		plot2D.removeAllPlots();
+		
+		this.f=f;
 		
 		this.mejor_individuo=mejor_individuo;
 		
@@ -686,7 +766,7 @@ public class ControlPanel extends JPanel {
 		
 		int[][] M=f.matrix(mejor_individuo);
 		
-		updateMatrixPanel(new int[filas][columnas]);
+		updateMatrixPanel(f.tablero);
 		
 		animacionMatrixPanel(mejor_individuo,
     			0.0,
@@ -720,12 +800,13 @@ public class ControlPanel extends JPanel {
 	private void runArbol() {
 		setValores(0);
 		AG.ejecutaArbol(valores);
+		//AG.ejecuta_calculo_mediasA(valores);
 	}
 	
 	private void runGramatica() {
 		setValores(1);
 		AG.ejecutaGramatica(valores);
-		
+		//AG.ejecuta_calculo_mediasG(valores);
 	}
 
 	private void setValores(int modo) {
@@ -748,7 +829,9 @@ public class ControlPanel extends JPanel {
 				Integer.parseInt(ticks.getText()),
 				modo,
 				bloating_CBox.getSelectedIndex(),
-				selectedCheckboxes);
+				selectedCheckboxes,
+				nGen,
+				nGenElim);
 	}
 	
 	
@@ -765,18 +848,41 @@ public class ControlPanel extends JPanel {
 	private void openDialog() {
 		boolean[] aux = selectedCheckboxes;
 		selectedCheckboxes = new boolean[checkBoxes.length];
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(checkBoxes.length, 1));
-        for (int i = 0; i < checkBoxes.length; i++) {
-            panel.add(checkBoxes[i]);
-        }
         
-
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets=new Insets(5, 5, 5, 5);
+		gbc.fill=GridBagConstraints.BOTH;		
+		gbc.anchor=GridBagConstraints.WEST;
+		gbc.gridx=0;
+		gbc.gridy=0; 
+		
+		nGeneraciones=new JTextField("100", 5);
+		nGeneracionesElim=new JTextField("100", 5);
+		
+		gbc.anchor = GridBagConstraints.WEST;
+        for (int i = 0; i < checkBoxes.length-2; i++) {
+            panel.add(checkBoxes[i],gbc);
+            gbc.gridy++;
+        }
+        gbc.gridy++;
+        panel.add(checkBoxes[checkBoxes.length-2],gbc);
+        gbc.gridx++;
+        panel.add(nGeneraciones,gbc);
+        
+        gbc.gridx=0;
+        gbc.gridy++;
+        panel.add(checkBoxes[checkBoxes.length-1],gbc);
+        gbc.gridx++;
+        panel.add(nGeneracionesElim,gbc);
+        
         int result = JOptionPane.showConfirmDialog(null, panel, "Select Options", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             for (int i = 0; i < checkBoxes.length; i++) {
                 selectedCheckboxes[i] = checkBoxes[i].isSelected();
             }
+            if(selectedCheckboxes[checkBoxes.length-2]) nGen=Integer.parseInt(nGeneraciones.getText());
+            if(selectedCheckboxes[checkBoxes.length-1]) nGenElim=Integer.parseInt(nGeneracionesElim.getText());
         }
         else {
         	selectedCheckboxes=aux;

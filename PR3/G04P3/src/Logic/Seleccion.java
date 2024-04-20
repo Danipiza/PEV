@@ -64,7 +64,7 @@ public class Seleccion {
 		for (int i = 0; i < tam_seleccionados; i++) {
 			max = Double.NEGATIVE_INFINITY;
 			indexMax = -1;
-			for (int j = 0; j < k; j++) {
+			for (int j = 1; j < k; j++) {
 				int randomIndex = (int) (Math.random() * tam_poblacion);
 				randomFitness = poblacion[randomIndex].fitness;
 				if (randomFitness > max) {
@@ -72,6 +72,8 @@ public class Seleccion {
 					indexMax = randomIndex;
 				} 
 			}	
+			if(indexMax==-1) 
+				System.out.println("a");
 			 
 			
 			if(ind_modo==0) seleccionados[i] = new IndividuoArbol((IndividuoArbol) poblacion[indexMax]);
@@ -177,7 +179,7 @@ public class Seleccion {
 		for (int i = 0; i < tam_seleccionados; i++) {
 			aux = prob_seleccion[i] * (tam_seleccionados);
 			num = (int) aux;
-			for (int j = 0; j < num; j++) {
+			for (int j = 0; j < num && x < tam_seleccionados; j++) {
 				if(ind_modo==0) seleccionados[x++] = new IndividuoArbol((IndividuoArbol) poblacion[i]);
 				else seleccionados[x++] = new IndividuoGramatica((IndividuoGramatica) poblacion[i]);
 			}
