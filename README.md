@@ -1,4 +1,11 @@
-# PEV
+*[ENGLISH](https://github.com/Danipiza/TFG/blob/main/README_ENG.md) ∙ [ESPAÑOL](README.md)* <img align="right" src="https://visitor-badge.laobi.icu/badge?page_id=danipiza.TFG" />
+
+<hr>
+
+<h1 align="center">
+    PEV: Programación EVolutiva
+</h1>
+
 **Programacion Evolutiva,** asignatura del Departamento de Sistemas Informaticos y ́Computación, perteneciente al bloque de asignaturas optativas generales grado de ingeniería informática en la Universidad Complutense de Madrid.
 
 En esta asignatura vemos diferentes formas de resolver problemas mediante algoritmos evolutivos. Creamos nuestras propias clases para implementar los metodos de Evaluacion, Selección, Cruce y Mutacion, así como los Individuos con sus respectivas Representaciónes (array binarios o reales, arboles o gramáticas).
